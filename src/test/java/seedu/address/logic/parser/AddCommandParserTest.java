@@ -18,7 +18,9 @@ import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_NON_EMPTY;
 import static seedu.address.logic.commands.CommandTestUtil.PREAMBLE_WHITESPACE;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_FRIEND;
 import static seedu.address.logic.commands.CommandTestUtil.TAG_DESC_HUSBAND;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ADDRESS_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NAME_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_PHONE_BOB;
@@ -53,6 +55,8 @@ public class AddCommandParserTest {
     private static final String INVALID_COMPANY_DESC = " c/Comp@ny!";
     private static final String VALID_COMPANY_AMY = "Amy Corp";
     private static final String VALID_COMPANY_BOB = "Bob Industries";
+
+    private static final String MINIMAL_INPUT_AMY = NAME_DESC_AMY + PHONE_DESC_AMY;
     private AddCommandParser parser = new AddCommandParser();
 
     @Test
@@ -138,10 +142,15 @@ public class AddCommandParserTest {
 
     @Test
     public void parse_optionalFieldsMissing_success() {
-        // zero tags
-        Person expectedPerson = new PersonBuilder(AMY).withTags().build();
-        assertParseSuccess(parser, NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY,
-                new AddCommand(expectedPerson));
+        Person expectedPerson = new PersonBuilder(AMY)
+                .withEmail(null)
+                .withAddress(null)
+                .withCompany(null)
+                .withTags()
+                .build();
+
+        assertParseSuccess(parser, MINIMAL_INPUT_AMY, new AddCommand(expectedPerson));
+
     }
 
     @Test
@@ -154,14 +163,6 @@ public class AddCommandParserTest {
 
         // missing phone prefix
         assertParseFailure(parser, NAME_DESC_BOB + VALID_PHONE_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
-
-        // missing email prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + VALID_EMAIL_BOB + ADDRESS_DESC_BOB,
-                expectedMessage);
-
-        // missing address prefix
-        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + VALID_ADDRESS_BOB,
                 expectedMessage);
 
         // all prefixes missing
@@ -201,6 +202,7 @@ public class AddCommandParserTest {
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
     }
 
+
     @Test
     public void parse_optionalCompanyPresent_success() {
         Person expectedPerson = new PersonBuilder(AMY)
@@ -233,4 +235,20 @@ public class AddCommandParserTest {
                         + ADDRESS_DESC_AMY + COMPANY_DESC_AMY + COMPANY_DESC_BOB,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_COMPANY));
     }
+
+    @Test
+    public void parse_optionalEmailAndAddress_success() {
+        AddCommandParser parser = new AddCommandParser();
+        String userInput = NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY;
+
+        Person expectedPerson = new PersonBuilder(AMY)
+                .withEmail(VALID_EMAIL_AMY)
+                .withAddress(VALID_ADDRESS_AMY)
+                .withCompany(null)
+                .withTags()
+                .build();
+
+        assertParseSuccess(parser, userInput, new AddCommand(expectedPerson));
+    }
+
 }

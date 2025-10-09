@@ -112,4 +112,19 @@ public class NameContainsKeywordsPredicateTest {
         String expected = NameContainsKeywordsPredicate.class.getCanonicalName() + "{keywords=" + keywords + "}";
         assertEquals(expected, predicate.toString());
     }
+
+    @Test
+    public void test_nullEmailOrAddress_doesNotCauseNpeAndBehavesCorrectly() {
+        NameContainsKeywordsPredicate predicate = new NameContainsKeywordsPredicate(
+                Collections.singletonList("example"));
+        Person personNoEmailAddress = new PersonBuilder().withName("Foo").withPhone("0000")
+                .withEmail(null).withAddress(null).withTags("friends").build();
+
+        assertFalse(predicate.test(personNoEmailAddress));
+
+        NameContainsKeywordsPredicate namePredicate = new NameContainsKeywordsPredicate(
+                Collections.singletonList("Foo"));
+        assertTrue(namePredicate.test(personNoEmailAddress));
+    }
+
 }

@@ -18,7 +18,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
-
+import seedu.address.testutil.PersonBuilder;
 public class JsonAdaptedPersonTest {
     private static final String INVALID_NAME = "R@chel";
     private static final String INVALID_PHONE = "+651234";
@@ -83,11 +83,11 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
-    public void toModelType_nullEmail_throwsIllegalValueException() {
+    public void toModelType_nullEmail_returnsPersonWithNullEmail() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(
                 VALID_NAME, VALID_PHONE, null, VALID_ADDRESS, null, VALID_TAGS);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName());
-        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Person modelPerson = person.toModelType();
+        assertEquals(null, modelPerson.getEmail());
     }
 
     @Test
@@ -99,10 +99,10 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
-    public void toModelType_nullAddress_throwsIllegalValueException() {
+    public void toModelType_nullAddress_returnsPersonWithNullAddress() throws Exception {
         JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, null, null, VALID_TAGS);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName());
-        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+        Person modelPerson = person.toModelType();
+        assertEquals(null, modelPerson.getAddress());
     }
 
     @Test
@@ -145,4 +145,27 @@ public class JsonAdaptedPersonTest {
         assertThrows(IllegalValueException.class, person::toModelType);
     }
 
+    @Test
+    public void toModelType_personConstructor_nullFields() throws Exception {
+        Person personWithNulls = new PersonBuilder(BENSON)
+                .withEmail(null)
+                .withAddress(null)
+                .withCompany(null)
+                .withTags(BENSON.getTags().stream().map(tag -> tag.tagName).toArray(String[]::new))
+                .build();
+
+
+        JsonAdaptedPerson adapted = new JsonAdaptedPerson(personWithNulls);
+        Person modelPerson = adapted.toModelType();
+
+        assertEquals(personWithNulls, modelPerson);
+    }
+
+    @Test
+    public void toModelType_nullFields_returnsPerson() throws Exception {
+        JsonAdaptedPerson person = new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, null, null, null, VALID_TAGS);
+        Person modelPerson = person.toModelType();
+        assertEquals(null, modelPerson.getEmail());
+        assertEquals(null, modelPerson.getAddress());
+    }
 }

@@ -69,12 +69,12 @@ public class NameContainsKeywordsPredicate implements java.util.function.Predica
         }
 
         // Email
-        if (SearchUtil.containsSubstringIgnoreCase(person.getEmail().value, keyword)) {
+        if (person.getEmail() != null && SearchUtil.containsSubstringIgnoreCase(person.getEmail().value, keyword)) {
             return true;
         }
 
         // Address
-        if (SearchUtil.containsSubstringIgnoreCase(person.getAddress().value, keyword)) {
+        if (person.getAddress() != null && SearchUtil.containsSubstringIgnoreCase(person.getAddress().value, keyword)) {
             return true;
         }
 
