@@ -1,9 +1,15 @@
 package seedu.address.ui;
 
+import java.awt.Desktop;
+import java.net.URI;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
@@ -11,7 +17,7 @@ import javafx.stage.Stage;
 import seedu.address.commons.core.LogsCenter;
 
 /**
- * Controller for a help page
+ * Controller for a nicer help page
  */
 public class HelpWindow extends UiPart<Stage> {
 
@@ -25,6 +31,9 @@ public class HelpWindow extends UiPart<Stage> {
     private Button copyButton;
 
     @FXML
+    private Button openButton;
+
+    @FXML
     private Label helpMessage;
 
     /**
@@ -35,6 +44,9 @@ public class HelpWindow extends UiPart<Stage> {
     public HelpWindow(Stage root) {
         super(FXML, root);
         helpMessage.setText(HELP_MESSAGE);
+
+        // Set the window title
+        getRoot().setTitle("Help - AddressBook");
     }
 
     /**
@@ -46,21 +58,6 @@ public class HelpWindow extends UiPart<Stage> {
 
     /**
      * Shows the help window.
-     * @throws IllegalStateException
-     *     <ul>
-     *         <li>
-     *             if this method is called on a thread other than the JavaFX Application Thread.
-     *         </li>
-     *         <li>
-     *             if this method is called during animation or layout processing.
-     *         </li>
-     *         <li>
-     *             if this method is called on the primary stage.
-     *         </li>
-     *         <li>
-     *             if {@code dialogStage} is already showing.
-     *         </li>
-     *     </ul>
      */
     public void show() {
         logger.fine("Showing help page about the application.");
@@ -95,8 +92,40 @@ public class HelpWindow extends UiPart<Stage> {
     @FXML
     private void copyUrl() {
         final Clipboard clipboard = Clipboard.getSystemClipboard();
-        final ClipboardContent url = new ClipboardContent();
-        url.putString(USERGUIDE_URL);
-        clipboard.setContent(url);
+        final ClipboardContent content = new ClipboardContent();
+        content.putString(USERGUIDE_URL);
+        clipboard.setContent(content);
+    }
+
+    /**
+     * Opens the URL in the default browser with a confirmation popup.
+     */
+    @FXML
+    private void openUrl() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Open External Link");
+        alert.setHeaderText("You are about to open the user guide in your browser");
+        alert.setContentText("This will open your default web browser. Do you want to continue?");
+
+        // Customize buttons text
+        ButtonType yesButton = new ButtonType("Yes, open browser");
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(yesButton, cancelButton);
+
+        // Show popup and wait for user response
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == yesButton) {
+            try {
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().browse(new URI(USERGUIDE_URL));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                logger.warning("Failed to open browser. User can copy the URL instead.");
+            }
+        }
     }
 }
+
+

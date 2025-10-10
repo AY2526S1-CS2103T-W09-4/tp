@@ -1,19 +1,65 @@
-#copyButton, #helpMessage {
-    -fx-text-fill: white;
+.root, .scene, .vbox {
+    -fx-background-color: linear-gradient(to bottom right, #1e1e1e, #2d2d2d);
 }
 
+/* Help message text */
+#helpMessage {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+/* Base styling for both buttons */
+#copyButton, #openButton {
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+    -fx-border-width: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+    -fx-transition: all 0.2s ease; /* JavaFX doesn't support this, but scale will help for pop */
+}
+
+/* Copy URL button (secondary look) */
 #copyButton {
     -fx-background-color: dimgray;
 }
-
 #copyButton:hover {
     -fx-background-color: gray;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 6, 0.4, 0, 0); /* soft glow */
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
-
 #copyButton:armed {
     -fx-background-color: darkgray;
+    -fx-scale-x: 0.97; /* pressed pop effect */
+    -fx-scale-y: 0.97;
 }
 
+/* Open in Browser button (primary look) */
+#openButton {
+    -fx-background-color: #3a86ff;
+}
+#openButton:hover {
+    -fx-background-color: #4fa3ff;
+    -fx-effect: dropshadow(gaussian, rgba(79,163,255,0.6), 10, 0.5, 0, 0); /* soft glow */
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+#openButton:armed {
+    -fx-background-color: #2f6edb;
+    -fx-scale-x: 0.97; /* pressed pop effect */
+    -fx-scale-y: 0.97;
+}
+
+/* Padding container if using VBox/HBox */
 #helpMessageContainer {
     -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-alignment: center;
 }
