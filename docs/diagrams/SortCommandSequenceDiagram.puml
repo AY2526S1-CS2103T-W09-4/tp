@@ -27,7 +27,7 @@ UniquePersonList --> AddressBook : (in-place sorted)
 deactivate UniquePersonList
 AddressBook --> Model :
 deactivate AddressBook
-Model --> SortCommand : 
+Model --> SortCommand :
 deactivate Model
 
 SortCommand -> Logic : return CommandResult(message)
