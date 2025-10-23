@@ -10,7 +10,7 @@ package "Model" <<Rectangle>> MODEL_COLOR {
         - PRIORITY_VALUES : Set<String> {static}
         - MESSAGE_CONSTRAINTS : String {static}
         - value : String
-        
+
         + Priority(priority : String)
         + {static} isValidPriority(test : String) : boolean
         + getValue() : String
@@ -18,7 +18,7 @@ package "Model" <<Rectangle>> MODEL_COLOR {
         + equals(other : Object) : boolean
         + hashCode() : int
     }
-    
+
     class Person {
         - name : Name
         - phone : Phone
@@ -27,7 +27,7 @@ package "Model" <<Rectangle>> MODEL_COLOR {
         - tags : Set<Tag>
         - priority : Priority
         - remark : Remark
-        
+
         + Person(name, phone, email, address, tags, priority, remark)
         + getName() : Name
         + getPhone() : Phone
@@ -41,7 +41,7 @@ package "Model" <<Rectangle>> MODEL_COLOR {
         + hashCode() : int
         + toString() : String
     }
-    
+
     Person "1" *-- "1" Priority : contains
 }
 
@@ -61,20 +61,20 @@ package "Logic" <<Rectangle>> COMMAND_COLOR {
         + equals(other : Object) : boolean
         + toString() : String
     }
-    
+
     abstract class Command {
         + {abstract} execute(model : Model) : CommandResult
     }
-    
+
     class PriorityCommandParser {
         + parse(args : String) : PriorityCommand
         - parsePriority(argMultimap : ArgumentMultimap) : Priority
     }
-    
+
     interface Parser<T> {
         + parse(userInput : String) : T
     }
-    
+
     Command <|-- PriorityCommand
     Parser <|.. PriorityCommandParser
     PriorityCommandParser ..> PriorityCommand : creates
@@ -90,7 +90,7 @@ package "Commons" <<Rectangle>> {
         + getZeroBased() : int
         + getOneBased() : int
     }
-    
+
     PriorityCommand ..> Index : uses
 }
 
@@ -105,7 +105,7 @@ end note
 note right of PriorityCommand
   Command format:
   priority INDEX pr/PRIORITY
-  
+
   Example:
   priority 1 pr/HIGH
 end note
