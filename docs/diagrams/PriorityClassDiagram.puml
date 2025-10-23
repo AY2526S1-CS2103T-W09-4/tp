@@ -54,7 +54,7 @@ package "Logic" <<Rectangle>> COMMAND_COLOR {
         - MESSAGE_DUPLICATE_PERSON : String {static}
         - index : Index
         - priority : Priority
-        
+
         + PriorityCommand(index : Index, priority : Priority)
         + execute(model : Model) : CommandResult
         - createEditedPerson(personToEdit : Person) : Person {static}
