@@ -1,0 +1,52 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class NoteCommand {
+  index: Index
+  note: Note
+
+  NoteCommand(index: Index, note: Note): void
+  execute(model: Model): CommandResult
+  generateSuccessMessage(note: Note, person: Person): String
+  equals(other: Object): boolean
+  toString(): String
+}
+
+' Abstracted related classes
+abstract class Command
+class Index
+class Note
+class Model
+class CommandResult
+class CommandException
+class Person
+class ToStringBuilder
+class Messages
+
+' =============================
+' Relationships
+' =============================
+Command <|-- NoteCommand
+
+' Association — NoteCommand uses Note
+NoteCommand --> Note : uses
+
+' Association — NoteCommand references Index (value object/reference)
+NoteCommand --> Index : references
+
+' Dependency — Model is passed into execute() (transient/not owned)
+NoteCommand ..> Model : uses
+
+' Dependencies — used/returned/thrown transiently
+NoteCommand ..> CommandResult : returns
+NoteCommand ..> CommandException : throws
+NoteCommand ..> Person : edits
+NoteCommand ..> ToStringBuilder : uses
+NoteCommand ..> Messages : formats
+
+note top of NoteCommand
+Adds or updates a note for a person
+in the address book.
+end note
+
+@enduml

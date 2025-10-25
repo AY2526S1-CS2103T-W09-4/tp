@@ -1,0 +1,88 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+package seedu.address.logic.commands {
+
+  ' =============================
+  ' Abstract Base Class
+  ' =============================
+  abstract class Command {
+    +CommandResult execute(Model model)
+  }
+
+  ' =============================
+  ' Concrete Command Classes
+  ' =============================
+  class AddCommand
+  class ClearCommand
+  class DeleteCommand
+  class EditCommand
+  class ExitCommand
+  class FindCommand
+  class HelpCommand
+  class ListCommand
+  class NoteCommand
+  class PriorityCommand
+  class SortCommand
+  class UndoCommand
+  class RedoCommand  ' <-- added
+
+  ' =============================
+  ' CommandResult
+  ' =============================
+  class CommandResult {
+    -String feedbackToUser
+    -boolean showHelp
+    -boolean exit
+    +CommandResult(String feedbackToUser, boolean showHelp, boolean exit)
+    +CommandResult(String feedbackToUser)
+    +getFeedbackToUser() : String
+    +isShowHelp() : boolean
+    +isExit() : boolean
+  }
+
+  ' =============================
+  ' Dependencies
+  ' =============================
+  class Model
+  class CommandException
+
+  ' =============================
+  ' Inheritance
+  ' =============================
+  Command <|-- AddCommand
+  Command <|-- ClearCommand
+  Command <|-- DeleteCommand
+  Command <|-- EditCommand
+  Command <|-- ExitCommand
+  Command <|-- FindCommand
+  Command <|-- HelpCommand
+  Command <|-- ListCommand
+  Command <|-- NoteCommand
+  Command <|-- PriorityCommand
+  Command <|-- SortCommand
+  Command <|-- UndoCommand
+  Command <|-- RedoCommand  ' <-- added
+
+  ' =============================
+  ' Associations
+  ' =============================
+  Command --> CommandResult : returns
+  Command --> Model : operates on
+  Command --> CommandException : throws
+
+  ' =============================
+  ' Notes
+  ' =============================
+  note top of Command
+  Abstract base class representing
+  executable commands.
+  end note
+
+  note right of CommandResult
+  Represents feedback to the user
+  after executing a command.
+  end note
+}
+
+@enduml

@@ -1,0 +1,48 @@
+@startuml NoteCommandInternalSequence
+hide footbox
+skinparam ArrowFontStyle plain
+
+participant ":NoteCommand" as NoteCommand
+participant ":Model" as Model
+participant ":List<Person>" as LastShownList
+participant ":Person" as EditedPerson
+participant ":CommandResult" as CommandResult
+
+NoteCommand -> Model : getFilteredPersonList()
+activate Model
+Model -> LastShownList : produce filtered list
+Model --> NoteCommand : lastShownList
+deactivate Model
+
+NoteCommand -> LastShownList : get(index)
+
+' Ensure EditedPerson lifeline exists at top, then send constructor and activate immediately
+create EditedPerson
+NoteCommand -> EditedPerson : new Person(name, phone, email, address, company, tags, note)
+activate EditedPerson
+EditedPerson --> NoteCommand
+deactivate EditedPerson
+
+NoteCommand -> Model : setPerson(personToEdit, editedPerson)
+activate Model
+Model --> NoteCommand
+deactivate Model
+
+NoteCommand -> Model : commitAddressBook()
+activate Model
+Model --> NoteCommand
+deactivate Model
+
+NoteCommand -> Model : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+activate Model
+Model --> NoteCommand
+deactivate Model
+
+' CommandResult: create first to reserve top placement, then constructor and activation attached to class box
+create CommandResult
+NoteCommand -> CommandResult : new CommandResult(generateSuccessMessage(note, editedPerson))
+activate CommandResult
+CommandResult --> NoteCommand : result
+deactivate CommandResult
+
+@enduml
