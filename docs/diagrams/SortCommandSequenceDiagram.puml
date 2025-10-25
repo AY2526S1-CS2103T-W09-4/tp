@@ -1,0 +1,36 @@
+@startuml
+title SortCommand execution (simplified, matches provided code)
+
+actor User
+participant Parser
+participant Logic as "LogicManager / Controller"
+participant SortCommand
+participant Model
+participant AddressBook
+participant UniquePersonList
+
+User -> Parser : "sort <key>" (text)
+Parser -> Logic : parsed SortCommand(key)
+Logic -> SortCommand : execute(model)
+activate SortCommand
+
+SortCommand -> SortCommand : comparatorFor(key)
+note right: builds Comparator<Person> using one of:\nNAME, PHONE, EMAIL, ADDRESS, TAG, PRIORITY
+SortCommand -> Model : sortPersonList(comparator)
+activate Model
+
+Model -> AddressBook : sortPersons(comparator)   ' model delegates to addressbook implementation
+activate AddressBook
+AddressBook -> UniquePersonList : sort(comparator) ' delegates to internal list sort
+activate UniquePersonList
+UniquePersonList --> AddressBook : (in-place sorted)
+deactivate UniquePersonList
+AddressBook --> Model :
+deactivate AddressBook
+Model --> SortCommand :
+deactivate Model
+
+SortCommand -> Logic : return CommandResult(message)
+deactivate SortCommand
+Logic -> User
+@enduml
