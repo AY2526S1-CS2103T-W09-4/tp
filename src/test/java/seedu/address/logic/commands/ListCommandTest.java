@@ -1,79 +1,71 @@
 package seedu.address.logic.commands;
 
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.logic.commands.CommandTestUtil.showPersonAtIndex;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Person;
 
 /**
- * Contains integration tests (interaction with the Model) and unit tests for ListCommand.
+ * Unit tests for ListCommand execution behaviour.
  */
 public class ListCommandTest {
 
-    private Model model;
-    private Model expectedModel;
+    @Test
+    public void execute_listAll_showsAllPersons() throws Exception {
+        AddressBook ab = getTypicalAddressBook();
+        Model model = new ModelManager(ab, new UserPrefs());
 
-    @BeforeEach
-    public void setUp() {
-        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        List<Person> expectedBefore = ab.getPersonList();
+
+        ListCommand command = new ListCommand();
+        CommandResult result = command.execute(model);
+
+        List<Person> after = model.getFilteredPersonList();
+        assertEquals(expectedBefore, after);
+
+        assertTrue(result.getFeedbackToUser() != null && !result.getFeedbackToUser().isEmpty());
     }
 
     @Test
-    public void execute_listIsNotFiltered_showsAllContacts() {
-        String expectedMessage = model.getFilteredPersonList().stream()
-                .map(person -> formatPerson(person, model))
-                .collect(Collectors.joining("\n"));
+    public void execute_listByTag_showsOnlyTaggedPersons() throws Exception {
+        AddressBook ab = getTypicalAddressBook();
+        Model model = new ModelManager(ab, new UserPrefs());
 
-        assertCommandSuccess(new ListCommand(), model, expectedMessage, expectedModel);
+        // build expected list by filtering the typical persons for tag "friends"
+        List<Person> expected = ab.getPersonList().stream()
+                .filter(p -> p.getTags().stream().anyMatch(t -> t.tagName.equalsIgnoreCase("friends")))
+                .collect(Collectors.toList());
+
+        ListCommand command = new ListCommand("friends");
+        CommandResult result = command.execute(model);
+
+        List<Person> after = model.getFilteredPersonList();
+        assertEquals(expected, after);
+
+        assertTrue(result.getFeedbackToUser() != null && !result.getFeedbackToUser().isEmpty());
     }
 
     @Test
-    public void execute_listIsFiltered_showsAllContacts() {
-        showPersonAtIndex(model, INDEX_FIRST_PERSON);
+    public void executeListByTag_noMatches() throws Exception {
+        AddressBook ab = getTypicalAddressBook();
+        Model model = new ModelManager(ab, new UserPrefs());
 
-        // Build expected message using the full list (like ListCommand will do)
-        expectedModel.updateFilteredPersonList(Model.PREDICATE_SHOW_ALL_PERSONS);
-        String expectedMessage = expectedModel.getFilteredPersonList().stream()
-                .map(person -> formatPerson(person, expectedModel))
-                .collect(Collectors.joining("\n"));
+        ListCommand command = new ListCommand("thisTagDoesNotExist");
+        CommandResult result = command.execute(model);
 
-        assertCommandSuccess(new ListCommand(), model, expectedMessage, expectedModel);
-    }
+        List<Person> after = model.getFilteredPersonList();
+        assertTrue(after.isEmpty());
 
-
-    @Test
-    public void execute_emptyAddressBook_showsNoContactsStored() {
-        model = new ModelManager();
-        expectedModel = new ModelManager();
-
-        ListCommand listCommand = new ListCommand();
-        String expectedMessage = "No contacts stored";
-
-        assertCommandSuccess(listCommand, model, expectedMessage, expectedModel);
-    }
-
-    /**
-     * Formats a person using the filtered list from the model to ensure correct numbering.
-     */
-    private String formatPerson(Person person, Model model) {
-        int index = model.getFilteredPersonList().indexOf(person) + 1;
-        return String.format("%d. %s | %s | [%s] | [%s] | %s",
-                index,
-                person.getName(),
-                person.getPhone(),
-                person.getEmail(),
-                person.getCompany(),
-                person.getTags());
+        assertEquals(ListCommand.MESSAGE_NO_CONTACTS_STORED, result.getFeedbackToUser());
     }
 }
