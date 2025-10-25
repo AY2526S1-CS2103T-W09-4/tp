@@ -8,7 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Region;
 
 /**
- * A ui for the status bar that is displayed at the footer of the application.
+ * A UI for the status bar that is displayed at the footer of the application.
+ * Displays the save file location statically.
  */
 public class StatusBarFooter extends UiPart<Region> {
 
@@ -19,10 +20,10 @@ public class StatusBarFooter extends UiPart<Region> {
 
     /**
      * Creates a {@code StatusBarFooter} with the given {@code Path}.
+     * Sets the text statically; no dynamic updates.
      */
     public StatusBarFooter(Path saveLocation) {
         super(FXML);
-        saveLocationStatus.setText(Paths.get(".").resolve(saveLocation).toString());
+        saveLocationStatus.setText("Save file location: " + Paths.get(".").resolve(saveLocation).toString());
     }
-
 }
