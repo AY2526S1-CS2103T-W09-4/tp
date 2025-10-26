@@ -1,45 +1,63 @@
 @startuml PriorityClassDiagram
 
+hide circle
+skinparam classAttributeIconSize 0
+
 !define PRIORITY_COLOR #E8F5E9
 !define COMMAND_COLOR #E3F2FD
 !define MODEL_COLOR #FFF9C4
 
 package "Model" <<Rectangle>> MODEL_COLOR {
     class Priority {
-        - PRIORITY_VALIDATION_REGEX : String {static}
-        - PRIORITY_VALUES : Set<String> {static}
-        - MESSAGE_CONSTRAINTS : String {static}
-        - value : String
+        +<u>MESSAGE_CONSTRAINTS : String</u>
+        +level : Level
 
-        + Priority(priority : String)
-        + {static} isValidPriority(test : String) : boolean
-        + getValue() : String
-        + toString() : String
-        + equals(other : Object) : boolean
-        + hashCode() : int
+        +Priority(priority : String)
+        +Priority(level : Level)
+        +<u>isValidPriority(test : String) : boolean</u>
+        +getSymbol() : String
+        +getLevel() : Level
+        +toString() : String
+        +equals(other : Object) : boolean
+        +hashCode() : int
+        -<u>parseLevel(priority : String) : Level</u>
+    }
+
+    class "<<enumeration>>\nLevel" as Level {
+        <u>HIGH</u>
+        <u>MEDIUM</u>
+        <u>LOW</u>
+        -numericValue : int
+        -displayName : String
+        -colorHex : String
+        +getNumericValue() : int
+        +getDisplayName() : String
+        +getColorHex() : String
     }
 
     class Person {
-        - name : Name
-        - phone : Phone
-        - email : Email
-        - address : Address
-        - tags : Set<Tag>
-        - priority : Priority
-        - remark : Remark
+        -name : Name
+        -phone : Phone
+        -email : Email
+        -address : Address
+        -company : Company
+        -note : Note
+        -priority : Priority
+        -tags : Set<Tag>
 
-        + Person(name, phone, email, address, tags, priority, remark)
-        + getName() : Name
-        + getPhone() : Phone
-        + getEmail() : Email
-        + getAddress() : Address
-        + getTags() : Set<Tag>
-        + getPriority() : Priority
-        + getRemark() : Remark
-        + isSamePerson(otherPerson : Person) : boolean
-        + equals(other : Object) : boolean
-        + hashCode() : int
-        + toString() : String
+        +Person(name, phone, email, address, company, tags, note, priority)
+        +getName() : Name
+        +getPhone() : Phone
+        +getEmail() : Email
+        +getAddress() : Address
+        +getCompany() : Company
+        +getNote() : Note
+        +getPriority() : Priority
+        +getTags() : Set<Tag>
+        +isSamePerson(otherPerson : Person) : boolean
+        +equals(other : Object) : boolean
+        +hashCode() : int
+        +toString() : String
     }
 
     Person "1" *-- "1" Priority : contains
@@ -47,59 +65,55 @@ package "Model" <<Rectangle>> MODEL_COLOR {
 
 package "Logic" <<Rectangle>> COMMAND_COLOR {
     class PriorityCommand {
-        - COMMAND_WORD : String {static}
-        - MESSAGE_USAGE : String {static}
-        - MESSAGE_SUCCESS : String {static}
-        - MESSAGE_NOT_EDITED : String {static}
-        - MESSAGE_DUPLICATE_PERSON : String {static}
-        - index : Index
-        - priority : Priority
+        +<u>COMMAND_WORD : String</u>
+        +<u>MESSAGE_USAGE : String</u>
+        +<u>MESSAGE_SET_PRIORITY_SUCCESS : String</u>
+        +<u>MESSAGE_REMOVE_PRIORITY_SUCCESS : String</u>
+        -index : Index
+        -priority : Priority
 
-        + PriorityCommand(index : Index, priority : Priority)
-        + execute(model : Model) : CommandResult
-        - createEditedPerson(personToEdit : Person) : Person {static}
-        + equals(other : Object) : boolean
-        + toString() : String
+        +PriorityCommand(index : Index, priority : Priority)
+        +execute(model : Model) : CommandResult
+        -generateSuccessMessage(person : Person) : String
+        +equals(other : Object) : boolean
+        +toString() : String
     }
 
     abstract class Command {
-        + {abstract} execute(model : Model) : CommandResult
+        +{abstract} execute(model : Model) : CommandResult
     }
 
     class PriorityCommandParser {
-        + parse(args : String) : PriorityCommand
-        - parsePriority(argMultimap : ArgumentMultimap) : Priority
+        +parse(args : String) : PriorityCommand
     }
 
-    interface Parser<T> {
-        + parse(userInput : String) : T
+    class "<<interface>>\nParser<T>" as Parser {
+        +parse(userInput : String) : T
     }
 
     Command <|-- PriorityCommand
     Parser <|.. PriorityCommandParser
     PriorityCommandParser ..> PriorityCommand : creates
-    PriorityCommand ..> Priority : uses
+    PriorityCommand --> Priority : uses
     PriorityCommand ..> Person : modifies
 }
 
 package "Commons" <<Rectangle>> {
     class Index {
-        - zeroBasedIndex : int
-        + {static} fromZeroBased(zeroBasedIndex : int) : Index
-        + {static} fromOneBased(oneBasedIndex : int) : Index
-        + getZeroBased() : int
-        + getOneBased() : int
+        -zeroBasedIndex : int
+        +<u>fromZeroBased(zeroBasedIndex : int) : Index</u>
+        +<u>fromOneBased(oneBasedIndex : int) : Index</u>
+        +getZeroBased() : int
+        +getOneBased() : int
     }
 
-    PriorityCommand ..> Index : uses
+    PriorityCommand --> Index : uses
 }
 
 note right of Priority
   Valid priority values:
-  - LOW
-  - MEDIUM
-  - HIGH
-  - NIL (default)
+  - HIGH/MEDIUM/LOW (case-insensitive)
+  - 1-5 where 1-2=HIGH, 3-4=MEDIUM, 5=LOW
 end note
 
 note right of PriorityCommand
