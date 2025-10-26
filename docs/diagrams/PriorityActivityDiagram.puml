@@ -5,18 +5,16 @@ start
 
 :Parse command input;
 
-if (Command format valid?) then ([yes])
+if (Command format valid?) then (yes)
     :Extract index and priority value;
 
-    if (Priority value valid?) then ([yes])
-        if (Index within list bounds?) then ([yes])
+    if (Priority value valid?) then (yes)
+        if (Index within list bounds?) then (yes)
             :Get person at specified index;
 
-            :Create new person with
-updated priority;
+            :Create new person with\nupdated priority;
 
-            :Replace old person
-with edited person in model;
+            :Replace old person\nwith edited person in model;
 
             :Update filtered person list;
 
@@ -24,30 +22,26 @@ with edited person in model;
 
             stop
 
-        else ([no])
-            :Throw CommandException
-"Invalid person index";
+        else (no)
+            :Throw CommandException\n"Invalid person index";
 
             :Display error message;
 
             stop
         endif
 
-    else ([no])
-        :Throw ParseException
-"Invalid priority value";
+    else (no)
+        :Throw ParseException\n"Invalid priority value";
 
         :Display error message;
 
         stop
     endif
 
-else ([no])
-    :Throw ParseException
-"Invalid command format";
+else (no)
+    :Throw ParseException\n"Invalid command format";
 
-    :Display error message
-with usage instructions;
+    :Display error message\nwith usage instructions;
 
     stop
 endif
