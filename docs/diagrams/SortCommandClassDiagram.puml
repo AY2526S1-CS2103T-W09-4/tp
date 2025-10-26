@@ -1,127 +1,96 @@
-@startuml PriorityClassDiagram
-
-hide circle
+@startuml
+' Class diagram for SortCommand (clean syntax)
 skinparam classAttributeIconSize 0
+hide empty members
 
-!define PRIORITY_COLOR #E8F5E9
-!define COMMAND_COLOR #E3F2FD
-!define MODEL_COLOR #FFF9C4
-
-package "Model" <<Rectangle>> MODEL_COLOR {
-    class Priority {
-        +<u>MESSAGE_CONSTRAINTS : String</u>
-        +level : Level
-
-        +Priority(priority : String)
-        +Priority(level : Level)
-        +<u>isValidPriority(test : String) : boolean</u>
-        +getSymbol() : String
-        +getLevel() : Level
-        +toString() : String
-        +equals(other : Object) : boolean
-        +hashCode() : int
-        -<u>parseLevel(priority : String) : Level</u>
-    }
-
-    class "<<enumeration>>\nLevel" as Level {
-        <u>HIGH</u>
-        <u>MEDIUM</u>
-        <u>LOW</u>
-        -numericValue : int
-        -displayName : String
-        -colorHex : String
-        +getNumericValue() : int
-        +getDisplayName() : String
-        +getColorHex() : String
-    }
-
-    class Person {
-        -name : Name
-        -phone : Phone
-        -email : Email
-        -address : Address
-        -company : Company
-        -note : Note
-        -priority : Priority
-        -tags : Set<Tag>
-
-        +Person(name, phone, email, address, company, tags, note, priority)
-        +getName() : Name
-        +getPhone() : Phone
-        +getEmail() : Email
-        +getAddress() : Address
-        +getCompany() : Company
-        +getNote() : Note
-        +getPriority() : Priority
-        +getTags() : Set<Tag>
-        +isSamePerson(otherPerson : Person) : boolean
-        +equals(other : Object) : boolean
-        +hashCode() : int
-        +toString() : String
-    }
-
-    Person "1" *-- "1" Priority : contains
+interface Command {
+  + execute(model : Model) : CommandResult
 }
 
-package "Logic" <<Rectangle>> COMMAND_COLOR {
-    class PriorityCommand {
-        +<u>COMMAND_WORD : String</u>
-        +<u>MESSAGE_USAGE : String</u>
-        +<u>MESSAGE_SET_PRIORITY_SUCCESS : String</u>
-        +<u>MESSAGE_REMOVE_PRIORITY_SUCCESS : String</u>
-        -index : Index
-        -priority : Priority
-
-        +PriorityCommand(index : Index, priority : Priority)
-        +execute(model : Model) : CommandResult
-        -generateSuccessMessage(person : Person) : String
-        +equals(other : Object) : boolean
-        +toString() : String
-    }
-
-    abstract class Command {
-        +{abstract} execute(model : Model) : CommandResult
-    }
-
-    class PriorityCommandParser {
-        +parse(args : String) : PriorityCommand
-    }
-
-    class "<<interface>>\nParser<T>" as Parser {
-        +parse(userInput : String) : T
-    }
-
-    Command <|-- PriorityCommand
-    Parser <|.. PriorityCommandParser
-    PriorityCommandParser ..> PriorityCommand : creates
-    PriorityCommand ..> Priority : uses
-    PriorityCommand ..> Person : modifies
+class SortCommand {
+  - key : SortKeys
+  + SortCommand(key : SortKeys)
+  + execute(model : Model) : CommandResult
+  - comparatorFor(f : SortKeys) : Comparator<Person>
+  + equals(other : Object) : boolean
 }
 
-package "Commons" <<Rectangle>> {
-    class Index {
-        -zeroBasedIndex : int
-        +<u>fromZeroBased(zeroBasedIndex : int) : Index</u>
-        +<u>fromOneBased(oneBasedIndex : int) : Index</u>
-        +getZeroBased() : int
-        +getOneBased() : int
-    }
-
-    PriorityCommand ..> Index : uses
+interface Model {
+  + sortPersonList(comparator : Comparator<Person>)
+  .. other model methods ..
 }
 
-note right of Priority
-  Valid priority values:
-  - HIGH/MEDIUM/LOW (case-insensitive)
-  - 1-5 where 1-2=HIGH, 3-4=MEDIUM, 5=LOW
-end note
+class CommandResult {
+  - feedbackToUser : String
+  + CommandResult(message : String)
+  + getFeedbackToUser() : String
+}
 
-note right of PriorityCommand
-  Command format:
-  priority INDEX pr/PRIORITY
+enum SortKeys {
+  NAME
+  PHONE
+  EMAIL
+  ADDRESS
+  TAG
+  PRIORITY
+  + getDisplayName() : String
+}
 
-  Example:
-  priority 1 pr/HIGH
+class Person {
+  + getName() : Name
+  + getPhone() : Phone
+  + getEmail() : Email
+  + getAddress() : Address
+  + getTags() : Set<Tag>
+  + getPriority() : Priority
+}
+
+class Name {
+  + fullName : String
+}
+
+class Phone {
+  + value : String
+}
+
+class Email {
+  + value : String
+}
+
+class Address {
+  + value : String
+}
+
+class Tag {
+  + tagName : String
+}
+
+class Priority {
+  + getLevel() : PriorityLevel
+}
+
+class PriorityLevel {
+  + getNumericValue() : int
+}
+
+' Relationships
+Command <|-- SortCommand
+SortCommand --> Model : uses
+SortCommand --> SortKeys : has
+SortCommand --> Comparator : builds
+SortCommand --> CommandResult : returns
+Model "1" .. "1" AddressBook : implemented by
+AddressBook *-- UniquePersonList : has
+UniquePersonList "1" *-- "*" Person : contains
+
+note left of SortCommand
+Key comparator behaviors:
+- NAME → compare by Name.fullName (case-insensitive)
+- PHONE → compare by Phone.value
+- EMAIL → compare by Email.value (case-insensitive)
+- ADDRESS → compare by Address.value (case-insensitive)
+- TAG → compare first tag (case-insensitive)
+- PRIORITY → compare numeric level, null → Integer.MAX_VALUE
 end note
 
 @enduml
