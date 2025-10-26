@@ -1,93 +1,85 @@
-@startuml PrioritySequenceDiagram
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
 
-!pragma teoz true
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":PriorityCommandParser" as PriorityCommandParser LOGIC_COLOR
+participant "p:PriorityCommand" as PriorityCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
 
-actor User
-participant ":UI" as UI
-participant ":LogicManager" as LogicManager
-participant ":AddressBookParser" as AddressBookParser
-participant ":PriorityCommandParser" as PriorityCommandParser
-participant "priority:PriorityCommand" as PriorityCommand
-participant ":Model" as Model
-participant "personToEdit:Person" as PersonToEdit
-participant "editedPerson:Person" as EditedPerson
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
 
-User -> UI : priority 1 pr/HIGH
-activate UI
-
-UI -> LogicManager : execute("priority 1 pr/HIGH")
+[-> LogicManager : execute("priority 1 pr/HIGH")
 activate LogicManager
 
 LogicManager -> AddressBookParser : parseCommand("priority 1 pr/HIGH")
 activate AddressBookParser
 
+create PriorityCommandParser
+AddressBookParser -> PriorityCommandParser
+activate PriorityCommandParser
+
+PriorityCommandParser --> AddressBookParser
+deactivate PriorityCommandParser
+
 AddressBookParser -> PriorityCommandParser : parse("1 pr/HIGH")
 activate PriorityCommandParser
 
-PriorityCommandParser -> PriorityCommandParser : parse arguments
-
 create PriorityCommand
-PriorityCommandParser -> PriorityCommand : new PriorityCommand(index, priority)
+PriorityCommandParser -> PriorityCommand
 activate PriorityCommand
-PriorityCommand --> PriorityCommandParser
+
+PriorityCommand --> PriorityCommandParser :
 deactivate PriorityCommand
 
-PriorityCommandParser --> AddressBookParser : priority
+PriorityCommandParser --> AddressBookParser : p
 deactivate PriorityCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+PriorityCommandParser -[hidden]-> AddressBookParser
+destroy PriorityCommandParser
 
-AddressBookParser --> LogicManager : priority
+AddressBookParser --> LogicManager : p
 deactivate AddressBookParser
 
-LogicManager -> PriorityCommand : execute(model)
+LogicManager -> PriorityCommand : execute(m)
 activate PriorityCommand
 
 PriorityCommand -> Model : getFilteredPersonList()
 activate Model
+
 Model --> PriorityCommand : personList
 deactivate Model
 
-PriorityCommand -> PriorityCommand : get person at index
-
-ref over PriorityCommand, PersonToEdit, EditedPerson : Create Edited Person
-
-create PersonToEdit
-PriorityCommand -> PersonToEdit : get personToEdit from list
-activate PersonToEdit
-
 PriorityCommand -> PriorityCommand : createEditedPerson(personToEdit)
-
-create EditedPerson
-PriorityCommand -> EditedPerson : new Person(name, phone, email,\naddress, tags, priority, remark)
-activate EditedPerson
-EditedPerson --> PriorityCommand
-deactivate EditedPerson
-
-PersonToEdit --> PriorityCommand
-deactivate PersonToEdit
 
 PriorityCommand -> Model : setPerson(personToEdit, editedPerson)
 activate Model
+
 Model --> PriorityCommand
 deactivate Model
 
 PriorityCommand -> Model : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
 activate Model
+
 Model --> PriorityCommand
 deactivate Model
 
-create ":CommandResult" as CommandResult
-PriorityCommand -> CommandResult : new CommandResult(MESSAGE_SUCCESS)
+create CommandResult
+PriorityCommand -> CommandResult
 activate CommandResult
-CommandResult --> PriorityCommand : result
+
+CommandResult --> PriorityCommand
 deactivate CommandResult
 
-PriorityCommand --> LogicManager : result
+PriorityCommand --> LogicManager : r
 deactivate PriorityCommand
 
-LogicManager --> UI : result
+[<--LogicManager
 deactivate LogicManager
-
-UI --> User : Display success message
-deactivate UI
-
 @enduml
+
