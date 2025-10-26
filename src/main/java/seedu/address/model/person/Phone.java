@@ -35,11 +35,13 @@ public class Phone {
      * Must contain at least 3 digits.
      */
     public static boolean isValidPhone(String test) {
-        if (test == null || test.trim().isEmpty()) {
-            return false;
-        }
+        requireNonNull(test);
 
         String trimmed = test.trim();
+
+        if (trimmed.isEmpty()) {
+            return false;
+        }
 
         // Must match the basic format (digits, spaces, hyphens, plus)
         if (!trimmed.matches(VALIDATION_REGEX)) {
