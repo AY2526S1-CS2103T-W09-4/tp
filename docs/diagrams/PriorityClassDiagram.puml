@@ -60,7 +60,6 @@ package "Model" <<Rectangle>> MODEL_COLOR {
         +toString() : String
     }
 
-    Priority +-- Level
     Person "1" *-- "1" Priority : contains
 }
 
@@ -95,7 +94,7 @@ package "Logic" <<Rectangle>> COMMAND_COLOR {
     Command <|-- PriorityCommand
     Parser <|.. PriorityCommandParser
     PriorityCommandParser ..> PriorityCommand : creates
-    PriorityCommand ..> Priority : uses
+    PriorityCommand --> Priority : uses
     PriorityCommand ..> Person : modifies
 }
 
@@ -108,13 +107,13 @@ package "Commons" <<Rectangle>> {
         +getOneBased() : int
     }
 
-    PriorityCommand ..> Index : uses
+    PriorityCommand --> Index : uses
 }
 
 note right of Priority
   Valid priority values:
   - HIGH/MEDIUM/LOW (case-insensitive)
-  - 1-5 where 1-2=HIGH, 3-4=MEDIUM, 5=LOW
+  - 1-5 where 1-2=HIGH, 3-4=MEDIUM, 5=LOWe
 end note
 
 note right of PriorityCommand
