@@ -53,7 +53,6 @@ public class Phone {
 
     /**
      * Normalizes phone number by removing spaces and hyphens while preserving leading plus sign.
-     * Examples: "+65-9123-4567" -> "+6591234567", "91234567" -> "91234567"
      */
     private static String normalizePhone(String phone) {
         return phone.replaceAll("[\\s-]", "");
