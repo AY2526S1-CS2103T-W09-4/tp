@@ -1,0 +1,113 @@
+@startuml PriorityClassDiagram
+
+!define PRIORITY_COLOR #E8F5E9
+!define COMMAND_COLOR #E3F2FD
+!define MODEL_COLOR #FFF9C4
+
+package "Model" <<Rectangle>> MODEL_COLOR {
+    class Priority {
+        - PRIORITY_VALIDATION_REGEX : String {static}
+        - PRIORITY_VALUES : Set<String> {static}
+        - MESSAGE_CONSTRAINTS : String {static}
+        - value : String
+
+        + Priority(priority : String)
+        + {static} isValidPriority(test : String) : boolean
+        + getValue() : String
+        + toString() : String
+        + equals(other : Object) : boolean
+        + hashCode() : int
+    }
+
+    class Person {
+        - name : Name
+        - phone : Phone
+        - email : Email
+        - address : Address
+        - tags : Set<Tag>
+        - priority : Priority
+        - remark : Remark
+
+        + Person(name, phone, email, address, tags, priority, remark)
+        + getName() : Name
+        + getPhone() : Phone
+        + getEmail() : Email
+        + getAddress() : Address
+        + getTags() : Set<Tag>
+        + getPriority() : Priority
+        + getRemark() : Remark
+        + isSamePerson(otherPerson : Person) : boolean
+        + equals(other : Object) : boolean
+        + hashCode() : int
+        + toString() : String
+    }
+
+    Person "1" *-- "1" Priority : contains
+}
+
+package "Logic" <<Rectangle>> COMMAND_COLOR {
+    class PriorityCommand {
+        - COMMAND_WORD : String {static}
+        - MESSAGE_USAGE : String {static}
+        - MESSAGE_SUCCESS : String {static}
+        - MESSAGE_NOT_EDITED : String {static}
+        - MESSAGE_DUPLICATE_PERSON : String {static}
+        - index : Index
+        - priority : Priority
+
+        + PriorityCommand(index : Index, priority : Priority)
+        + execute(model : Model) : CommandResult
+        - createEditedPerson(personToEdit : Person) : Person {static}
+        + equals(other : Object) : boolean
+        + toString() : String
+    }
+
+    abstract class Command {
+        + {abstract} execute(model : Model) : CommandResult
+    }
+
+    class PriorityCommandParser {
+        + parse(args : String) : PriorityCommand
+        - parsePriority(argMultimap : ArgumentMultimap) : Priority
+    }
+
+    interface Parser<T> {
+        + parse(userInput : String) : T
+    }
+
+    Command <|-- PriorityCommand
+    Parser <|.. PriorityCommandParser
+    PriorityCommandParser ..> PriorityCommand : creates
+    PriorityCommand ..> Priority : uses
+    PriorityCommand ..> Person : modifies
+}
+
+package "Commons" <<Rectangle>> {
+    class Index {
+        - zeroBasedIndex : int
+        + {static} fromZeroBased(zeroBasedIndex : int) : Index
+        + {static} fromOneBased(oneBasedIndex : int) : Index
+        + getZeroBased() : int
+        + getOneBased() : int
+    }
+
+    PriorityCommand ..> Index : uses
+}
+
+note right of Priority
+  Valid priority values:
+  - LOW
+  - MEDIUM
+  - HIGH
+  - NIL (default)
+end note
+
+note right of PriorityCommand
+  Command format:
+  priority INDEX pr/PRIORITY
+
+  Example:
+  priority 1 pr/HIGH
+end note
+
+@enduml
