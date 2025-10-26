@@ -113,7 +113,7 @@ package "Commons" <<Rectangle>> {
 note right of Priority
   Valid priority values:
   - HIGH/MEDIUM/LOW (case-insensitive)
-  - 1-5 where 1-2=HIGH, 3-4=MEDIUM, 5=LOWe
+  - 1-5 where 1-2=HIGH, 3-4=MEDIUM, 5=LOW
 end note
 
 note right of PriorityCommand
