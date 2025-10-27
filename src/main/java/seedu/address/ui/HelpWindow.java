@@ -11,9 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.scene.Scene;
 import seedu.address.commons.core.LogsCenter;
 
 /**
@@ -91,14 +91,14 @@ public class HelpWindow extends UiPart<Stage> {
      */
     @FXML
     private void copyUrl() {
-        final Clipboard clipboard = Clipboard.getSystemClipboard();
-        final ClipboardContent content = new ClipboardContent();
+        final javafx.scene.input.Clipboard clipboard = javafx.scene.input.Clipboard.getSystemClipboard();
+        final javafx.scene.input.ClipboardContent content = new javafx.scene.input.ClipboardContent();
         content.putString(USERGUIDE_URL);
         clipboard.setContent(content);
     }
 
     /**
-     * Opens the URL in the default browser with a confirmation popup.
+     * Opens the URL in the default browser with a styled confirmation popup.
      */
     @FXML
     private void openUrl() {
@@ -111,6 +111,15 @@ public class HelpWindow extends UiPart<Stage> {
         ButtonType yesButton = new ButtonType("Yes, open browser");
         ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().setAll(yesButton, cancelButton);
+
+        // Apply custom CSS
+        alert.getDialogPane().getStylesheets().add(
+                getClass().getResource("/view/HelpWindowAlert.css").toExternalForm()
+        );
+
+        // Add custom icon to title bar
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        alertStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/help_icon.png")));
 
         // Show popup and wait for user response
         Optional<ButtonType> result = alert.showAndWait();
@@ -127,5 +136,3 @@ public class HelpWindow extends UiPart<Stage> {
         }
     }
 }
-
-
