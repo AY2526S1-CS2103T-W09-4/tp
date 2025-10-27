@@ -9,7 +9,9 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-* {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+* se-edu/addressbook-level3 — project structure and developer guide layout used as inspiration. Some architecture and undo/redo documentation style is adapted. (https://github.com/se-edu/addressbook-level3)
+* JUnit 5 testing patterns and assertions used throughout the test suites.
+* JavaFX documentation and FXML usage patterns for UI parts.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -42,18 +44,25 @@ Given below is a quick overview of main components and how they interact with ea
 
 The bulk of the app's work is done by the following four components:
 
-* [**`UI`**](#ui-component): The UI of the App.
-* [**`Logic`**](#logic-component): The command executor.
-* [**`Model`**](#model-component): Holds the data of the App in memory.
-* [**`Storage`**](#storage-component): Reads data from, and writes data to, the hard disk.
+* **UI** — JavaFX-based user interface, separated into `UiPart` classes and FXML layout files in `src/main/resources/view`.
+* **Logic** — Command parsing and execution layer. Exposes a `Logic` interface implemented by `LogicManager`.
+* **Model** — In-memory representation of data (contacts, filtered lists, user prefs). Provides undo/redo hooks via `VersionedAddressBook` / `VersionedModel`.
+* **Storage** — JSON-backed persistent storage for `AddressBook` and `UserPrefs`.
 
-[**`Commons`**](#common-classes) represents a collection of classes used by multiple other components.
+Each component defines an interface (e.g., `Logic`, `Model`, `Storage`) and a `*Manager` concrete implementation. Other components depend on the interfaces rather than concrete classes to reduce coupling.
 
-**How the architecture components interact with each other**
+### How the components interact
 
-The *Sequence Diagram* below shows how the components interact with each other for the scenario where the user issues the command `delete 1`.
+When a user types a command (for example `delete 1`):
 
-<img src="images/ArchitectureSequenceDiagram.png" width="574" />
+1. The **UI** passes the raw command string to the **Logic** component.
+2. **Logic** uses `AddressBookParser` to parse the string into a `Command` object.
+3. The `Command` object executes using the **Model** API to manipulate data.
+4. If the command modifies the model, the **Model** commits a new state (undo/redo history).
+5. **Storage** persists the modified data to JSON.
+6. The **UI** observes model changes and updates the rendered view.
+
+A high-level sequence diagram is available at `images/ArchitectureSequenceDiagram.png`.
 
 Each of the four main components (also shown in the diagram above),
 
@@ -68,86 +77,77 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+**API**: `Ui` interface (see `src/main/java/seedu/address/ui/Ui.java` in the original reference layout).
 
-![Structure of the UI Component](images/UiClassDiagram.png)
+The UI uses JavaFX. Primary points:
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
+* `MainWindow` composes the main visual parts: `CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`.
+* Visual parts derive from `UiPart<T>`, which abstracts loading via FXML and connecting controllers with FXML roots. The tests include `UiPartTest` and `TestFxmlObject` to validate FXML loading logic.
+* Optional fields on `Person` (email, address, company, note, priority) are displayed conditionally; helper methods exist in `PersonCard` and `PersonCardViewModel` to compute visible text and flags. Unit tests for these helpers are in `src/test/java/.../PersonCardTest.java` and `PersonCardViewModelTest.java`.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
-
-The `UI` component,
-
-* executes user commands using the `Logic` component.
-* listens for changes to `Model` data so that the UI can be updated with the modified data.
-* keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
-* depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
+The UI communicates with `Logic` only (it has a reference to a `Logic` instance); it does not directly manipulate the `Model` or `Storage`.
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API**: `Logic` (implemented by `LogicManager`). The parsing subsystem is centered around `AddressBookParser` and many `*CommandParser` classes.
 
-Here's a (partial) class diagram of the `Logic` component:
+Key parsing & command classes in the codebase (also covered by parser unit tests):
 
-<img src="images/LogicClassDiagram.png" width="550"/>
+* `AddressBookParser` — top-level parser that selects the appropriate `XYZCommandParser`.
+* `ArgumentTokenizer`, `ArgumentMultimap`, and `Prefix` — support classes that extract flags like `n/`, `p/`, `e/`, `pr/` from the raw command string. `ArgumentTokenizerTest` ensures tokenization edge cases are handled.
+* Individual parsers include `AddCommandParser`, `EditCommandParser`, `DeleteCommandParser`, `FindCommandParser`, `NoteCommandParser`, `PriorityCommandParser`, `SortCommandParser`, etc. Each has a dedicated test class (e.g., `AddCommandParserTest`, `EditCommandParserTest`, ...).
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
+Command execution flow (high-level):
 
-![Interactions Inside the Logic Component for the `delete 1` Command](images/DeleteSequenceDiagram.png)
+1. `LogicManager.execute(commandText)` calls `AddressBookParser.parse(commandText)`.
+2. `AddressBookParser` returns a concrete `Command` (e.g. `DeleteCommand`).
+3. `LogicManager` executes the `Command` by invoking its `execute(Model)` method.
+4. The `Command` performs validations and calls `Model` APIs (e.g., `Model#setPerson`, `Model#addPerson`, `Model#commitAddressBook()`).
+5. The `execute` method returns `CommandResult` which contains feedback to the UI.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
-</div>
+Several command behaviors are covered by unit tests in `src/test/java/seedu/address/logic/commands` including `PriorityCommandTest`, `NoteCommandTest` (parser + command), `UndoCommandTest`, `RedoCommandTest`, `SortCommandTest`, etc.
 
-How the `Logic` component works:
-
-1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `DeleteCommandParser`) and uses it to parse the command.
-1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `DeleteCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to delete a person).<br>
-   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
-1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
-
-Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
-
-<img src="images/ParserClasses.png" width="600"/>
-
-How the parsing works:
-* When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddCommand`) which the `AddressBookParser` returns back as a `Command` object.
-* All `XYZCommandParser` classes (e.g., `AddCommandParser`, `DeleteCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
 
 ### Model component
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
-
+**API**: `Ui` interface (see `src/main/java/seedu/address/model/Model.java` in the original reference layout).
 <img src="images/ModelClassDiagram.png" width="450" />
 
 
-The `Model` component,
+The `Model` stores the _single source of truth_ for the application state. In our codebase the important classes are:
 
-* stores the address book data i.e., all `Person` objects (which are contained in a `UniquePersonList` object).
-* stores the currently 'selected' `Person` objects (e.g., results of a search query) as a separate _filtered_ list which is exposed to outsiders as an unmodifiable `ObservableList<Person>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
-* does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
+* `Person` — domain object that holds contact fields (name, phone, email, address, company, note, priority, tags). See `src/main/java/seedu/address/model/person/Person.java`.
+* `Priority` — represents priority levels as an enum-like `Level` with helper parsing, numeric mapping and display metadata (symbol, color). See `src/main/java/seedu/address/model/person/Priority.java` and tests in `PriorityTest`.
+* `Note` — lightweight wrapper for remarks attached to a person. See `Note.java` and `NoteTest`.
+* `UniquePersonList` — enforces uniqueness (name + phone) and is used by `AddressBook`.
+* `AddressBook` / `VersionedAddressBook` — stores the `UniquePersonList` and (for versioned behaviour) maintains history for undo/redo.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** An alternative (arguably, a more OOP) model is given below. It has a `Tag` list in the `AddressBook`, which `Person` references. This allows `AddressBook` to only require one `Tag` object per unique tag, instead of each `Person` needing their own `Tag` objects.<br>
+**Design choices and rationale**
 
-<img src="images/BetterModelClassDiagram.png" width="450" />
+* `Person` keeps optional fields (email, address, company, note, priority) as nullable values. This reduces churn for users who want minimal contact entries and simplifies JSON storage of absent values. `PersonBuilder` and `JsonAdaptedPerson` handle `null` gracefully in parsing and serialization.
+* Identity is defined as the tuple (name, phone). The `UniquePersonList` enforces this invariant; the codebase throws `DuplicatePersonException` when violated.
+* `Priority` accepts both textual (`HIGH`, `MEDIUM`, `LOW`) and numeric inputs (`1`..`5`) and maps numeric ranges to levels (1-2 => HIGH, 3-4 => MEDIUM, 5 => LOW). This is reflected in parsing tests (`PriorityTest`) and command parser tests (`PriorityCommandParserTest`).
 
-</div>
 
 
 ### Storage component
 
-**API** : [`Storage.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/storage/Storage.java)
+**API**: `Ui` interface (see `src/main/java/seedu/address/storage/Storage.java` in the original reference layout).
+
 
 <img src="images/StorageClassDiagram.png" width="550" />
 
-The `Storage` component,
-* can save both address book data and user preference data in JSON format, and read them back into corresponding objects.
-* inherits from both `AddressBookStorage` and `UserPrefStorage`, which means it can be treated as either one (if only the functionality of only one is needed).
-* depends on some classes in the `Model` component (because the `Storage` component's job is to save/retrieve objects that belong to the `Model`)
+The `Storage` component handles reading and writing JSON files. Noteworthy classes and tests:
 
-### Common classes
+* `JsonAddressBookStorage` — read/write `AddressBook` to JSON. Unit tests live in `JsonAddressBookStorageTest` and use a temporary folder (`@TempDir`) for IO safety.
+* `JsonUserPrefsStorage` — read/write `UserPrefs` (GUI settings, paths), tested in `JsonUserPrefsStorageTest`.
+* `JsonAdaptedPerson` / `JsonAdaptedTag` — serialization adapters that convert between JSON-friendly structures and domain objects. `JsonAdaptedPersonTest` validates a wide range of null/invalid field behaviour.
+* `StorageManager` — glue class that wires address book and prefs storage together. See `StorageManagerTest` for integration-level checks.
 
-Classes used by multiple components are in the `seedu.address.commons` package.
+**Important behaviours tested**
+
+* Missing or invalid JSON files are reported via `DataLoadingException` to avoid application crashes; tests assert these cases (`read_notJsonFormat_exceptionThrown`, `read_missingFile_emptyResult`).
+* Serialization tolerates `null` optional fields; `toModelType` returns domain objects with `null` fields where appropriate (verified by `JsonAdaptedPersonTest#toModelType_nullFields_returnsPerson`).
+* Saving to non-existent locations is handled — tests create temporary files and confirm correctness after save+load.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -249,11 +249,298 @@ The following activity diagram summarizes what happens when a user executes a ne
   * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
   * Cons: We must ensure that the implementation of each individual command are correct.
 
-_{more aspects and alternatives to be added}_
+### Add
 
-### \[Proposed\] Data archiving
+**Command format**  
+`add n/NAME p/PHONE [e/EMAIL] [a/ADDRESS] [c/COMPANY] [pr/PRIORITY] [t/TAG]... [r/REMARKS]`
 
-_{Explain here how the data archiving feature will be implemented}_
+- Prefix constants are used throughout parsing code and test utilities (see `PersonUtil`), e.g. `PREFIX_NAME`, `PREFIX_PHONE`, `PREFIX_EMAIL`, `PREFIX_ADDRESS`, `PREFIX_TAG`, `PREFIX_PRIORITY`, `PREFIX_REMARK`, `PREFIX_COMPANY`, etc.
+  * Example builder used in tests: `PersonUtil.getPersonDetails(person)` constructs strings using these prefixes. See:  
+    `src/test/java/seedu/address/testutil/PersonUtil.java`
+
+**Validation rules (derived from `ParserUtilTest` & model tests):**
+
+* `Name`: Not null, not blank, must satisfy `Name.isValidName(...)`.
+* `Phone`: Numeric only, ≥ 3 digits (`Phone.isValidPhone`).
+* `Email` (optional): Must satisfy `Email.isValidEmail(...)`.
+* `Address` (optional): Must satisfy `Address.isValidAddress(...)`.
+* `Company` (optional): Must satisfy `Company.isValidCompany(...)`.
+* `Priority` (optional): Must be one of `HIGH`, `MEDIUM`, `LOW` or numeric 1–5.
+* `Note` / `Remarks` (optional): Must satisfy `Note.isValidNote(...)`.
+* `Tags` (optional): Must satisfy `Tag.isValidTagName(...)`.
+
+**Implementation steps (how Add is put together in code):**
+
+1. **Parse**: `AddCommandParser.parse(String args)` uses `ParserUtil` methods to build fields. Throws `ParseException` if validations fail.
+2. **Build Person**: Parsed values → new `Person` via constructor or `PersonBuilder`.
+3. **Execute AddCommand**:
+   * Calls `model.addPerson(person)`.
+   * Commits model only after successful add (`model.commitAddressBook()`).
+4. **Return result**: Returns `CommandResult` with success message.
+
+**Important implementation points (Add):**
+
+* Duplicate prevention via `DuplicatePersonException` (see `AddressBookTest`, `UniquePersonListTest`).
+* `Company` blank → invalid (`CompanyTest`).
+* Commit only on success.
+
+**Key test references:**
+
+- `ParserUtilTest`  
+- `PersonBuilder.java`, `PersonUtil.java`, `TypicalPersons.java`  
+- `AddressBookTest`, `UniquePersonListTest`
+
+**Example:**
+- `add n/Jane Doe p/91234567 e/jane@example.com a/123 Main St c/Acme pr/HIGH t/client r/Prefers email`
+
+
+
+### Note
+
+**Command format**  
+`note INDEX r/REMARKS`  
+(Entering `r/` with no text clears the note)
+
+* Test examples:  
+  * `note 1 r/Client prefers email`  
+  * `note 1 r/` (clears note)
+
+**Validation & semantics:**
+
+* `Note.isValidNote(...)` accepts any printable text or `"-"`.
+* Empty or whitespace-only → treated as placeholder `"-"`.
+  * See:  
+    `NoteCommandParserTest.parse_emptyNote_success()`  
+    `ParserUtilTest.parseNote_whitespaceString_returnsPlaceholderNote()`
+
+**Implementation steps:**
+
+1. **Parse**:
+   * `NoteCommandParser.parse(String args)` reads index + `r/`.
+   * Empty remark → placeholder `"-"`.
+   * Uses `ParserUtil.parseNote(...)`.
+2. **Create NoteCommand**:
+   * `new NoteCommand(Index, new Note(value))`
+3. **Execute**:
+   * Updates person at index via `model.setPerson(...)` or `model.setNote(...)`.
+   * Commits model after success.
+
+**Key tests:**
+
+- `NoteCommandParserTest`
+- `ParserUtilTest` (`parseNote_*`)
+- `NoteTest`
+
+**Example:**
+- `note 2 r/Client prefers weekends. Call after 3pm.`
+
+### Priority
+
+**Command format**  
+`priority INDEX pr/PRIORITY`
+
+* Accepted textual values: `HIGH`, `MEDIUM`, `LOW` (case-insensitive)  
+* Accepted numeric values: `1`–`5`
+
+**Mapping:**
+| Numeric | Level  |
+|----------|---------|
+| 1, 2     | HIGH    |
+| 3, 4     | MEDIUM  |
+| 5        | LOW     |
+
+**Implementation steps:**
+
+1. **Parse**:
+   * `PriorityCommandParser.parse(String args)` → index + `PREFIX_PRIORITY`
+   * Validates with `ParserUtil.parsePriority(...)`.
+2. **Create**:
+   * `new PriorityCommand(index, new Priority(value))`
+3. **Execute**:
+   * Updates the person’s priority via `model.setPerson(...)`.
+   * Commits model after success.
+
+**Important details:**
+
+* Case-insensitive input accepted.
+* Numeric 1–5 mapped to textual levels.
+* Invalid (e.g., `0`, `6`, `URGENT`) → ParseException.
+
+**Key tests:**
+
+- `PriorityCommandParserTest`
+- `PriorityTest`
+- `PersonCardTest` / `PersonCardViewModelTest` (priority badge rendering)
+
+**Example:**
+- priority 3 pr/HIGH
+- priority 1 pr/2
+- priority 2 pr/low
+
+# Sort — implementation notes & tests
+
+> Diagrams referenced  
+> * Class diagram: shows `SortCommand` (has `key: SortKeys`) → builds `Comparator<Person>` → calls `Model#sortPersonList(Comparator)` → `AddressBook` → `UniquePersonList` → `Person` accessors.
+![SortCommand Class Diagram](docs/images/SortCommandClassDiagram.png)
+
+> * Sequence diagram (bottom): shows the parse → command → execute flow and that sorting is performed by the model/addressbook/unique list (in-place), then `CommandResult` is returned.
+![SortCommand Sequence Diagram](docs/images/SortCommandSequenceDiagram.png)
+
+
+---
+
+## Command format
+sort [CRITERION]
+
+- If no args or only whitespace → **defaults to** `name`.  
+- Valid criteria (case-insensitive): `name`, `phone`, `email`, `address`, `tag`, `priority`.
+
+---
+
+## High-level flow (parse → command → execute) — matches sequence diagram and code
+
+1. `LogicManager` hands the raw user input to `AddressBookParser`.  
+2. `AddressBookParser` delegates to `SortCommandParser` which:
+   - trims the input string;
+   - empty / whitespace-only → constructs `new SortCommand(SortKeys.NAME)` (default);
+   - a single valid key token → constructs `new SortCommand(<that SortKeys>)`;
+   - otherwise throws `ParseException` (invalid format or token).
+3. `SortCommand.execute(Model model)` (as implemented in the provided code):
+   1. `requireNonNull(model)`.
+   2. `Comparator<Person> cmp = comparatorFor(key);` — `comparatorFor` returns the comparator for the selected `SortKeys` (detailed below).
+   3. `model.sortPersonList(cmp);` — the model is asked to sort its person list using that comparator.
+      - According to the sequence/class diagram and current code structure, that results in `AddressBook` delegating to `UniquePersonList.sort(cmp)`, which sorts the list **in-place** (i.e., mutates the model’s internal person ordering).
+   4. `model.commitAddressBook();` — the command commits the change to the model (so sorting is treated as a model state change, enabling undo/redo).
+   5. Build success message: `String.format(MESSAGE_SUCCESS, key.getDisplayName())`.
+   6. `return new CommandResult(message)`.
+
+> Important: the code **does** call `model.commitAddressBook()` (so sorting is currently a mutation and recorded for undo/redo). The diagrams show the in-place sort via `AddressBook / UniquePersonList` — this matches the code.
+
+---
+
+## How comparators are built (rules implemented in `comparatorFor`)
+- `NAME` → compare `Person.getName().fullName`, case-insensitive.
+- `PHONE` → compare `Person.getPhone().value` (string).
+- `EMAIL` → compare `Person.getEmail().value`, case-insensitive.
+- `ADDRESS` → compare `Person.getAddress().value`, case-insensitive.
+- `TAG` → compare the **first tag** (by alphabetical order, case-insensitive):  
+  `p.getTags().stream().map(tag->tag.tagName).sorted(String.CASE_INSENSITIVE_ORDER).findFirst().orElse("")`.  
+  * Persons with no tags are treated as `""` for comparison.
+- `PRIORITY` → compare numeric priority level via  
+  `p.getPriority() != null ? p.getPriority().getLevel().getNumericValue() : Integer.MAX_VALUE`.  
+  * Persons without a priority (`null`) get `Integer.MAX_VALUE` — they appear **after** any person with a numeric priority when sorting ascending.
+
+If an unsupported key is passed, the code throws `IllegalArgumentException("Unsupported sort key: " + f)`.
+
+---
+
+## Class-level mapping (from the class diagram)
+- `SortCommand` (fields / methods shown in class diagram and implemented in code):
+  - field: `private final SortKeys key;`
+  - constructor: `SortCommand(SortKeys key)`
+  - `execute(Model model) : CommandResult` — builds comparator, calls `model.sortPersonList(cmp)`, `model.commitAddressBook()`, returns `CommandResult`.
+  - `private comparatorFor(SortKeys f) : Comparator<Person>` — builds comparator per key (see rules above).
+  - `equals(Object other)` — current implementation: `return other == this || other instanceof SortCommand;`  
+    **Note:** that implementation treats any two `SortCommand` instances as equal regardless of `key`. This is inconsistent with the class diagram intent (and typical equals semantics). See **Tests & recommended fix** below.
+
+- `Model` provides `sortPersonList(Comparator<Person>)` (diagram & code).  
+- `AddressBook` implements `Model` and delegates the sort to `UniquePersonList`.  
+- `UniquePersonList` contains `Person` objects and performs the in-place sorting.
+
+**Example valid inputs:**
+- sort
+- sort name
+- sort priority
+- sort phone
+
+**Key unit/parser tests (examples in repo):**
+- src/test/java/seedu/address/logic/parser/SortCommandParserTest.java
+
+
+*Tests include:*
+* empty and whitespace inputs → default behavior
+* valid single-key inputs (all supported keys)
+* invalid inputs (multiple tokens, invalid key) → parse failure with `MESSAGE_INVALID_SORT_COMMAND_FORMAT`
+
+**Notes for implementers:**
+* If `SortCommand` relies on a `SortKeys` enum/class, ensure the parser maps strings case-insensitively to that enum.
+* Keep sorting logic in `Model` (or a `Model#sortBy(SortKey)` helper) so `SortCommand` just delegates — this keeps separation of concerns and simplifies testing.
+
+
+#### ModelManager
+
+The concrete implementation is in `ModelManager` (`src/main/java/seedu/address/model/ModelManager.java`).
+
+* **History storage**
+  * `ModelManager` stores the history as a `List<AddressBook>` named `addressBookHistory`.
+  * `historyPointer` is an `int` pointing to the current state within `addressBookHistory`.
+  * Each saved state is a fresh `new AddressBook(this.addressBook)` copy (i.e., whole-state snapshots).
+
+* **Committing**
+  * `commitAddressBook()` calls a helper `pushCurrentStateToHistory()` which:
+    * Removes any states after `historyPointer` (purging redo history) using:
+      ```java
+      while (addressBookHistory.size() > historyPointer + 1) {
+          addressBookHistory.remove(addressBookHistory.size() - 1);
+      }
+      ```
+    * Adds a deep snapshot `new AddressBook(this.addressBook)` to `addressBookHistory`.
+    * Sets `historyPointer = addressBookHistory.size() - 1;`
+  * Initial commit is performed by the constructors: both constructors call `commitAddressBook()` so there is always an initial state in history.
+
+* **Undo**
+  * `canUndoAddressBook()` returns `historyPointer > 0`.
+  * `undoAddressBook()`:
+    * Throws `IllegalStateException` if `canUndoAddressBook()` is false.
+    * Decrements `historyPointer`.
+    * Reads `AddressBook previous = addressBookHistory.get(historyPointer);`
+    * Calls `this.addressBook.resetData(previous);` to restore the state.
+    * Calls `updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);` to reset any filtered view.
+
+* **Redo**
+  * `canRedoAddressBook()` returns `historyPointer < addressBookHistory.size() - 1`.
+  * `redoAddressBook()`:
+    * Throws `IllegalStateException` if `canRedoAddressBook()` is false.
+    * Increments `historyPointer`.
+    * Reads `AddressBook next = addressBookHistory.get(historyPointer);`
+    * Calls `this.addressBook.resetData(next);` to restore the state.
+    * Calls `updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);` to reset any filtered view.
+
+* **Snapshot semantics**
+  * History stores **whole AddressBook snapshots** (not command diffs).
+  * Purging behaviour: when committing while `historyPointer` is not at the last index, later states are removed (redo history is discarded) prior to appending the new commit.
+
+(Implementation source: `ModelManager.java`.)
+
+---
+
+#### Command-level classes (UndoCommand / RedoCommand)
+
+The undo/redo CLI commands are implemented in:
+
+* `src/main/java/seedu/address/logic/commands/UndoCommand.java`
+* `src/main/java/seedu/address/logic/commands/RedoCommand.java`
+
+Key points from those classes:
+
+* `UndoCommand` behavior:
+  * Command word: `undo`
+  * Success message: `"Undid previous action."`
+  * Failure message: `"No actions to undo."`
+  * Execution steps:
+    1. `requireNonNull(model);`
+    2. Check `if (!model.canUndoAddressBook())` → throw `CommandException(MESSAGE_FAILURE)`.
+    3. Call `model.undoAddressBook();` inside try/catch. If `IllegalStateException` occurs, convert to `CommandException(MESSAGE_FAILURE)`.
+    4. Return `new CommandResult(MESSAGE_SUCCESS);`
+
+* `RedoCommand` behavior:
+  * Command word: `redo`
+  * Success message: `"Redid previous action."`
+  * Failure message: `"No actions to redo."`
+  * Execution steps mirror `UndoCommand` but use `canRedoAddressBook()` and `model.redoAddressBook()`.
+
+(Execution/error message behaviour: see `UndoCommand.java` and `RedoCommand.java`.)
+
 
 
 --------------------------------------------------------------------------------------------------------------------
@@ -398,66 +685,66 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Glossary
 
-* **CLI**: Command Line Interface - A text-based interface where users interact with the application by typing commands
-* **Client Contact**: A business contact entry containing name, phone, email, company, and tags
-* **Command**: A text instruction typed by the user to perform an action in QuickCLI
-* **Duplicate Contact**: Two contacts with the same name AND phone number
-* **Index**: A number shown next to each contact in the displayed list, used to reference specific contacts
-* **JSON**: JavaScript Object Notation - A human-readable data format used to store contact data
-* **Mainstream OS**: Windows, Linux, Unix, MacOS
-* **Parameter**: Additional information provided with a command (e.g., name, phone number)
-* **Tag**: A single-word label used to categorize contacts (e.g., "priority", "designer")
-* **Freelance Professional**: Self-employed individual offering services to multiple clients
+| **Term** | **Definition / Explanation** | **Example** |
+|-----------|------------------------------|--------------|
+| **CLI (Command Line Interface)** | A text-based interface where users type commands to interact with software. | `QuickCLI` uses a CLI to manage contacts. |
+| **GUI (Graphical User Interface)** | A visual interface where users interact with software using windows, buttons, and icons. | `QuickCLI` has a GUI overlay for visual representation. |
+| **Contact** | A record representing a client, including name, phone, email, company, tags, and remarks. | `add n/John Doe p/91234567` |
+| **Index** | The number representing a contact in the current list, used in commands like edit, delete, note. | `edit 2 n/Jane Smith` |
+| **Priority** | A level assigned to a contact indicating their importance or urgency. | `pr/HIGH`, `pr/MEDIUM`, `pr/LOW`, `pr/1` |
+| **Tag** | A keyword used to categorize or filter contacts. | `t/client`, `t/priority`. |
+| **Remark / Note** | Optional textual information about a contact, stored for reference. | `r/Prefers Email Communication.` |
+| **Command Format / Syntax** | The structure in which a command must be entered. | `add n/NAME p/PHONE [e/EMAIL]...` |
+| **Duplicate Contact** | A contact considered identical to an existing one if both name and phone number match. | `QuickCLI` prevents duplicates. |
+| **Sort Criterion** | A property used to organize contacts when using the `sort` command. | `name` for alphabetical, `recent` for newest first. |
+| **Clear Confirm** | A confirmation step to prevent accidental deletion of all contacts. | User types `clear confirm` to execute clear. |
+| **JSON** | A text-based format for storing structured data. | `QuickCLI` stores contacts in JSON format. |
+| **User Story** | Short description of a feature from the user’s perspective. | “As a user, I can add a contact so that I can manage client info quickly.” |
+| **Help Window** | A GUI window that lists all available commands and syntax. | Opened using `help`. |
+| **Clock Button** | A button beside notes showing the time the note was added. | Only active if a note exists. |
+| **Exit** | Command to close QuickCLI; automatically saves data. | `exit` |
+| **Save Data** | Automatic saving of changes to the database after commands that modify data. | Stored in `quickcli.json`. |
+| **Add Command** | Adds a new contact to QuickCLI. | `add n/John Doe p/91234567` |
+| **List Command** | Lists all contacts or filtered by tags. | `list t/priority` |
+| **Find Command** | Searches contacts by keyword(s). | `find john mary` |
+| **Edit Command** | Updates details of an existing contact. | `edit 2 n/Jane Smith p/91234567` |
+| **Delete Command** | Removes a contact from the database. | `delete 3` |
+| **Note Command** | Adds remarks to a contact. | `note 1 r/Meeting scheduled` |
+| **Sort Command** | Organizes contacts according to a criterion. | `sort name` or `sort recent` |
+| **Clear Command** | Deletes all contacts from the database. | Must type `clear confirm` to proceed. |
+| **Help Command** | Launches the Help Window. | `help` |
+| **JSON** |JavaScript Object Notation - A human-readable data format used to store contact data |
+| **Mainstream OS** |Operating System that is mainstream |Windows, Linux, Unix, MacOS |
+| **Freelance Professional** |Self-employed individual offering services to multiple clients |
 
 --------------------------------------------------------------------------------------------------------------------
 
-## **Appendix: Instructions for manual testing**
+## Appendix: Instructions for manual testing (expanded)
 
-Given below are instructions to test the app manually.
+> Note: These instructions complement the User Guide and are written for the tester who needs a quick, reproducible path through the app features. They are not exhaustive; exploratory testing is encouraged.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** These instructions only provide a starting point for testers to work on;
-testers are expected to do more *exploratory* testing.
+### Basic tests
 
-</div>
+1. `list` — app should show the sample contacts and return success.
+2. `add n/Test User p/91234567` — new contact created and visible in top of list (or bottom depending on sort), success message appears.
+3. `find Test` — the previously added contact should be shown.
+4. `edit 1 p/99999999` — the phone of the first visible contact should update.
+5. `note 1 r/Meeting notes` — note should be saved and `Note:` visible in person card (or `-` placeholder cleared).
+6. `priority 1 pr/HIGH` — the contact’s priority should update and any visual badge updated.
+7. `delete 1` — deletion happens; confirm address book updated in UI and status bar.
+8. `undo` (if implemented) — the last mutation is undone. 
+9. `redo` to reapply.
+10. `clear` then `clear confirm` — all entries deleted; check that data file was updated.
 
-### Launch and shutdown
+### Edge cases and invalid input tests
 
-1. Initial launch
+1. Try `add` with missing required fields — should show a helpful error (missing name/phone).
+2. Try `delete 9999` — out-of-range index should be rejected.
+3. Try `note 1 r/` (empty note) — should clear note and show placeholder behavior.
+4. Try `priority 1 pr/URGENT` — invalid priority should be rejected with usage message.
+5. Try duplicate add: add the same name & phone twice — second add should be rejected.
 
-   1. Download the jar file and copy into an empty folder
+### Manual testing for sorting & filtering
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
-
-1. Saving window preferences
-
-   1. Resize the window to an optimum size. Move the window to a different location. Close the window.
-
-   1. Re-launch the app by double-clicking the jar file.<br>
-       Expected: The most recent window size and location is retained.
-
-1. _{ more test cases …​ }_
-
-### Deleting a person
-
-1. Deleting a person while all persons are being shown
-
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
-
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
-
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
-
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
-
-1. _{ more test cases …​ }_
-
-### Saving data
-
-1. Dealing with missing/corrupted data files
-
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
-
-1. _{ more test cases …​ }_
+1. Use `sort` and `sort priority` and `sort recent` — check correct ordering in the list pane.
+3. Use `find` with partial keywords and mixed-case (e.g., `find JoH`) — confirm case-insensitive partial matches.
