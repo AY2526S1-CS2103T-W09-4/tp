@@ -25,7 +25,7 @@
   class PriorityCommand
   class SortCommand
   class UndoCommand
-  class RedoCommand  
+  class RedoCommand
 
   ' =============================
   ' CommandResult
@@ -62,7 +62,7 @@
   Command <|-- PriorityCommand
   Command <|-- SortCommand
   Command <|-- UndoCommand
-  Command <|-- RedoCommand 
+  Command <|-- RedoCommand
 
   ' =============================
   ' Associations
