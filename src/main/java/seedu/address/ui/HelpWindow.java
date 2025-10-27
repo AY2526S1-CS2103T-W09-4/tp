@@ -114,7 +114,7 @@ public class HelpWindow extends UiPart<Stage> {
 
         // Apply custom CSS
         alert.getDialogPane().getStylesheets().add(
-                getClass().getResource("/HelpWindowAlert.css").toExternalForm()
+                getClass().getResource("HelpWindowAlert.css").toExternalForm()
         );
 
         // Add custom icon to title bar
