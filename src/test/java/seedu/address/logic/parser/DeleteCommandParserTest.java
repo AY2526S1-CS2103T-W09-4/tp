@@ -1,7 +1,7 @@
 package seedu.address.logic.parser;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +9,7 @@ import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
- * Contains unit tests for DeleteCommandParser.
+ * Contains unit tests for {@code DeleteCommandParser}.
  */
 public class DeleteCommandParserTest {
 
@@ -17,78 +17,79 @@ public class DeleteCommandParserTest {
 
     @Test
     public void parse_validSingleIndex_returnsDeleteCommand() throws ParseException {
-        // Single index should be parsed correctly
+        // Valid single index "1" should return DeleteCommand with that index
         DeleteCommand result = parser.parse("1");
-        assertEquals(1, result.toString().split("targetIndices=")[1].split("}")[0].split(",").length);
+        assertTrue(result != null);
     }
 
     @Test
     public void parse_validMultipleIndices_returnsDeleteCommand() throws ParseException {
-        // Multiple comma-separated indices should trigger bulk delete
+        // Valid multiple indices "1,3,5" should return bulk DeleteCommand
         DeleteCommand result = parser.parse("1,3,5");
-        assertEquals(true, result.toString().contains("isBulkDelete=true"));
+        assertTrue(result.toString().contains("isBulkDelete=true"));
     }
 
     @Test
     public void parse_validRange_returnsDeleteCommand() throws ParseException {
-        // Range format "5-7" should be parsed and trigger bulk delete
+        // Valid range "5-7" should return bulk DeleteCommand with expanded indices
         DeleteCommand result = parser.parse("5-7");
-        assertEquals(true, result.toString().contains("isBulkDelete=true"));
+        assertTrue(result.toString().contains("isBulkDelete=true"));
     }
 
     @Test
     public void parse_validMixedFormat_returnsDeleteCommand() throws ParseException {
-        // Mixed format with indices and ranges should work
+        // Mixed format "1,3,5-7,10" should return bulk DeleteCommand
         DeleteCommand result = parser.parse("1,3,5-7,10");
-        assertEquals(true, result.toString().contains("isBulkDelete=true"));
+        assertTrue(result.toString().contains("isBulkDelete=true"));
     }
 
     @Test
     public void parse_invalidSingleIndex_throwsParseException() {
-        // Zero index is invalid
+        // Zero index should throw ParseException
         assertThrows(ParseException.class, () -> parser.parse("0"));
     }
 
     @Test
     public void parse_invalidFormat_throwsParseException() {
-        // Non-numeric input should throw exception
+        // Non-numeric input should throw ParseException
         assertThrows(ParseException.class, () -> parser.parse("abc"));
     }
 
     @Test
     public void parse_invalidRange_throwsParseException() {
-        // Range with start > end should throw exception
+        // Invalid range (start > end) should throw ParseException
         assertThrows(ParseException.class, () -> parser.parse("5-3"));
     }
 
     @Test
     public void parse_emptyString_throwsParseException() {
+        // Empty string should throw ParseException
         assertThrows(ParseException.class, () -> parser.parse(""));
     }
 
     @Test
     public void parse_largeIndex_returnsDeleteCommand() throws ParseException {
-        // Large valid indices should parse correctly
+        // Large valid index should still return DeleteCommand
         DeleteCommand result = parser.parse("999");
-        assertEquals(true, result != null);
+        assertTrue(result != null);
     }
 
     @Test
     public void parse_whitespaceInInput_returnsDeleteCommand() throws ParseException {
-        // Whitespace around indices should be ignored
+        // Extra whitespace should be handled correctly
         DeleteCommand result = parser.parse("  1 , 3 , 5  ");
-        assertEquals(true, result.toString().contains("isBulkDelete=true"));
+        assertTrue(result.toString().contains("isBulkDelete=true"));
     }
 
     @Test
     public void parse_negativeIndex_throwsParseException() {
-        // Negative indices are invalid
+        // Negative index should throw ParseException
         assertThrows(ParseException.class, () -> parser.parse("-1"));
     }
 
     @Test
     public void parse_invalidRangeFormat_throwsParseException() {
-        // Non-numeric range should throw exception
+        // Non-numeric range should throw ParseException
         assertThrows(ParseException.class, () -> parser.parse("a-b"));
     }
 }

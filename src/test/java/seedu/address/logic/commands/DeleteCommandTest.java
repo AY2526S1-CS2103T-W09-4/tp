@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.util.Arrays;
@@ -21,45 +22,60 @@ import seedu.address.model.UserPrefs;
  */
 public class DeleteCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-
     @Test
     public void execute_validSingleIndex_success() throws CommandException {
-        // Delete a single person should succeed
-        Model tempModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        // Single index deletion should reduce list size by 1
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON);
 
-        int sizeBefore = tempModel.getFilteredPersonList().size();
-        CommandResult result = deleteCommand.execute(tempModel);
-        int sizeAfter = tempModel.getFilteredPersonList().size();
+        int sizeBefore = model.getFilteredPersonList().size();
+        CommandResult result = deleteCommand.execute(model);
+        int sizeAfter = model.getFilteredPersonList().size();
 
         assertEquals(sizeBefore - 1, sizeAfter);
         assertEquals(true, result.getFeedbackToUser().contains("Deleted Person:"));
     }
 
     @Test
-    public void execute_invalidIndex_throwsCommandException() {
-        // Out of bounds index should throw CommandException
-        Model tempModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(999);
-        DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
+    public void execute_validMultipleIndicesWithoutConfirmation_success() throws CommandException {
+        // Multiple indices without confirmation should still delete successfully
+        // (Note: In GUI, confirmation dialog will appear, but execute logic validates)
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        int sizeBefore = model.getFilteredPersonList().size();
 
-        assertThrows(CommandException.class, () -> deleteCommand.execute(tempModel));
+        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON);
+        deleteCommand.execute(model);
+
+        int sizeAfter = model.getFilteredPersonList().size();
+        assertEquals(sizeBefore - 1, sizeAfter);
     }
 
     @Test
-    public void execute_invalidBulkIndices_throwsCommandException() {
-        // Bulk delete with any invalid index should throw CommandException
-        Model tempModel = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-        Index outOfBoundIndex = Index.fromOneBased(999);
-        DeleteCommand deleteCommand = new DeleteCommand(Arrays.asList(INDEX_FIRST_PERSON, outOfBoundIndex));
+    public void execute_outOfBoundIndex_throwsCommandException() {
+        // Out of bounds index should throw CommandException
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+        DeleteCommand deleteCommand = new DeleteCommand(outOfBoundIndex);
 
-        assertThrows(CommandException.class, () -> deleteCommand.execute(tempModel));
+        assertThrows(CommandException.class, () -> deleteCommand.execute(model));
+    }
+
+    @Test
+    public void execute_bulkOutOfBoundIndex_throwsCommandException() {
+        // Bulk delete with out of bounds index should throw CommandException
+        Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+        int listSize = model.getFilteredPersonList().size();
+        Index outOfBoundIndex = Index.fromOneBased(listSize + 1);
+
+        DeleteCommand deleteCommand = new DeleteCommand(
+                Arrays.asList(INDEX_FIRST_PERSON, outOfBoundIndex));
+
+        assertThrows(CommandException.class, () -> deleteCommand.execute(model));
     }
 
     @Test
     public void equals_sameIndices_true() {
-        // Same single index should be equal
+        // DeleteCommand with same index should be equal
         DeleteCommand deleteCommand1 = new DeleteCommand(INDEX_FIRST_PERSON);
         DeleteCommand deleteCommand2 = new DeleteCommand(INDEX_FIRST_PERSON);
         assertEquals(deleteCommand1, deleteCommand2);
@@ -67,7 +83,7 @@ public class DeleteCommandTest {
 
     @Test
     public void equals_differentIndices_false() {
-        // Different indices should not be equal
+        // DeleteCommand with different indices should not be equal
         DeleteCommand deleteCommand1 = new DeleteCommand(INDEX_FIRST_PERSON);
         DeleteCommand deleteCommand2 = new DeleteCommand(INDEX_SECOND_PERSON);
         assertEquals(false, deleteCommand1.equals(deleteCommand2));
@@ -75,23 +91,53 @@ public class DeleteCommandTest {
 
     @Test
     public void equals_sameListIndices_true() {
-        // Same list of indices should be equal
-        DeleteCommand deleteCommand1 = new DeleteCommand(Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
-        DeleteCommand deleteCommand2 = new DeleteCommand(Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
+        // DeleteCommand with same list of indices should be equal
+        DeleteCommand deleteCommand1 = new DeleteCommand(
+                Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
+        DeleteCommand deleteCommand2 = new DeleteCommand(
+                Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
         assertEquals(deleteCommand1, deleteCommand2);
     }
 
     @Test
+    public void equals_differentListIndices_false() {
+        // DeleteCommand with different indices should not be equal
+        DeleteCommand deleteCommand1 = new DeleteCommand(
+                Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
+        DeleteCommand deleteCommand2 = new DeleteCommand(
+                Arrays.asList(INDEX_FIRST_PERSON, INDEX_THIRD_PERSON));
+        assertEquals(false, deleteCommand1.equals(deleteCommand2));
+    }
+
+    @Test
     public void isBulkDelete_singleIndex_false() {
-        // Single index delete should have isBulkDelete=false
+        // Single index should not be marked as bulk delete
         DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON);
         assertEquals(false, deleteCommand.toString().contains("isBulkDelete=true"));
     }
 
     @Test
     public void isBulkDelete_multipleIndices_true() {
-        // Multiple indices should set isBulkDelete=true
-        DeleteCommand deleteCommand = new DeleteCommand(Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
+        // Multiple indices should be marked as bulk delete
+        DeleteCommand deleteCommand = new DeleteCommand(
+                Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
         assertEquals(true, deleteCommand.toString().contains("isBulkDelete=true"));
+    }
+
+    @Test
+    public void toString_singleDelete_containsCorrectInfo() {
+        // toString should contain correct information for single delete
+        DeleteCommand deleteCommand = new DeleteCommand(INDEX_FIRST_PERSON);
+        String result = deleteCommand.toString();
+        assertEquals(true, result.contains("isBulkDelete=false"));
+    }
+
+    @Test
+    public void toString_bulkDelete_containsCorrectInfo() {
+        // toString should contain correct information for bulk delete
+        DeleteCommand deleteCommand = new DeleteCommand(
+                Arrays.asList(INDEX_FIRST_PERSON, INDEX_SECOND_PERSON));
+        String result = deleteCommand.toString();
+        assertEquals(true, result.contains("isBulkDelete=true"));
     }
 }

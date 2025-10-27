@@ -27,52 +27,68 @@ public class IndexRangeParserTest {
     public void parseIndexRange_multipleIndices_success() throws ParseException {
         List<Index> result = IndexRangeParser.parseIndexRange("1,3,5");
         assertEquals(3, result.size());
+        assertEquals(Index.fromOneBased(1), result.get(0));
+        assertEquals(Index.fromOneBased(3), result.get(1));
+        assertEquals(Index.fromOneBased(5), result.get(2));
     }
 
     @Test
     public void parseIndexRange_simpleRange_success() throws ParseException {
-        // Range "5-7" should expand to indices 5, 6, 7
+        // Valid range "5-7" should expand to indices 5, 6, 7
         List<Index> result = IndexRangeParser.parseIndexRange("5-7");
         assertEquals(3, result.size());
+        assertEquals(Index.fromOneBased(5), result.get(0));
+        assertEquals(Index.fromOneBased(6), result.get(1));
+        assertEquals(Index.fromOneBased(7), result.get(2));
     }
 
     @Test
     public void parseIndexRange_mixedFormat_success() throws ParseException {
-        // Mixed format "1,3,5-7,10" should expand and parse correctly
+        // Mixed format "1,3,5-7,10" should expand and sort to [1, 3, 5, 6, 7, 10]
         List<Index> result = IndexRangeParser.parseIndexRange("1,3,5-7,10");
         assertEquals(6, result.size());
+        assertEquals(Index.fromOneBased(1), result.get(0));
+        assertEquals(Index.fromOneBased(3), result.get(1));
+        assertEquals(Index.fromOneBased(5), result.get(2));
+        assertEquals(Index.fromOneBased(6), result.get(3));
+        assertEquals(Index.fromOneBased(7), result.get(4));
+        assertEquals(Index.fromOneBased(10), result.get(5));
     }
 
     @Test
     public void parseIndexRange_duplicates_removed() throws ParseException {
-        // Duplicates should be automatically removed
+        // Duplicate indices should be automatically removed
         List<Index> result = IndexRangeParser.parseIndexRange("1,1,1,3,3");
         assertEquals(2, result.size());
+        assertEquals(Index.fromOneBased(1), result.get(0));
+        assertEquals(Index.fromOneBased(3), result.get(1));
     }
 
     @Test
     public void parseIndexRange_unorderedInput_sorted() throws ParseException {
-        // Unsorted input should be sorted in ascending order
+        // Unsorted input should be automatically sorted
         List<Index> result = IndexRangeParser.parseIndexRange("5,1,3");
         assertEquals(3, result.size());
         assertEquals(Index.fromOneBased(1), result.get(0));
+        assertEquals(Index.fromOneBased(3), result.get(1));
+        assertEquals(Index.fromOneBased(5), result.get(2));
     }
 
     @Test
     public void parseIndexRange_zeroIndex_failure() {
-        // Zero is not a valid index
+        // Zero index should throw ParseException
         assertThrows(ParseException.class, () -> IndexRangeParser.parseIndexRange("0"));
     }
 
     @Test
     public void parseIndexRange_negativeIndex_failure() {
-        // Negative indices are not valid
+        // Negative index should throw ParseException
         assertThrows(ParseException.class, () -> IndexRangeParser.parseIndexRange("-1"));
     }
 
     @Test
     public void parseIndexRange_invalidRange_failure() {
-        // Range start must be <= end
+        // Range with start > end should throw ParseException
         assertThrows(ParseException.class, () -> IndexRangeParser.parseIndexRange("5-3"));
     }
 
@@ -84,6 +100,7 @@ public class IndexRangeParserTest {
 
     @Test
     public void parseIndexRange_emptyInput_failure() {
+        // Empty input should throw ParseException
         assertThrows(ParseException.class, () -> IndexRangeParser.parseIndexRange(""));
     }
 
