@@ -97,8 +97,8 @@ Before diving into specific commands, here's how you read the command syntax:
   - Multiple times t/designer t/priority
 - **Parameters can be in any order**
   - Example: n/NAME p/PHONE is the same as p/PHONE n/NAME
-- **Extraneous parameters** for commands that don't take parameters (like help, list, exit, clear) will be ignored
-  - Example: help 123 will be interpreted as help
+- **Extraneous parameters** for commands that don't take parameters (like help, exit, clear) will be ignored
+  - Example: <mark> help 123 </mark> will be interpreted as help
 
 ### **Managing Contacts**
 
