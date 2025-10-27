@@ -40,13 +40,3 @@
     -fx-alignment: center;
     -fx-opacity: 0.95;
 }
-
-/* small responsive tweak: if footer is narrow, reduce font slightly */
-@media (max-width: 420px) {
-    .status-bar #saveLocationStatus {
-        -fx-font-size: 11px;
-    }
-    .status-bar #copyrightLabel {
-        -fx-font-size: 10px;
-    }
-}
