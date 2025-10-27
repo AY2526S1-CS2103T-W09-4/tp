@@ -91,7 +91,8 @@ public class DeleteCommandTest {
         DeleteCommand deleteCommand = new DeleteCommand(Arrays.asList(validIndex, invalidIndex));
 
         CommandException exception = assertThrows(CommandException.class,
-                () -> deleteCommand.execute(model));
+                () -> deleteCommand.execute(model)
+        );
 
         // Verify error message contains info about invalid indices
         assertTrue(exception.getMessage().contains("Invalid indices"));

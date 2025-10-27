@@ -171,11 +171,11 @@ public class IndexRangeParserTest {
     public void getInvalidIndices_mixedValidInvalid_onlyInvalidReported() {
         // Test mixed valid and invalid indices
         List<Index> indices = Arrays.asList(
-                Index.fromOneBased(1),  // valid
-                Index.fromOneBased(3),  // valid
+                Index.fromOneBased(1), // valid
+                Index.fromOneBased(3), // valid
                 Index.fromOneBased(10), // invalid
-                Index.fromOneBased(5),  // valid
-                Index.fromOneBased(15)  // invalid
+                Index.fromOneBased(5), // valid
+                Index.fromOneBased(15) // invalid
         );
         List<Integer> invalid = IndexRangeParser.getInvalidIndices(indices, 7);
         assertEquals(2, invalid.size());
