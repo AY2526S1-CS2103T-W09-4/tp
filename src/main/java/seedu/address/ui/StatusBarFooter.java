@@ -19,6 +19,7 @@ public class StatusBarFooter extends UiPart<Region> {
 
     /**
      * Creates a {@code StatusBarFooter} with the given {@code Path}.
+     * @param saveLocation The storage file path to display.
      */
     public StatusBarFooter(Path saveLocation) {
         super(FXML);
