@@ -112,9 +112,13 @@ public class HelpWindow extends UiPart<Stage> {
         alert.getButtonTypes().setAll(yesButton, cancelButton);
 
         // Apply custom CSS
-        alert.getDialogPane().getStylesheets().add(
-                getClass().getResource("HelpWindowAlert.css").toExternalForm()
-        );
+        URL cssUrl = getClass().getResource("/view/HelpWindowAlert.css");
+        if (cssUrl != null) {
+            alert.getDialogPane().getStylesheets().add(cssUrl.toExternalForm());
+        }         
+        else {
+            logger.warning("HelpWindowAlert.css not found, skipping styling");
+        }
 
         // Add custom icon to title bar
         Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
