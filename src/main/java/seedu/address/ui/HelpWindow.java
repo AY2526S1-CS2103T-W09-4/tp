@@ -2,6 +2,7 @@ package seedu.address.ui;
 
 import java.awt.Desktop;
 import java.net.URI;
+import java.net.URL;
 import java.util.Optional;
 import java.util.logging.Logger;
 
