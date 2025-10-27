@@ -377,46 +377,75 @@ The following activity diagram summarizes what happens when a user executes a ne
 - priority 1 pr/2
 - priority 2 pr/low
 
-### Sort (implementation notes & tests)
+# Sort — implementation notes & tests
 
-The class diagram is as follows
+> Diagrams referenced  
+> * Class diagram: shows `SortCommand` (has `key: SortKeys`) → builds `Comparator<Person>` → calls `Model#sortPersonList(Comparator)` → `AddressBook` → `UniquePersonList` → `Person` accessors.
 ![SortCommand Class Diagram](docs/images/SortCommandClassDiagram.png)
 
-**Command format**  
-`sort [CRITERION]`  
-*No args or whitespace-only args → defaults to `name`.*
-
-**Valid criteria (derived from tests):**
-* `name` (default)
-* `phone`
-* `email`
-* `address`
-* `tag`
-* `priority`
-
-**High-level flow (parse → command → execute):**
-The sequence diagram is as follows 
+> * Sequence diagram (bottom): shows the parse → command → execute flow and that sorting is performed by the model/addressbook/unique list (in-place), then `CommandResult` is returned.
 ![SortCommand Sequence Diagram](docs/images/SortCommandSequenceDiagram.png)
 
-1. `LogicManager` receives the raw user input and delegates to `AddressBookParser`.
-2. `AddressBookParser` picks `SortCommandParser` and calls `parse(...)`.
-3. `SortCommandParser`:
-   * Trims input.
-   * If input is empty or whitespace-only → create `SortCommand(SortKeys.NAME)` (default).
-   * If input contains a single valid key (case-insensitive) → construct `SortCommand` with corresponding `SortKeys` value.
-   * If input contains anything else (invalid key, multiple tokens, unexpected prefixes), throw `ParseException` with `MESSAGE_INVALID_SORT_COMMAND_FORMAT` (see tests).
-4. `SortCommand` executes:
-   * Calls model method(s) to reorder (or request model to provide a sorted view) using the requested criterion.
-   * Does **not** mutate the address book data itself (sorting is a presentation / view operation) — therefore it should **not** call `model.commitAddressBook()` (see Undo/Redo rules).
-   * Returns `CommandResult` with success feedback and the applied sort criterion.
 
-**Implementation details & decisions:**
+---
 
-* Parser treats pure whitespace as empty arguments (default sort by `name`). See tests: `parse_whitespace_success`, `parse_trailingWhitespace_success`.
-* When the user supplies invalid argument(s), `SortCommandParser` should report the invalid key back via `MESSAGE_INVALID_SORT_COMMAND_FORMAT` and include the offending token in the error message (see tests: `parse_withArgs_failure`).
-* The sorting operation is expected to change only the _filtered/observable view_ returned by the model (so UI updates), but not the underlying data structures (i.e., not changing Person identities).
-* Sorting by `priority` must handle `null` (no priority) persons consistently — typically they will appear after priority-bearing persons (tests and UI logic may expect a particular order; confirm in `SortCommand` / `Model` implementations).
-* Sorting should be stable if possible so that sort-by-name after sort-by-priority produces predictable layouts.
+## Command format
+sort [CRITERION]
+
+- If no args or only whitespace → **defaults to** `name`.  
+- Valid criteria (case-insensitive): `name`, `phone`, `email`, `address`, `tag`, `priority`.
+
+---
+
+## High-level flow (parse → command → execute) — matches sequence diagram and code
+
+1. `LogicManager` hands the raw user input to `AddressBookParser`.  
+2. `AddressBookParser` delegates to `SortCommandParser` which:
+   - trims the input string;
+   - empty / whitespace-only → constructs `new SortCommand(SortKeys.NAME)` (default);
+   - a single valid key token → constructs `new SortCommand(<that SortKeys>)`;
+   - otherwise throws `ParseException` (invalid format or token).
+3. `SortCommand.execute(Model model)` (as implemented in the provided code):
+   1. `requireNonNull(model)`.
+   2. `Comparator<Person> cmp = comparatorFor(key);` — `comparatorFor` returns the comparator for the selected `SortKeys` (detailed below).
+   3. `model.sortPersonList(cmp);` — the model is asked to sort its person list using that comparator.
+      - According to the sequence/class diagram and current code structure, that results in `AddressBook` delegating to `UniquePersonList.sort(cmp)`, which sorts the list **in-place** (i.e., mutates the model’s internal person ordering).
+   4. `model.commitAddressBook();` — the command commits the change to the model (so sorting is treated as a model state change, enabling undo/redo).
+   5. Build success message: `String.format(MESSAGE_SUCCESS, key.getDisplayName())`.
+   6. `return new CommandResult(message)`.
+
+> Important: the code **does** call `model.commitAddressBook()` (so sorting is currently a mutation and recorded for undo/redo). The diagrams show the in-place sort via `AddressBook / UniquePersonList` — this matches the code.
+
+---
+
+## How comparators are built (rules implemented in `comparatorFor`)
+- `NAME` → compare `Person.getName().fullName`, case-insensitive.
+- `PHONE` → compare `Person.getPhone().value` (string).
+- `EMAIL` → compare `Person.getEmail().value`, case-insensitive.
+- `ADDRESS` → compare `Person.getAddress().value`, case-insensitive.
+- `TAG` → compare the **first tag** (by alphabetical order, case-insensitive):  
+  `p.getTags().stream().map(tag->tag.tagName).sorted(String.CASE_INSENSITIVE_ORDER).findFirst().orElse("")`.  
+  * Persons with no tags are treated as `""` for comparison.
+- `PRIORITY` → compare numeric priority level via  
+  `p.getPriority() != null ? p.getPriority().getLevel().getNumericValue() : Integer.MAX_VALUE`.  
+  * Persons without a priority (`null`) get `Integer.MAX_VALUE` — they appear **after** any person with a numeric priority when sorting ascending.
+
+If an unsupported key is passed, the code throws `IllegalArgumentException("Unsupported sort key: " + f)`.
+
+---
+
+## Class-level mapping (from the class diagram)
+- `SortCommand` (fields / methods shown in class diagram and implemented in code):
+  - field: `private final SortKeys key;`
+  - constructor: `SortCommand(SortKeys key)`
+  - `execute(Model model) : CommandResult` — builds comparator, calls `model.sortPersonList(cmp)`, `model.commitAddressBook()`, returns `CommandResult`.
+  - `private comparatorFor(SortKeys f) : Comparator<Person>` — builds comparator per key (see rules above).
+  - `equals(Object other)` — current implementation: `return other == this || other instanceof SortCommand;`  
+    **Note:** that implementation treats any two `SortCommand` instances as equal regardless of `key`. This is inconsistent with the class diagram intent (and typical equals semantics). See **Tests & recommended fix** below.
+
+- `Model` provides `sortPersonList(Comparator<Person>)` (diagram & code).  
+- `AddressBook` implements `Model` and delegates the sort to `UniquePersonList`.  
+- `UniquePersonList` contains `Person` objects and performs the in-place sorting.
 
 **Example valid inputs:**
 - sort
@@ -438,9 +467,9 @@ The sequence diagram is as follows
 * Keep sorting logic in `Model` (or a `Model#sortBy(SortKey)` helper) so `SortCommand` just delegates — this keeps separation of concerns and simplifies testing.
 
 
-#### Concrete implementation details (ModelManager)
+#### ModelManager
 
-The concrete implementation is in `ModelManager` (`src/main/java/seedu/address/model/ModelManager.java`). Key details derived from the implementation:
+The concrete implementation is in `ModelManager` (`src/main/java/seedu/address/model/ModelManager.java`).
 
 * **History storage**
   * `ModelManager` stores the history as a `List<AddressBook>` named `addressBookHistory`.
