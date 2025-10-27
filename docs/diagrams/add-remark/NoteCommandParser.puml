@@ -23,7 +23,6 @@ class NoteCommand {
 class Index
 class Note
 class ParseException
-class IllegalValueException
 class ArgumentMultimap
 class ArgumentTokenizer
 class ParserUtil
@@ -36,7 +35,6 @@ NoteCommandParser ..> NoteCommand : creates >
 NoteCommandParser ..> Index : uses >
 NoteCommandParser ..> Note : uses >
 NoteCommandParser ..> ParseException : throws >
-NoteCommandParser ..> IllegalValueException : catches >
 NoteCommandParser ..> ArgumentMultimap : uses >
 NoteCommandParser ..> ArgumentTokenizer : uses >
 NoteCommandParser ..> ParserUtil : uses >
