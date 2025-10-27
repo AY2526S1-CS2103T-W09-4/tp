@@ -379,6 +379,9 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 ### Sort (implementation notes & tests)
 
+The class diagram is as follows
+![SortCommand Class Diagram](docs/images/SortCommandClassDiagram.png)
+
 **Command format**  
 `sort [CRITERION]`  
 *No args or whitespace-only args → defaults to `name`.*
@@ -392,6 +395,8 @@ The following activity diagram summarizes what happens when a user executes a ne
 * `priority`
 
 **High-level flow (parse → command → execute):**
+The sequence diagram is as follows 
+![SortCommand Sequence Diagram](docs/images/SortCommandSequenceDiagram.png)
 
 1. `LogicManager` receives the raw user input and delegates to `AddressBookParser`.
 2. `AddressBookParser` picks `SortCommandParser` and calls `parse(...)`.
