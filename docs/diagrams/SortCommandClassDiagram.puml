@@ -1,5 +1,5 @@
 @startuml
-' Class diagram for SortCommand (clean syntax)
+' Class diagram for SortCommand
 skinparam classAttributeIconSize 0
 hide empty members
 
@@ -17,7 +17,6 @@ class SortCommand {
 
 interface Model {
   + sortPersonList(comparator : Comparator<Person>)
-  .. other model methods ..
 }
 
 class CommandResult {
@@ -79,7 +78,7 @@ SortCommand --> Model : uses
 SortCommand --> SortKeys : has
 SortCommand --> Comparator : builds
 SortCommand --> CommandResult : returns
-Model "1" .. "1" AddressBook : implemented by
+Model "1" ..> "1" AddressBook : implemented by
 AddressBook *-- UniquePersonList : has
 UniquePersonList "1" *-- "*" Person : contains
 
