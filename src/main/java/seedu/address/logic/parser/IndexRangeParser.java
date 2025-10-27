@@ -98,4 +98,21 @@ public class IndexRangeParser {
 
         return result;
     }
+
+    /**
+     * Validates that all provided indices are within the list size.
+     *
+     * @param indices the list of indices to validate
+     * @param listSize the size of the list being indexed
+     * @return a list of invalid indices (those >= listSize), empty if all valid
+     */
+    public static List<Integer> getInvalidIndices(List<Index> indices, int listSize) {
+        List<Integer> invalidIndices = new ArrayList<>();
+        for (Index idx : indices) {
+            if (idx.getZeroBased() >= listSize) {
+                invalidIndices.add(idx.getOneBased());
+            }
+        }
+        return invalidIndices;
+    }
 }

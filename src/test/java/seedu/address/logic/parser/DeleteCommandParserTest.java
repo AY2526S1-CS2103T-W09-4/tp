@@ -1,32 +1,84 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
-import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
 
-/**
- * As we are only doing white-box testing, our test cases do not cover path variations
- * outside of the DeleteCommand code. For example, inputs "1" and "1 abc" take the
- * same path through the DeleteCommand, and therefore we test only one of them.
- * The path variation for those two cases occur inside the ParserUtil, and
- * therefore should be covered by the ParserUtilTest.
- */
 public class DeleteCommandParserTest {
 
     private DeleteCommandParser parser = new DeleteCommandParser();
 
     @Test
-    public void parse_validArgs_returnsDeleteCommand() {
-        assertParseSuccess(parser, "1", new DeleteCommand(INDEX_FIRST_PERSON));
+    public void parse_validSingleIndex_returnsDeleteCommand() throws ParseException {
+        DeleteCommand result = parser.parse("1");
+        assertEquals(1, result.toString().split("targetIndices=")[1].split("}")[0].split(",").length);
     }
 
     @Test
-    public void parse_invalidArgs_throwsParseException() {
-        assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+    public void parse_validMultipleIndices_returnsDeleteCommand() throws ParseException {
+        DeleteCommand result = parser.parse("1,3,5");
+        assertEquals(true, result.toString().contains("isBulkDelete=true"));
+    }
+
+    @Test
+    public void parse_validRange_returnsDeleteCommand() throws ParseException {
+        DeleteCommand result = parser.parse("5-7");
+        assertEquals(true, result.toString().contains("isBulkDelete=true"));
+    }
+
+    @Test
+    public void parse_validMixedFormat_returnsDeleteCommand() throws ParseException {
+        DeleteCommand result = parser.parse("1,3,5-7,10");
+        assertEquals(true, result.toString().contains("isBulkDelete=true"));
+    }
+
+    @Test
+    public void parse_invalidSingleIndex_throwsParseException() {
+        assertThrows(ParseException.class, () -> parser.parse("0"));
+    }
+
+    @Test
+    public void parse_invalidFormat_throwsParseException() {
+        assertThrows(ParseException.class, () -> parser.parse("abc"));
+    }
+
+    @Test
+    public void parse_invalidRange_throwsParseException() {
+        assertThrows(ParseException.class, () -> parser.parse("5-3"));
+    }
+
+    @Test
+    public void parse_emptyString_throwsParseException() {
+        assertThrows(ParseException.class, () -> parser.parse(""));
+    }
+
+    @Test
+    public void parse_largeIndex_returnsDeleteCommand() throws ParseException {
+        DeleteCommand result = parser.parse("999");
+        assertEquals(true, result != null);
+    }
+
+    @Test
+    public void parse_whitespaceInInput_returnsDeleteCommand() throws ParseException {
+        DeleteCommand result = parser.parse("  1 , 3 , 5  ");
+        assertEquals(true, result.toString().contains("isBulkDelete=true"));
+    }
+
+    @Test
+    public void parse_negativeIndex_throwsParseException() {
+        assertThrows(ParseException.class, () -> parser.parse("-1"));
+    }
+
+    @Test
+    public void parse_invalidRangeFormat_throwsParseException() {
+        assertThrows(ParseException.class, () -> parser.parse("a-b"));
     }
 }
