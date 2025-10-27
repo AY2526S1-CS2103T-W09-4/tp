@@ -258,4 +258,89 @@ Removes a contact from your database.
 
 <mark> delete 1 </mark> (Deletes Person with Index 1 in the list filtered by find: In this case, it deletes Roy Balakrishnan)
 
+### **Organizing Your Contacts**
 
+#### Sorting contacts: sort
+
+Organize your contact list for easier access.
+
+**Format:** sort \[CRITERION\]
+
+**Available sorting options:**
+
+- sort or sort name - Alphabetical by name (default)
+- sort recent - Most recently added first
+- sort priority - By priority level (HIGH → MEDIUM → LOW, then no priority)
+
+**Examples:**
+
+- Sort
+- sort name
+- sort recent
+- sort priority
+
+### **System Commands**
+
+#### Clearing all contacts: clear
+
+Removes all contacts from the database. Use with caution!
+
+**Format:** clear
+
+- You will be prompted to confirm: Type clear confirm to proceed
+
+![](!)
+
+- This action cannot be undone
+
+#### Viewing help: help
+
+Opens the help window showing all available commands.
+
+**Format:** help
+
+You can type help in the command input box and pressing enter on your keyboard :
+
+**OR**
+
+**You can hover over Help and click on the button 'Help F1':**
+
+![]()
+
+Will automatically launch this window:
+
+![]()
+
+| **Button** | Action |
+| --- | --- |
+| Copy URL | Clicking it copies URL shown into clipboard. |
+| Open in Browser | Opens URL in default browser<br><br>![]() |
+
+#### Exiting the program: exit
+
+Closes QuickCLI. Your data is automatically saved.
+
+**Format:** exit
+
+![]
+
+## **FAQ**
+
+**Q: Can I use QuickCLI on multiple computers?** A: Yes! Copy the quickcli.json data file from the data folder to transfer your contacts between computers.
+
+**Q: What happens if I enter an invalid command?** A: QuickCLI will show an error message explaining what went wrong. Check the command format and try again.
+
+**Q: Can I have multiple contacts with the same name?** A: Yes, as long as they have different phone numbers. QuickCLI considers contacts duplicates only if both name AND phone number match.
+
+**Q: Is there a limit to how many contacts I can store?** A: QuickCLI can handle up to 1,000 contacts efficiently. Performance may degrade with larger databases.
+
+**Q: Can I undo a delete operation?** A: Currently, delete operations cannot be undone. Future versions will include undo/redo functionality.
+
+**Q: How do I import contacts from another application?** A: Import/export functionality is coming in version 2.0. For now, you can manually edit the JSON data file.
+
+**Q: What if QuickCLI doesn't start?**
+
+- Check that Java 17 or higher is installed: java -version
+- Ensure you're in the correct directory
+- Try running with: java -jar quickcli.jar
+- Check for error messages in the terminal
