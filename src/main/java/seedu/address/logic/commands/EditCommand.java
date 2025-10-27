@@ -169,7 +169,7 @@ public class EditCommand extends Command {
     /**
      * Stores the details used to edit a person.
      *
-     * <p>Only the fields that are set in this descriptor will overwrite the 
+     * <p>Only the fields that are set in this descriptor will overwrite the
      * corresponding fields of the person.</p>
      *
      */
