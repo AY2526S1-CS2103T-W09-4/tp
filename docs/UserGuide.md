@@ -264,7 +264,7 @@ Removes a contact from your database.
 
 Organize your contact list for easier access.
 
-**Format:** sort \[CRITERION\]
+**Format:** <mark> sort \[CRITERION\] </mark>
 
 **Available sorting options:**
 
@@ -274,10 +274,10 @@ Organize your contact list for easier access.
 
 **Examples:**
 
-- Sort
-- sort name
-- sort recent
-- sort priority
+- <mark> Sort </mark>
+- <mark> sort name </mark>
+- <mark> sort recent </mark>
+- <mark> sort priority </mark>
 
 ### **System Commands**
 
@@ -285,9 +285,9 @@ Organize your contact list for easier access.
 
 Removes all contacts from the database. Use with caution!
 
-**Format:** clear
+**Format:** <mark> clear </mark>
 
-- You will be prompted to confirm: Type clear confirm to proceed
+- You will be prompted to confirm: Type <mark> clear confirm </mark> to proceed
 
 <img width="486" height="109" alt="image" src="https://github.com/user-attachments/assets/0b6d4002-c2e8-4aab-949f-b6eeeb12f96f" />
 
@@ -297,9 +297,9 @@ Removes all contacts from the database. Use with caution!
 
 Opens the help window showing all available commands.
 
-**Format:** help
+**Format:** <mark> help </mark>
 
-You can type help in the command input box and pressing enter on your keyboard :
+You can type <mark> help </mark> in the command input box and pressing enter on your keyboard :
 
 **OR**
 
@@ -320,7 +320,7 @@ Will automatically launch this window:
 
 Closes QuickCLI. Your data is automatically saved.
 
-**Format:** exit
+**Format:** <mark> exit </mark>
 
 <img width="947" height="180" alt="image" src="https://github.com/user-attachments/assets/f5e211e8-f1bf-4ca6-a585-2385de34712d" />
 
