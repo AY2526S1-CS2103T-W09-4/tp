@@ -107,3 +107,155 @@ Before diving into specific commands, here's how you read the command syntax:
 Adds a new client contact so you can manage your client list in QuickCLI.
 
 **Format:** <mark> add n/NAME p/PHONE \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... \[r/REMARKS\] </mark> 
+**Parameters:**
+
+<div class="joplin-table-wrapper"><table><tbody><tr><th><p><strong>Parameter</strong></p></th><th><p><strong>Definition / Explanation</strong></p></th></tr><tr><td><p>n/NAME</p></td><td><p>Client's name (required)</p><ul><li>Alphanumeric characters and spaces only</li><li>1-100 characters</li></ul></td></tr><tr><td><p>p/PHONE</p></td><td><p>Phone number (required)</p><ul><li>Numbers only, 3-15 digits</li></ul></td></tr><tr><td><p>e/EMAIL</p></td><td><p>Email address (optional)</p><ul><li>Must be valid email format</li></ul></td></tr><tr><td><p>a/ADDRESS</p></td><td><p>Address (optional)</p></td></tr><tr><td><p>C/COMPANY</p></td><td><p>Company name (optional)</p><ul><li>Can include letters, numbers, spaces, and . , &amp; -</li></ul></td></tr><tr><td><p>t/TAG</p></td><td><p>Tags for categorization (optional, multiple allowed)</p><ul><li>Single word, alphanumeric only</li></ul></td></tr><tr><td><p>pr/PRIORITY</p></td><td><p>Priority level (optional)</p><ul><li>Can be HIGH, MEDIUM, or LOW (case-insensitive)</li><li>Or numeric: 1-2 = HIGH, 3-4 = MEDIUM, 5 = LOW<ul><li>For more details on this feature, refer to Section: <a href="#_Setting_priority_for">Setting priority for a contact: priority</a></li></ul></li></ul></td></tr><tr><td><p>r/REMARKS</p></td><td><ul><li>Add remarks or project details to a contact (optional)<ul><li>For more details on this feature, refer to Section: <a href="#_Adding_notes_to">Adding notes to a contact: note</a></li></ul></li></ul></td></tr></tbody></table></div>
+
+**Examples:**
+
+| **Command** | **You have added Client...** |
+| --- | --- |
+| <mark> add n/John Doe p/98765432 </mark>  | John Doe - name, phone |
+| <mark> add n/Sarah Chen p/91234567 [e/sarah@design.co](mailto:e/sarah@design.co) c/Chen Designs t/designer t/priority </mark> | Sarah Chen - name, phone; optional: email, company, 2 tags |
+| <mark> add n/Mike Wong p/87654321 [e/mike@techcorp.com](mailto:e/mike@techcorp.com) t/developer r/Prefers Email Communication </mark>| Mike Wong - name, phone; optional: email, tag, remark |
+| <mark> add n/Jane Smith p/92345678 e/jane@urgentclient.com pr/HIGH t/priority </mark> | Jane Smith - name, phone; optional: email, priority |
+
+**Note:** QuickCLI prevents duplicate contacts. Two contacts are considered duplicates if they have the same name AND phone number.
+
+#### Listing all contacts: list
+
+Shows all contacts in your database. You can also filter by tags.
+
+**Format:**
+
+- <mark> list </mark> - Shows all contacts
+- <mark> list t/TAG </mark> - Shows contacts with specific tag (learn about tags in the add command section)
+
+**Examples:**
+
+<mark> list </mark>
+<mark> list t/priority </mark> 
+<mark> list t/designer </mark>
+
+#### Finding contacts: find
+
+Searches across all fields including name, phone, email, address, company, tags, and priority level.
+
+**Format:** <mark> find KEYWORD \[MORE_KEYWORDS\] </mark>
+
+- Search is case-insensitive (john matches John)
+- Partial matching is supported (Joh matches John)
+- Multiple keywords use OR logic (find john marys all Johns OR Marys)
+
+**Examples:**
+
+- <mark> find john </mark>
+- <mark> find chen wong </mark>
+- <mark> find design </mark>
+- <mark> find HIGH </mark> (finds all high-priority contacts)
+- <mark> find urgent high </mark> (finds contacts with "urgent" OR "high" in any field)
+
+<img width="708" height="146" alt="image" src="https://github.com/user-attachments/assets/3ea68fd4-bf55-4fc5-9a21-f0f8fc1002e2" />
+
+
+### **Modifying Contact Information**
+
+#### Editing a contact: edit
+
+Updates the details of an existing contact.
+
+**Format:** <mark> edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... </mark>
+
+- Edit the contact at the specified INDEX (shown in the contact list)
+- At least one field must be provided
+
+<img width="778" height="195" alt="image" src="https://github.com/user-attachments/assets/dc8a29b0-869a-4c6f-8998-533866c49b7f" />
+
+
+**Examples:**
+
+- <mark> edit 1 p/91234567 </mark>
+- <mark> edit 2 n/John Smith [e/john@newcompany.com](mailto:e/john@newcompany.com) </mark>
+- <mark> edit 3 t/priority t/developer </mark>
+- <mark> edit 2 pr/MEDIUM t/important </mark>
+- <mark> edit 4 t/ </mark>
+
+#### Adding notes to a contact: note
+
+Add remarks or project details to a contact.
+
+**Format:** <mark> note INDEX r/REMARKS </mark>
+
+- Adds notes to the contact at the specified INDEX
+- Replaces any existing notes
+- Maximum 500 characters
+- The **clock button** appears next to each note added to a contact.
+
+<img width="80" height="26" alt="image" src="https://github.com/user-attachments/assets/279188d2-62d9-4a4a-8580-f4975e8654c4" />
+
+- Clicking the clock button displays the **timestamp** showing when the note was added.
+
+<img width="274" height="29" alt="image" src="https://github.com/user-attachments/assets/d47d9f26-437b-491a-a7e7-1536b8ba7995" />
+
+- If no note exists, the icon only appears on hover.
+
+**Examples:**
+
+<mark> note 1 r/Discussed new website project, budget \$5000 </mark> 
+<mark> note 2 r/Meeting scheduled for next Tuesday, 2pm  </mark>
+<br/>
+
+Setting priority for a contact: priority  
+<br/>Assign or update the priority level for a contact to help you focus on important clients.  
+<br/>**Format:** <mark> priority INDEX pr/PRIORITY </mark>
+
+- Set priority for the contact at the specified INDEX
+- Replaces any existing priority level
+- Priority levels: HIGH, MEDIUM, LOW (case-insensitive)
+- Alternative: Use numbers 1-5 (1-2 = HIGH, 3-4 = MEDIUM, 5 = LOW)
+
+**Visual indicators:**
+
+- **HIGH** priority: Red badge with \`!!!\` symbol
+- **MEDIUM** priority: Orange badge with \`!!\` symbol
+- **LOW** priority: Green badge with \`!\` symbol
+
+**Parameters:**
+
+- pr/PRIORITY: Priority level (required)
+- Valid values: \`HIGH\`, \`MEDIUM\`, \`LOW\`, or \`1\`, \`2\`, \`3\`, \`4\`, \`5\`
+- Case-insensitive
+
+**Examples:**
+
+- <mark> priority 1 pr/HIGH </mark>
+- <mark> priority 2 pr/medium </mark>
+- <mark> priority 3 pr/1 </mark>
+
+<img width="913" height="197" alt="image" src="https://github.com/user-attachments/assets/7fcb4e47-300e-483d-a02d-3d52daabb6da" />
+
+#### Deleting a contact: delete
+
+Removes a contact from your database.
+
+**Format:** <mark> delete INDEX </mark>
+
+- Deletes the contact at the specified INDEX
+- The index refers to the number shown in the current contact list
+- The index must be a positive integer (1, 2, 3, ...)
+
+**Examples:**
+
+<mark> delete 3 </mark> deletes Charlotte Oliveiro
+
+<img width="274" height="29" alt="image" src="https://github.com/user-attachments/assets/4cb368a2-f203-48f8-99b5-f5966057c457" />
+
+<img width="865" height="202" alt="image" src="https://github.com/user-attachments/assets/34b01396-f1a0-48a0-9267-7760d0e6eb86" />
+
+<mark> find roy </mark>
+
+<img width="274" height="29" alt="image" src="https://github.com/user-attachments/assets/7f351799-323f-4bee-b696-9d35310fdec3" />
+
+<mark> delete 1 </mark> (Deletes Person with Index 1 in the list filtered by find: In this case, it deletes Roy Balakrishnan)
+
+
