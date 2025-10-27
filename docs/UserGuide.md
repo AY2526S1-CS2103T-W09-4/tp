@@ -289,7 +289,7 @@ Removes all contacts from the database. Use with caution!
 
 - You will be prompted to confirm: Type clear confirm to proceed
 
-![](!)
+<img width="486" height="109" alt="image" src="https://github.com/user-attachments/assets/0b6d4002-c2e8-4aab-949f-b6eeeb12f96f" />
 
 - This action cannot be undone
 
@@ -305,11 +305,11 @@ You can type help in the command input box and pressing enter on your keyboard :
 
 **You can hover over Help and click on the button 'Help F1':**
 
-![]()
+<img width="939" height="189" alt="image" src="https://github.com/user-attachments/assets/433fa106-a315-47ac-96fc-8244fd4fb9e3" />
 
 Will automatically launch this window:
 
-![]()
+<img width="945" height="338" alt="image" src="https://github.com/user-attachments/assets/da4d68e5-4ff0-44c0-b261-bcb07790b527" />
 
 | **Button** | Action |
 | --- | --- |
@@ -322,7 +322,7 @@ Closes QuickCLI. Your data is automatically saved.
 
 **Format:** exit
 
-![]
+<img width="947" height="180" alt="image" src="https://github.com/user-attachments/assets/f5e211e8-f1bf-4ca6-a585-2385de34712d" />
 
 ## **FAQ**
 
