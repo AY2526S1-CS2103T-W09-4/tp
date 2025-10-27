@@ -97,6 +97,8 @@ public class ModelManager implements Model {
     @Override
     public void commitAddressBook() {
         pushCurrentStateToHistory();
+        logger.fine("Committed address book state. historySize=" + addressBookHistory.size()
+                + " pointer=" + historyPointer);
     }
 
     @Override
