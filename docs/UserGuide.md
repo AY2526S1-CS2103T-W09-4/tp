@@ -248,13 +248,13 @@ Removes a contact from your database.
 
 <mark> delete 3 </mark> deletes Charlotte Oliveiro
 
-<img width="274" height="29" alt="image" src="https://github.com/user-attachments/assets/4cb368a2-f203-48f8-99b5-f5966057c457" />
+<img width="905" height="737" alt="image" src="https://github.com/user-attachments/assets/c2f24953-7b94-4863-88d6-5e5324724f72" />
 
 <img width="865" height="202" alt="image" src="https://github.com/user-attachments/assets/34b01396-f1a0-48a0-9267-7760d0e6eb86" />
 
 <mark> find roy </mark>
 
-<img width="274" height="29" alt="image" src="https://github.com/user-attachments/assets/7f351799-323f-4bee-b696-9d35310fdec3" />
+<img width="902" height="737" alt="image" src="https://github.com/user-attachments/assets/4b7b3f49-adad-40f9-a40e-db8edbcb7540" />
 
 <mark> delete 1 </mark> (Deletes Person with Index 1 in the list filtered by find: In this case, it deletes Roy Balakrishnan)
 
