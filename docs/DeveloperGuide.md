@@ -381,10 +381,10 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 > Diagrams referenced  
 > * Class diagram: shows `SortCommand` (has `key: SortKeys`) → builds `Comparator<Person>` → calls `Model#sortPersonList(Comparator)` → `AddressBook` → `UniquePersonList` → `Person` accessors.
-![SortCommand Class Diagram](docs/images/SortCommandClassDiagram.png)
+![SortCommand Class Diagram](images/SortCommandClassDiagram.png)
 
 > * Sequence diagram (bottom): shows the parse → command → execute flow and that sorting is performed by the model/addressbook/unique list (in-place), then `CommandResult` is returned.
-![SortCommand Sequence Diagram](docs/images/SortCommandSequenceDiagram.png)
+![SortCommand Sequence Diagram](images/SortCommandSequenceDiagram.png)
 
 
 ---
