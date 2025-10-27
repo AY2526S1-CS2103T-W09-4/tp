@@ -90,8 +90,7 @@ public class DeleteCommandTest {
 
         DeleteCommand deleteCommand = new DeleteCommand(Arrays.asList(validIndex, invalidIndex));
 
-        CommandException exception = assertThrows(
-                CommandException.class,
+        CommandException exception = assertThrows(CommandException.class,
                 () -> deleteCommand.execute(model)
         );
 
