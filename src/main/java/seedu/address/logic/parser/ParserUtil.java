@@ -31,7 +31,7 @@ public class ParserUtil {
      * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
-        String trimmedIndex = oneBasedIndex.trim();
+        String trimmedIndex = trimOrThrow(oneBasedIndex, "Index");
         if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
             throw new ParseException(MESSAGE_INVALID_INDEX);
         }
@@ -40,13 +40,12 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String name} into a {@code Name}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Leading, trailing and extra whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code name} is invalid.
      */
     public static Name parseName(String name) throws ParseException {
-        requireNonNull(name);
-        String trimmedName = name.trim();
+        String trimmedName = collapseInnerSpaces(trimOrThrow(name, "Name"));
         if (!Name.isValidName(trimmedName)) {
             throw new ParseException(Name.MESSAGE_CONSTRAINTS);
         }
@@ -60,8 +59,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code phone} is invalid.
      */
     public static Phone parsePhone(String phone) throws ParseException {
-        requireNonNull(phone);
-        String trimmedPhone = phone.trim();
+        String trimmedPhone = trimOrThrow(phone, "Phone");
         if (!Phone.isValidPhone(trimmedPhone)) {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
         }
@@ -70,13 +68,12 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String address} into an {@code Address}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Leading, trailing and extra whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code address} is invalid.
      */
     public static Address parseAddress(String address) throws ParseException {
-        requireNonNull(address);
-        String trimmedAddress = address.trim();
+        String trimmedAddress = collapseInnerSpaces(trimOrThrow(address, "Address"));
         if (!Address.isValidAddress(trimmedAddress)) {
             throw new ParseException(Address.MESSAGE_CONSTRAINTS);
         }
@@ -90,8 +87,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code email} is invalid.
      */
     public static Email parseEmail(String email) throws ParseException {
-        requireNonNull(email);
-        String trimmedEmail = email.trim();
+        String trimmedEmail = trimOrThrow(email, "Email");
         if (!Email.isValidEmail(trimmedEmail)) {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
@@ -105,8 +101,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code tag} is invalid.
      */
     public static Tag parseTag(String tag) throws ParseException {
-        requireNonNull(tag);
-        String trimmedTag = tag.trim();
+        String trimmedTag = trimOrThrow(tag, "Tag");
         if (!Tag.isValidTagName(trimmedTag)) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
@@ -127,13 +122,12 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String company} into a {@code Company}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Leading, trailing and extra whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code company} is invalid.
      */
     public static Company parseCompany(String company) throws ParseException {
-        requireNonNull(company);
-        String trimmedCompany = company.trim();
+        String trimmedCompany = collapseInnerSpaces(trimOrThrow(company, "Company"));
         if (!Company.isValidCompany(trimmedCompany)) {
             throw new ParseException(Company.MESSAGE_CONSTRAINTS);
         }
@@ -148,8 +142,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code note} is invalid.
      */
     public static Note parseNote(String note) throws ParseException {
-        requireNonNull(note);
-        String trimmedNote = note.trim();
+        String trimmedNote = collapseInnerSpaces(trimOrThrow(note, "Note"));
 
         // Allow empty string to clear the note
         if (trimmedNote.isEmpty()) {
@@ -164,17 +157,46 @@ public class ParserUtil {
 
     /**
      * Parses a {@code String priority} into a {@code Priority}.
-     * Leading and trailing whitespaces will be trimmed.
+     * Leading, trailing and extra whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code priority} is invalid.
      */
     public static Priority parsePriority(String priority) throws ParseException {
-        requireNonNull(priority);
-        String trimmedPriority = priority.trim();
+        String trimmedPriority = collapseInnerSpaces(trimOrThrow(priority, "Priority"));
         if (!Priority.isValidPriority(trimmedPriority)) {
             throw new ParseException(Priority.MESSAGE_CONSTRAINTS);
         }
         return new Priority(trimmedPriority);
     }
 
+    // Helper functions to harden parser util
+
+    /**
+     * Trims and returns input string if it is valid, throws a custom ParseException otherwise.
+     */
+    private static String trimOrThrow(String s, String field) throws ParseException {
+        requireNonNull(s);
+        String t = s.trim();
+        if (t.isEmpty()) {
+            throw new ParseException(field + " cannot be empty.");
+        }
+        return t;
+    }
+
+    private static String collapseInnerSpaces(String s) {
+        return s.trim().replaceAll("\\s+", " ");
+    }
+
+    public static int parsePositiveInt(String token, String field, int min, int max) throws ParseException {
+        String t = trimOrThrow(token, field);
+        try {
+            int v = Integer.parseInt(t);
+            if (v < min || v > max) {
+                throw new ParseException(String.format("%s must be between %d and %d.", field, min, max));
+            }
+            return v;
+        } catch (NumberFormatException e) {
+            throw new ParseException(field + " must be an integer.");
+        }
+    }
 }
