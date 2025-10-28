@@ -15,8 +15,8 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons in all field parameters who contain any of "
-            + "the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons in all field parameters who contain "
+            + "any of the specified keywords (case-insensitive) and displays them as a list with index numbers.\n"
             + "Matching behavior:\n"
             + "  - Searches across all fields (name, phone, email, address, company, tags).\n"
             + "  - Case-insensitive and partial (substring) matches are supported.\n"
