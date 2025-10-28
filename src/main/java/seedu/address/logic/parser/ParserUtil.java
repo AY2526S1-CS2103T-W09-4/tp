@@ -186,17 +186,4 @@ public class ParserUtil {
     private static String collapseInnerSpaces(String s) {
         return s.trim().replaceAll("\\s+", " ");
     }
-
-    public static int parsePositiveInt(String token, String field, int min, int max) throws ParseException {
-        String t = trimOrThrow(token, field);
-        try {
-            int v = Integer.parseInt(t);
-            if (v < min || v > max) {
-                throw new ParseException(String.format("%s must be between %d and %d.", field, min, max));
-            }
-            return v;
-        } catch (NumberFormatException e) {
-            throw new ParseException(field + " must be an integer.");
-        }
-    }
 }
