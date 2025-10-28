@@ -6,7 +6,7 @@
 - [Product Overview](#product-overview)
 - [Quick Start](#quick-start)
 - [Features](#features)
-  - [Understanding the Command Format](#understanding-the-command)
+  - [Understanding the Command Format](#understanding-the-command-format)
   - [Adding a contact: add](#adding-a-contact-add)
   - [Listing all contacts: list](#listing-all-contacts-list)
   - [Finding contacts: find](#finding-contacts-find)
@@ -23,7 +23,7 @@
   - [Editing the data file](#editing-the-data-file)
 - [Command Summary](#command-summary)
 - [Troubleshooting](#troubleshooting)
-- [Contact & Support](#contact-&-Support)
+- [Contact & Support](#contact--support)
 - [Glossary](#glossary)
 
 ## **About: How to use the guide**
