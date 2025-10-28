@@ -31,7 +31,7 @@ public class ParserUtil {
      * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
-        String trimmedIndex = trimOrThrow(oneBasedIndex, "Index");
+        String trimmedIndex = trimOrThrow(oneBasedIndex);
         if (!StringUtil.isNonZeroUnsignedInteger(trimmedIndex)) {
             throw new ParseException(MESSAGE_INVALID_INDEX);
         }
@@ -45,7 +45,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code name} is invalid.
      */
     public static Name parseName(String name) throws ParseException {
-        String trimmedName = collapseInnerSpaces(trimOrThrow(name, "Name"));
+        String trimmedName = collapseInnerSpaces(trimOrThrow(name));
         if (!Name.isValidName(trimmedName)) {
             throw new ParseException(Name.MESSAGE_CONSTRAINTS);
         }
@@ -59,7 +59,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code phone} is invalid.
      */
     public static Phone parsePhone(String phone) throws ParseException {
-        String trimmedPhone = trimOrThrow(phone, "Phone");
+        String trimmedPhone = trimOrThrow(phone);
         if (!Phone.isValidPhone(trimmedPhone)) {
             throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
         }
@@ -73,7 +73,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code address} is invalid.
      */
     public static Address parseAddress(String address) throws ParseException {
-        String trimmedAddress = collapseInnerSpaces(trimOrThrow(address, "Address"));
+        String trimmedAddress = collapseInnerSpaces(trimOrThrow(address));
         if (!Address.isValidAddress(trimmedAddress)) {
             throw new ParseException(Address.MESSAGE_CONSTRAINTS);
         }
@@ -87,7 +87,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code email} is invalid.
      */
     public static Email parseEmail(String email) throws ParseException {
-        String trimmedEmail = trimOrThrow(email, "Email");
+        String trimmedEmail = trimOrThrow(email);
         if (!Email.isValidEmail(trimmedEmail)) {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
@@ -101,7 +101,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code tag} is invalid.
      */
     public static Tag parseTag(String tag) throws ParseException {
-        String trimmedTag = trimOrThrow(tag, "Tag");
+        String trimmedTag = trimOrThrow(tag);
         if (!Tag.isValidTagName(trimmedTag)) {
             throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
         }
@@ -127,7 +127,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code company} is invalid.
      */
     public static Company parseCompany(String company) throws ParseException {
-        String trimmedCompany = collapseInnerSpaces(trimOrThrow(company, "Company"));
+        String trimmedCompany = collapseInnerSpaces(trimOrThrow(company));
         if (!Company.isValidCompany(trimmedCompany)) {
             throw new ParseException(Company.MESSAGE_CONSTRAINTS);
         }
@@ -142,7 +142,8 @@ public class ParserUtil {
      * @throws ParseException if the given {@code note} is invalid.
      */
     public static Note parseNote(String note) throws ParseException {
-        String trimmedNote = collapseInnerSpaces(trimOrThrow(note, "Note"));
+        requireNonNull(note);
+        String trimmedNote = note.trim();
 
         // Allow empty string to clear the note
         if (trimmedNote.isEmpty()) {
@@ -162,7 +163,7 @@ public class ParserUtil {
      * @throws ParseException if the given {@code priority} is invalid.
      */
     public static Priority parsePriority(String priority) throws ParseException {
-        String trimmedPriority = collapseInnerSpaces(trimOrThrow(priority, "Priority"));
+        String trimmedPriority = collapseInnerSpaces(trimOrThrow(priority));
         if (!Priority.isValidPriority(trimmedPriority)) {
             throw new ParseException(Priority.MESSAGE_CONSTRAINTS);
         }
@@ -170,19 +171,17 @@ public class ParserUtil {
     }
 
     // Helper functions to harden parser util
-
     /**
      * Trims and returns input string if it is valid, throws a custom ParseException otherwise.
      */
-    private static String trimOrThrow(String s, String field) throws ParseException {
+    private static String trimOrThrow(String s) {
         requireNonNull(s);
-        String t = s.trim();
-        if (t.isEmpty()) {
-            throw new ParseException(field + " cannot be empty.");
-        }
-        return t;
+        return s.trim();
     }
 
+    /**
+     * Removes excessive spaces between words within input string.
+     */
     private static String collapseInnerSpaces(String s) {
         return s.trim().replaceAll("\\s+", " ");
     }
