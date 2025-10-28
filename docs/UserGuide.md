@@ -28,7 +28,7 @@
 
 ## **About: How to use the guide**
 
-Words highlighted in <mark> yellow </mark> represent commands that should be typed into the **command terminal** in QuickCLI under the section [Features](#_Features).
+Words highlighted in <mark> yellow </mark> represent commands that should be typed into the **command terminal** in QuickCLI under the [Features](#features) section.
 
 **Tip Boxes** provide additional guidance or useful hints to help you use QuickCLI more effectively:
 <img width="553" height="109" alt="image" src="https://github.com/user-attachments/assets/ae8307da-aec9-448d-a3ce-644025781e3e" />
@@ -326,19 +326,19 @@ A: Import/export functionality is coming in version 2.0. For now, you can manual
 
 ## Command Summary
 
-| Action   | Format                                                                                              | Example                                                                           |
-|----------|-----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| Add      | `add n/NAME p/PHONE [e/EMAIL] [c/COMPANY] [t/TAG] [r/REMARKS]`                                     | `add n/John Doe p/98765432 e/john@email.com t/client r/Prefers Email Communication` |
-| List     | `list [t/TAG]`                                                                                      | `list` or `list t/priority`                                                       |
-| Find     | `find KEYWORD [MORE_KEYWORDS]`                                                                      | `find john smith`                                                                 |
-| Edit     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [c/COMPANY] [t/TAG]...`                                   | `edit 2 p/91234567 e/newemail@company.com`                                        |
-| Delete   | `delete INDEX`                                                                                      | `delete 3`                                                                        |
-| Note     | `note INDEX r/REMARKS`                                                                              | `note 1 r/Important client, handle with care`                                     |
-| Priority | `priority INDEX pr/PRIORITY`                                                                        | `priority 1 pr/HIGH`                                                              |
-| Sort     | `sort [name|recent|priority]`                                                                       | `sort recent`                                                                     |
-| Clear    | `clear`                                                                                             | `clear` (then `clear confirm`)                                                    |
-| Help     | `help`                                                                                              | `help`                                                                            |
-| Exit     | `exit`                                                                                              | `exit`                                                                            |
+| Action   | Format                                                                               | Example                                                                           |
+|----------|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| Add      | `add n/NAME p/PHONE [e/EMAIL] [c/COMPANY] [t/TAG] [r/REMARKS]`                       | `add n/John Doe p/98765432 e/john@email.com t/client r/Prefers Email Communication` |
+| List     | `list [t/TAG]`                                                                       | `list` or `list t/priority`                                             |
+| Find     | `find KEYWORD [MORE_KEYWORDS]`                                                       | `find john smith`                                                                 |
+| Edit     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [c/COMPANY] [t/TAG]...`                     | `edit 2 p/91234567 e/newemail@company.com`                              |
+| Delete   | `delete INDEX`                                                                       | `delete 3`                                                              |
+| Note     | `note INDEX r/REMARKS`                                                               | `note 1 r/Important client, handle with care`                           |
+| Priority | `priority INDEX pr/PRIORITY`                                                         | `priority 1 pr/HIGH`                                                    |
+| Sort     | `sort [SORTKEY]`                                                                     | `sort name` or `sort phone`                                             |
+| Clear    | `clear`                                                                              | `clear` (then `clear confirm`)                                          |
+| Help     | `help`                                                                               | `help`                                                                  |
+| Exit     | `exit`                                                                               | `exit`                                                                  |
 
 --------------------------------------------------------------------------------------------------------------------
 
