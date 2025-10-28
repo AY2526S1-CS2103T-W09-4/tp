@@ -2,12 +2,12 @@
 
 ## **Table of Contents**
 
-- [About: How to use the guide](#_QuickCLI_User_Guide)
-- [Product Overview](#_Product_Overview)
-- [Quick Start](#_Quick_Start)
+- [About: How to use the guide](#about-how-to-use-the-guide)
+- [Product Overview](#product-overview)
+- [Quick Start](#quick-start)
 - [Features](#_Features)
   - [Understanding the Command Format](#_Understanding_the_Command)
-  - [Adding a contact: add](#_Adding_a_contact:)
+  - [Adding a contact: add](#_Adding_a_contact:_add)
   - [Listing all contacts: list](#_Listing_all_contacts:)
   - [Finding contacts: find](#_Finding_contacts:_find)
   - [Editing a contact: edit](#_Editing_a_contact:)
@@ -37,13 +37,13 @@ Words highlighted in <mark> yellow </mark> represent commands that should be typ
 <img width="565" height="109" alt="image" src="https://github.com/user-attachments/assets/3a9df3d2-4b3d-4f75-bd08-7d02e0193954" />
 
 
-## **Product Overview**
+## Product Overview
 
 QuickCLI is a **desktop application for freelance professionals** who need to manage multiple client relationships efficiently. Optimized for users who can type fast, QuickCLI allows you to manage your contacts faster than traditional GUI applications through a Command Line Interface (CLI), while still providing the visual benefits of a Graphical User Interface (GUI).
 
 **Perfect for:** Freelance developers, designers, writers, marketers, and consultants who value keyboard efficiency and need quick access to client information.
 
-## **Quick Start**
+## Quick Start
 
 - **Check System Requirements**
   - Ensure you have Java 17 or above installed on your computer, follow the Instruction Guide for Windows users [here](https://se-education.org/guides/tutorials/javaInstallationWindows.html)
