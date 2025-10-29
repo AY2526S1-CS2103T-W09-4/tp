@@ -17,10 +17,10 @@
   - [Clearing all contacts: clear](#clearing-all-contacts-sort)
   - [Viewing help: help](#viewing-help-help)
   - [Exiting the program: exit](#exiting-the-program-exit)
-- [FAQ](#faq)
 - [Data Management](#data-management)
   - [Saving the data](#saving-the-data)
   - [Editing the data file](#editing-the-data-file)
+- [FAQ](#faq)
 - [Command Summary](#command-summary)
 - [Troubleshooting](#troubleshooting)
 - [Contact & Support](#contact--support)
@@ -324,26 +324,6 @@ Closes QuickCLI. Your data is automatically saved.
 
 <img width="947" height="180" alt="image" src="https://github.com/user-attachments/assets/f5e211e8-f1bf-4ca6-a585-2385de34712d" />
 
-## **FAQ**
-
-**Q: Can I use QuickCLI on multiple computers?** A: Yes! Copy the quickcli.json data file from the data folder to transfer your contacts between computers.
-
-**Q: What happens if I enter an invalid command?** A: QuickCLI will show an error message explaining what went wrong. Check the command format and try again.
-
-**Q: Can I have multiple contacts with the same name?** A: Yes, as long as they have different phone numbers. QuickCLI considers contacts duplicates only if both name AND phone number match.
-
-**Q: Is there a limit to how many contacts I can store?** A: QuickCLI can handle up to 1,000 contacts efficiently. Performance may degrade with larger databases.
-
-**Q: Can I undo a delete operation?** A: Currently, delete operations cannot be undone. Future versions will include undo/redo functionality.
-
-**Q: How do I import contacts from another application?** A: Import/export functionality is coming in version 2.0. For now, you can manually edit the JSON data file.
-
-**Q: What if QuickCLI doesn't start?**
-
-- Check that Java 17 or higher is installed: java -version
-- Ensure you're in the correct directory
-- Try running with: java -jar quickcli.jar
-- Check for error messages in the terminal
 ## Data Management
 
 ### Saving the data
