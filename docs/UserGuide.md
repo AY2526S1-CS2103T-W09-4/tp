@@ -236,27 +236,58 @@ Setting priority for a contact: priority
 
 #### Deleting a contact: delete
 
-Removes a contact from your database.
+Removes one or multiple contacts from your database.
 
-**Format:** <mark> delete INDEX </mark>
+**Format:**
+- Single deletion: <mark> delete INDEX </mark>
+- Multiple deletion: <mark> delete INDEX1,INDEX2,INDEX3 </mark>
+- Range deletion: <mark> delete START-END </mark>
+- Combined: <mark> delete INDEX1,INDEX2,START-END </mark>
 
-- Deletes the contact at the specified INDEX
-- The index refers to the number shown in the current contact list
-- The index must be a positive integer (1, 2, 3, ...)
+**Parameters:**
+- INDEX: The contact number shown in the current list (must be positive integer)
+- Multiple indices can be separated by commas
+- Ranges can be specified with a hyphen (e.g., 5-7 deletes contacts 5, 6, and 7)
+- Can combine individual indices and ranges (e.g., 1,3,5-7,10)
+
+**Bulk Delete Confirmation:**
+When deleting multiple contacts (2 or more), QuickCLI will show a confirmation dialog to prevent accidental deletion. Click "YES" to proceed or "NO" to cancel.
+
+<box type="warning" seamless>
+Warning: Bulk delete operations cannot be undone. Always verify the indices before confirming deletion.
+</box>
 
 **Examples:**
 
-<mark> delete 3 </mark> deletes Charlotte Oliveiro
+**Single deletion:**
+<mark>delete 3</mark> - Deletes contact at index 3 (e.g., Charlotte Oliveiro)
 
 <img width="905" height="737" alt="image" src="https://github.com/user-attachments/assets/c2f24953-7b94-4863-88d6-5e5324724f72" />
 
-<img width="865" height="202" alt="image" src="https://github.com/user-attachments/assets/34b01396-f1a0-48a0-9267-7760d0e6eb86" />
+**Multiple deletion:**
+<mark>delete 1,3,5</mark> - Deletes contacts at indices 1, 3, and 5
 
-<mark> find roy </mark>
+**Range deletion:**
+<mark>delete 2-4</mark> - Deletes contacts from index 2 to 4 (inclusive)
 
-<img width="902" height="737" alt="image" src="https://github.com/user-attachments/assets/4b7b3f49-adad-40f9-a40e-db8edbcb7540" />
+**Combined deletion:**
+<mark>delete 1,3,5-7,10</mark> - Deletes contacts at indices 1, 3, 5, 6, 7, and 10
 
-<mark> delete 1 </mark> (Deletes Person with Index 1 in the list filtered by find: In this case, it deletes Roy Balakrishnan)
+**After using find:**
+
+<mark>find roy</mark>
+
+<mark>delete 1</mark>
+
+Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
+
+<box type="tip" seamless>
+<img src="images/tips-delete.png" width="1286" alt="warning" />
+</box>
+
+**Error Handling:**
+- If any index is invalid, QuickCLI will display all invalid indices and the operation will be cancelled
+- Example: <mark>delete 1,3,50</mark> when only 10 contacts exist will show: "Invalid indices: 50 (person list has 10 entries)"
 
 ### **Organizing Your Contacts**
 
@@ -417,7 +448,7 @@ A: Import/export functionality is coming in version 2.0. For now, you can manual
 | List     | `list [t/TAG]`                                                                                      | `list` or `list t/priority`                                                       |
 | Find     | `find KEYWORD [MORE_KEYWORDS]`                                                                      | `find john smith`                                                                 |
 | Edit     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [c/COMPANY] [t/TAG]...`                                   | `edit 2 p/91234567 e/newemail@company.com`                                        |
-| Delete   | `delete INDEX`                                                                                      | `delete 3`                                                                        |
+| Delete   | `delete INDEX` or `delete INDEX1,INDEX2,...` or `delete START-END`                                  | `delete 3` or `delete 1,3,5` or `delete 2-4` or `delete 1,3,5-7,10`               |
 | Note     | `note INDEX r/REMARKS`                                                                              | `note 1 r/Important client, handle with care`                                     |
 | Priority | `priority INDEX pr/PRIORITY`                                                                        | `priority 1 pr/HIGH`                                                              |
 | Sort     | `sort [name|recent|priority]`                                                                       | `sort recent`                                                                     |
