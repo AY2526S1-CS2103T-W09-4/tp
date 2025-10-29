@@ -258,7 +258,92 @@ Removes a contact from your database.
 
 <mark> delete 1 </mark> (Deletes Person with Index 1 in the list filtered by find: In this case, it deletes Roy Balakrishnan)
 
+### **Organizing Your Contacts**
 
+#### Sorting contacts: sort
+
+Organize your contact list for easier access.
+
+**Format:** <mark> sort \[CRITERION\] </mark>
+
+**Available sorting options:**
+
+- sort or sort name - Alphabetical by name (default)
+- sort recent - Most recently added first
+- sort priority - By priority level (HIGH → MEDIUM → LOW, then no priority)
+
+**Examples:**
+
+- <mark> Sort </mark>
+- <mark> sort name </mark>
+- <mark> sort recent </mark>
+- <mark> sort priority </mark>
+
+### **System Commands**
+
+#### Clearing all contacts: clear
+
+Removes all contacts from the database. Use with caution!
+
+**Format:** <mark> clear </mark>
+
+- You will be prompted to confirm: Type <mark> clear confirm </mark> to proceed
+
+<img width="486" height="109" alt="image" src="https://github.com/user-attachments/assets/0b6d4002-c2e8-4aab-949f-b6eeeb12f96f" />
+
+- This action cannot be undone
+
+#### Viewing help: help
+
+Opens the help window showing all available commands.
+
+**Format:** <mark> help </mark>
+
+You can type <mark> help </mark> in the command input box and pressing enter on your keyboard :
+
+**OR**
+
+**You can hover over Help and click on the button 'Help F1':**
+
+<img width="939" height="189" alt="image" src="https://github.com/user-attachments/assets/433fa106-a315-47ac-96fc-8244fd4fb9e3" />
+
+Will automatically launch this window:
+
+<img width="945" height="338" alt="image" src="https://github.com/user-attachments/assets/da4d68e5-4ff0-44c0-b261-bcb07790b527" />
+
+| **Button** | Action |
+| --- | --- |
+| Copy URL | Clicking it copies URL shown into clipboard. |
+| Open in Browser | Opens URL in default browser<br><br>![]() |
+
+#### Exiting the program: exit
+
+Closes QuickCLI. Your data is automatically saved.
+
+**Format:** <mark> exit </mark>
+
+<img width="947" height="180" alt="image" src="https://github.com/user-attachments/assets/f5e211e8-f1bf-4ca6-a585-2385de34712d" />
+
+## **FAQ**
+
+**Q: Can I use QuickCLI on multiple computers?** A: Yes! Copy the quickcli.json data file from the data folder to transfer your contacts between computers.
+
+**Q: What happens if I enter an invalid command?** A: QuickCLI will show an error message explaining what went wrong. Check the command format and try again.
+
+**Q: Can I have multiple contacts with the same name?** A: Yes, as long as they have different phone numbers. QuickCLI considers contacts duplicates only if both name AND phone number match.
+
+**Q: Is there a limit to how many contacts I can store?** A: QuickCLI can handle up to 1,000 contacts efficiently. Performance may degrade with larger databases.
+
+**Q: Can I undo a delete operation?** A: Currently, delete operations cannot be undone. Future versions will include undo/redo functionality.
+
+**Q: How do I import contacts from another application?** A: Import/export functionality is coming in version 2.0. For now, you can manually edit the JSON data file.
+
+**Q: What if QuickCLI doesn't start?**
+
+- Check that Java 17 or higher is installed: java -version
+- Ensure you're in the correct directory
+- Try running with: java -jar quickcli.jar
+- Check for error messages in the terminal
 ## Data Management
 
 ### Saving the data
