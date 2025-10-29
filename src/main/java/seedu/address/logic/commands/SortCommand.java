@@ -58,6 +58,6 @@ public class SortCommand extends Command {
 
     @Override
     public boolean equals(Object other) {
-        return other == this || other instanceof SortCommand;
+        return other instanceof SortCommand;
     }
 }
