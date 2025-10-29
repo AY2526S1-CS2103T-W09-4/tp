@@ -26,6 +26,8 @@
 - [Contact & Support](#contact--support)
 - [Glossary](#glossary)
 
+--------------------------------------------------------------------------------------------------------------------
+
 ## **About: How to use the guide**
 
 Words highlighted in <mark> yellow </mark> represent commands that should be typed into the **command terminal** in QuickCLI under the [Features](#features) section.
@@ -36,12 +38,15 @@ Words highlighted in <mark> yellow </mark> represent commands that should be typ
 **Warning Boxes** alert you about something important, risky, or potentially destructive.
 <img width="565" height="109" alt="image" src="https://github.com/user-attachments/assets/3a9df3d2-4b3d-4f75-bd08-7d02e0193954" />
 
+--------------------------------------------------------------------------------------------------------------------
 
 ## Product Overview
 
 QuickCLI is a **desktop application for freelance professionals** who need to manage multiple client relationships efficiently. Optimized for users who can type fast, QuickCLI allows you to manage your contacts faster than traditional GUI applications through a Command Line Interface (CLI), while still providing the visual benefits of a Graphical User Interface (GUI).
 
 **Perfect for:** Freelance developers, designers, writers, marketers, and consultants who value keyboard efficiency and need quick access to client information.
+
+--------------------------------------------------------------------------------------------------------------------
 
 ## Quick Start
 
@@ -80,6 +85,8 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
   - <mark> add n/Jane Smith p/91234567 </mark> - Add a new contact
   - <mark> find John </mark> - Search for contacts named John
   - <mark> help </mark> - View available commands
+
+--------------------------------------------------------------------------------------------------------------------
 
 ## **Features**
 
@@ -323,6 +330,8 @@ Closes QuickCLI. Your data is automatically saved.
 **Format:** <mark> exit </mark>
 
 <img width="947" height="180" alt="image" src="https://github.com/user-attachments/assets/f5e211e8-f1bf-4ca6-a585-2385de34712d" />
+
+--------------------------------------------------------------------------------------------------------------------
 
 ## Data Management
 
