@@ -10,13 +10,13 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Company {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Company name can contain alphanumeric characters, spaces, and .,&-, and it should not be blank";
+            "Company name can contain alphanumeric characters, spaces, and .,&-', and it should not be blank";
 
     /*
      * The first character of the company must not be a whitespace,
      * Company can contain alphanumeric, spaces, and .,&- characters
      */
-    public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum}\\s.,&-]*";
+    public static final String VALIDATION_REGEX = "[\\p{Alnum}][\\p{Alnum}\\s.,&'-]*";
 
     public final String value;
 

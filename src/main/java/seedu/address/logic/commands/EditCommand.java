@@ -59,7 +59,7 @@ public class EditCommand extends Command {
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Contact: %1$s";
     public static final String MESSAGE_NOT_EDITED = "Please provide at least one field to update";
-    public static final String MESSAGE_DUPLICATE_PERSON = "This edit would create a duplicate contact";
+    public static final String MESSAGE_DUPLICATE_PERSON = "❗Warning: This edit would create a duplicate contact";
 
     private final Index index;
     private final EditPersonDescriptor editPersonDescriptor;
@@ -167,8 +167,11 @@ public class EditCommand extends Command {
     }
 
     /**
-     * Stores the details to edit the person with. Each non-empty field value will replace the
-     * corresponding field value of the person.
+     * Stores the details used to edit a person.
+     *
+     * <p>Only the fields that are set in this descriptor will overwrite the
+     * corresponding fields of the person.</p>
+     *
      */
     public static class EditPersonDescriptor {
         private Name name;

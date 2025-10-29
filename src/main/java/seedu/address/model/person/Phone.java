@@ -11,8 +11,9 @@ public class Phone {
 
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Phone numbers should only contain numbers, and it should be at least 3 digits long";
-    public static final String VALIDATION_REGEX = "\\d{3,}";
+            "Phone numbers should contain only digits, spaces, hyphens, and plus signs, "
+                    + "with at least 3 digits. Valid formats include: 91234567, +65 9123 4567, +1-650-555-0123";
+    public static final String VALIDATION_REGEX = "[+\\d\\s-]+";
     public final String value;
 
     /**
@@ -22,15 +23,41 @@ public class Phone {
      */
     public Phone(String phone) {
         requireNonNull(phone);
-        checkArgument(isValidPhone(phone), MESSAGE_CONSTRAINTS);
-        value = phone;
+        String trimmedPhone = phone.trim();
+        checkArgument(isValidPhone(trimmedPhone), MESSAGE_CONSTRAINTS);
+        // Store normalized version (remove formatting, keep only digits and leading +)
+        value = normalizePhone(trimmedPhone);
     }
 
     /**
      * Returns true if a given string is a valid phone number.
+     * Accepts phone numbers with digits, spaces, hyphens, and plus signs.
+     * Must contain at least 3 digits.
      */
     public static boolean isValidPhone(String test) {
-        return test.matches(VALIDATION_REGEX);
+        requireNonNull(test);
+
+        String trimmed = test.trim();
+
+        if (trimmed.isEmpty()) {
+            return false;
+        }
+
+        // Must match the basic format (digits, spaces, hyphens, plus)
+        if (!trimmed.matches(VALIDATION_REGEX)) {
+            return false;
+        }
+
+        // Must contain at least 3 digits
+        long digitCount = trimmed.chars().filter(Character::isDigit).count();
+        return digitCount >= 3;
+    }
+
+    /**
+     * Normalizes phone number by removing spaces and hyphens while preserving leading plus sign.
+     */
+    private static String normalizePhone(String phone) {
+        return phone.replaceAll("[\\s-]", "");
     }
 
     @Override
