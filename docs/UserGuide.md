@@ -15,6 +15,8 @@
   - [Deleting a contact: delete](#deleting-a-contact-delete)
   - [Sorting contacts: sort](#sorting-contacts-sort)
   - [Clearing all contacts: clear](#clearing-all-contacts-sort)
+  - [Undo last action: undo](#undo-last-action-undo)
+  - [Redo undone action: redo](#redo-undone-action-redo)
   - [Viewing help: help](#viewing-help-help)
   - [Exiting the program: exit](#exiting-the-program-exit)
 - [FAQ](#faq)
@@ -278,6 +280,26 @@ Organize your contact list for easier access.
 - <mark> sort name </mark>
 - <mark> sort recent </mark>
 - <mark> sort priority </mark>
+
+### **History Commands**
+
+All the above commands except [list](#listing-all-contacts-list) directly change the contact list. Every new, changed state of the contact list is tracked, allowing access to states across the history through certain commands like [undo](#undo-last-action-undo) and [redo](#redo-undone-action-redo).
+
+#### Undo last action: undo
+
+Undo last action done by user; Moves back to previous saved state in the history. 
+
+**Format:** <mark> undo </mark>
+
+This only works if there are actions to undo.
+
+#### Redo undone action: redo
+
+Redo last action that was undone. Reverts last undo action by moving forward to the next saved state in the history.
+
+**Format:** <mark> redo </mark>
+
+This only works if there was at least one or more consecutive undo commands called before this redo command, without calling any other command that changes the addressbook. If one of these commands are called after an undo command, that state is set as the most recent, effectively forgetting all previously undone state using the undo command.
 
 ### **System Commands**
 
