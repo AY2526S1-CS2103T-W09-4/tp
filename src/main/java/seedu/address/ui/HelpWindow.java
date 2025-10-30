@@ -46,7 +46,7 @@ public class HelpWindow extends UiPart<Stage> {
         helpMessage.setText(HELP_MESSAGE);
 
         // Set the window title
-        getRoot().setTitle("Help - AddressBook");
+        getRoot().setTitle("Help - QuickCLI");
     }
 
     /**
@@ -127,5 +127,4 @@ public class HelpWindow extends UiPart<Stage> {
         }
     }
 }
-
 
