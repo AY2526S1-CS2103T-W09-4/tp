@@ -11,11 +11,11 @@
   - [Listing all contacts: list](#listing-all-contacts-list)
   - [Finding contacts: find](#finding-contacts-find)
   - [Editing a contact: edit](#editing-a-contact-edit)
-  - [Adding notes to a contact: note](#_Adding_notes_to)
-  - [Setting priority for a contact: priority](#_Setting_priority_for)
+  - [Adding notes to a contact: note](#adding-notes-to-a-contact-note)
+  - [Setting priority for a contact: priority](#setting-priority-for-a-contact-priority)
   - [Deleting a contact: delete](#deleting-a-contact-delete)
   - [Sorting contacts: sort](#sorting-contacts-sort)
-  - [Clearing all contacts: clear](#clearing-all-contacts-sort)
+  - [Clearing all contacts: clear](#clearing-all-contacts-clear)
   - [Undo last action: undo](#undo-last-action-undo)
   - [Redo undone action: redo](#redo-undone-action-redo)
   - [Viewing help: help](#viewing-help-help)
@@ -190,7 +190,7 @@ Updates the details of an existing contact.
 - <mark> edit 2 pr/MEDIUM t/important </mark>
 - <mark> edit 4 t/ </mark>
 
-#### Adding notes to a contact: note {#_Adding_notes_to}
+#### Adding notes to a contact: note
 
 Add remarks or project details to a contact.
 
@@ -215,7 +215,7 @@ Add remarks or project details to a contact.
 <mark> note 2 r/Meeting scheduled for next Tuesday, 2pm  </mark>
 <br/>
 
-#### Setting priority for a contact: priority {#_Setting_priority_for}
+#### Setting priority for a contact: priority
 <br/>Assign or update the priority level for a contact to help you focus on important clients.  
 <br/>**Format:** <mark> priority INDEX pr/PRIORITY </mark>
 
@@ -342,7 +342,7 @@ This only works if there was at least one or more consecutive undo commands call
 
 ### **System Commands**
 
-#### Clearing all contacts: clear {#clearing-all-contacts-sort}
+#### Clearing all contacts: clear
 
 Removes all contacts from the database. Use with caution!
 
