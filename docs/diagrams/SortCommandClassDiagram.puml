@@ -1,0 +1,95 @@
+@startuml
+' Class diagram for SortCommand
+skinparam classAttributeIconSize 0
+hide empty members
+
+interface Command {
+  + execute(model : Model) : CommandResult
+}
+
+class SortCommand {
+  - key : SortKeys
+  + SortCommand(key : SortKeys)
+  + execute(model : Model) : CommandResult
+  - comparatorFor(f : SortKeys) : Comparator<Person>
+  + equals(other : Object) : boolean
+}
+
+interface Model {
+  + sortPersonList(comparator : Comparator<Person>)
+}
+
+class CommandResult {
+  - feedbackToUser : String
+  + CommandResult(message : String)
+  + getFeedbackToUser() : String
+}
+
+enum SortKeys {
+  NAME
+  PHONE
+  EMAIL
+  ADDRESS
+  TAG
+  PRIORITY
+  + getDisplayName() : String
+}
+
+class Person {
+  + getName() : Name
+  + getPhone() : Phone
+  + getEmail() : Email
+  + getAddress() : Address
+  + getTags() : Set<Tag>
+  + getPriority() : Priority
+}
+
+class Name {
+  + fullName : String
+}
+
+class Phone {
+  + value : String
+}
+
+class Email {
+  + value : String
+}
+
+class Address {
+  + value : String
+}
+
+class Tag {
+  + tagName : String
+}
+
+class Priority {
+  + getLevel() : PriorityLevel
+}
+
+class PriorityLevel {
+  + getNumericValue() : int
+}
+
+' Relationships
+Command <|-- SortCommand
+SortCommand --> Model : uses
+SortCommand --> SortKeys : has
+SortCommand --> Comparator : builds
+SortCommand --> CommandResult : returns
+Model "1" ..> "1" AddressBook : implemented by
+AddressBook *-- UniquePersonList : has
+UniquePersonList "1" *-- "*" Person : contains
+
+note left of SortCommand
+Key comparator behaviors:
+- NAME → compare by Name.fullName (case-insensitive)
+- PHONE → compare by Phone.value
+- EMAIL → compare by Email.value (case-insensitive)
+- ADDRESS → compare by Address.value (case-insensitive)
+- TAG → compare first tag (case-insensitive)
+- PRIORITY → compare numeric level, null → Integer.MAX_VALUE
+end note
+
+@enduml

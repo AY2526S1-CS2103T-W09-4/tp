@@ -16,14 +16,17 @@
     -fx-text-fill: #333;
 
     /* Show placeholder text */
-    -fx-prompt-text-fill: #aaa;  /* very light gray */
+    -fx-prompt-text-fill: #999;  /* slightly darker gray for readability */
+
+    /* Smooth transitions for hover/focus */
+    -fx-transition: all 0.2s ease-in-out;
 }
 
 /* Focused state — subtle glow and border accent */
 .command-input:focused {
     -fx-background-color: white;
     -fx-border-color: #0078d4; /* Accent blue */
-    -fx-effect: dropshadow(gaussian, rgba(0, 120, 212, 0.2), 6, 0.2, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgba(0, 120, 212, 0.15), 8, 0.3, 0, 2);
 }
 
 /* Hover effect — optional, soft highlight */

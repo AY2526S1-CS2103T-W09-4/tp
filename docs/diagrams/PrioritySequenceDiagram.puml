@@ -1,0 +1,84 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":PriorityCommandParser" as PriorityCommandParser LOGIC_COLOR
+participant "p:PriorityCommand" as PriorityCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("priority 1 pr/HIGH")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("priority 1 pr/HIGH")
+activate AddressBookParser
+
+create PriorityCommandParser
+AddressBookParser -> PriorityCommandParser
+activate PriorityCommandParser
+
+PriorityCommandParser --> AddressBookParser
+deactivate PriorityCommandParser
+
+AddressBookParser -> PriorityCommandParser : parse("1 pr/HIGH")
+activate PriorityCommandParser
+
+create PriorityCommand
+PriorityCommandParser -> PriorityCommand
+activate PriorityCommand
+
+PriorityCommand --> PriorityCommandParser :
+deactivate PriorityCommand
+
+PriorityCommandParser --> AddressBookParser : p
+deactivate PriorityCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+PriorityCommandParser -[hidden]-> AddressBookParser
+destroy PriorityCommandParser
+
+AddressBookParser --> LogicManager : p
+deactivate AddressBookParser
+
+LogicManager -> PriorityCommand : execute(m)
+activate PriorityCommand
+
+PriorityCommand -> Model : getFilteredPersonList()
+activate Model
+
+Model --> PriorityCommand : personList
+deactivate Model
+
+PriorityCommand -> PriorityCommand : create editedPerson\n(inline Person construction)
+
+PriorityCommand -> Model : setPerson(personToEdit, editedPerson)
+activate Model
+
+Model --> PriorityCommand
+deactivate Model
+
+PriorityCommand -> Model : updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS)
+activate Model
+
+Model --> PriorityCommand
+deactivate Model
+
+create CommandResult
+PriorityCommand -> CommandResult
+activate CommandResult
+
+CommandResult --> PriorityCommand
+deactivate CommandResult
+
+PriorityCommand --> LogicManager : r
+deactivate PriorityCommand
+
+[<--LogicManager
+deactivate LogicManager
+@enduml

@@ -30,12 +30,17 @@ public class PhoneTest {
         assertFalse(Phone.isValidPhone("91")); // less than 3 numbers
         assertFalse(Phone.isValidPhone("phone")); // non-numeric
         assertFalse(Phone.isValidPhone("9011p041")); // alphabets within digits
-        assertFalse(Phone.isValidPhone("9312 1534")); // spaces within digits
+        assertFalse(Phone.isValidPhone("ab12345")); // alphabets with digits
 
         // valid phone numbers
         assertTrue(Phone.isValidPhone("911")); // exactly 3 numbers
         assertTrue(Phone.isValidPhone("93121534"));
         assertTrue(Phone.isValidPhone("124293842033123")); // long phone numbers
+        assertTrue(Phone.isValidPhone("9312 1534")); // spaces within digits
+        assertTrue(Phone.isValidPhone("+6591234567")); // with country code
+        assertTrue(Phone.isValidPhone("+65 9123 4567")); // with spaces
+        assertTrue(Phone.isValidPhone("+65-9123-4567")); // with hyphens
+        assertTrue(Phone.isValidPhone("93-12-15-34")); // hyphens within digits
     }
 
     @Test
