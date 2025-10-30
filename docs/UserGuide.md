@@ -12,9 +12,10 @@
   - [Finding contacts: find](#finding-contacts-find)
   - [Editing a contact: edit](#editing-a-contact-edit)
   - [Adding notes to a contact: note](#adding-notes-to-a-contact-note)
+  - [Setting priority for a contact: priority](#setting-priority-for-a-contact-priority)
   - [Deleting a contact: delete](#deleting-a-contact-delete)
   - [Sorting contacts: sort](#sorting-contacts-sort)
-  - [Clearing all contacts: clear](#clearing-all-contacts-sort)
+  - [Clearing all contacts: clear](#clearing-all-contacts-clear)
   - [Undo last action: undo](#undo-last-action-undo)
   - [Redo undone action: redo](#redo-undone-action-redo)
   - [Viewing help: help](#viewing-help-help)
@@ -118,7 +119,7 @@ Adds a new client contact so you can manage your client list in QuickCLI.
 **Format:** <mark> add n/NAME p/PHONE \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... \[r/REMARKS\] </mark> 
 **Parameters:**
 
-<div class="joplin-table-wrapper"><table><tbody><tr><th><p><strong>Parameter</strong></p></th><th><p><strong>Definition / Explanation</strong></p></th></tr><tr><td><p>n/NAME</p></td><td><p>Client's name (required)</p><ul><li>Alphanumeric characters and spaces only</li><li>1-100 characters</li></ul></td></tr><tr><td><p>p/PHONE</p></td><td><p>Phone number (required)</p><ul><li>Numbers only, 3-15 digits</li></ul></td></tr><tr><td><p>e/EMAIL</p></td><td><p>Email address (optional)</p><ul><li>Must be valid email format</li></ul></td></tr><tr><td><p>a/ADDRESS</p></td><td><p>Address (optional)</p></td></tr><tr><td><p>C/COMPANY</p></td><td><p>Company name (optional)</p><ul><li>Can include letters, numbers, spaces, and . , &amp; -</li></ul></td></tr><tr><td><p>t/TAG</p></td><td><p>Tags for categorization (optional, multiple allowed)</p><ul><li>Single word, alphanumeric only</li></ul></td></tr><tr><td><p>pr/PRIORITY</p></td><td><p>Priority level (optional)</p><ul><li>Can be HIGH, MEDIUM, or LOW (case-insensitive)</li><li>Or numeric: 1-2 = HIGH, 3-4 = MEDIUM, 5 = LOW<ul><li>For more details on this feature, refer to Section: <a href="#_Setting_priority_for">Setting priority for a contact: priority</a></li></ul></li></ul></td></tr><tr><td><p>r/REMARKS</p></td><td><ul><li>Add remarks or project details to a contact (optional)<ul><li>For more details on this feature, refer to Section: <a href="#_Adding_notes_to">Adding notes to a contact: note</a></li></ul></li></ul></td></tr></tbody></table></div>
+<div class="joplin-table-wrapper"><table><tbody><tr><th><p><strong>Parameter</strong></p></th><th><p><strong>Definition / Explanation</strong></p></th></tr><tr><td><p>n/NAME</p></td><td><p>Client's name (required)</p><ul><li>Alphanumeric characters and spaces only</li><li>1-100 characters</li></ul></td></tr><tr><td><p>p/PHONE</p></td><td><p>Phone number (required)</p><ul><li>Numbers only, 3-15 digits</li></ul></td></tr><tr><td><p>e/EMAIL</p></td><td><p>Email address (optional)</p><ul><li>Must be valid email format</li></ul></td></tr><tr><td><p>a/ADDRESS</p></td><td><p>Address (optional)</p></td></tr><tr><td><p>C/COMPANY</p></td><td><p>Company name (optional)</p><ul><li>Can include letters, numbers, spaces, and . , &amp; -</li></ul></td></tr><tr><td><p>t/TAG</p></td><td><p>Tags for categorization (optional, multiple allowed)</p><ul><li>Single word, alphanumeric only</li></ul></td></tr><tr><td><p>pr/PRIORITY</p></td><td><p>Priority level (optional)</p><ul><li>Can be HIGH, MEDIUM, or LOW (case-insensitive)</li><li>Or numeric: 1-2 = HIGH, 3-4 = MEDIUM, 5 = LOW<ul><li>For more details on this feature, refer to Section: <a href="#setting-priority-for-a-contact-priority">Setting priority for a contact: priority</a></li></ul></li></ul></td></tr><tr><td><p>r/REMARKS</p></td><td><ul><li>Add remarks or project details to a contact (optional)<ul><li>For more details on this feature, refer to Section: <a href="#adding-notes-to-a-contact-note">Adding notes to a contact: note</a></li></ul></li></ul></td></tr></tbody></table></div>
 
 **Examples:**
 
@@ -214,7 +215,7 @@ Add remarks or project details to a contact.
 <mark> note 2 r/Meeting scheduled for next Tuesday, 2pm  </mark>
 <br/>
 
-Setting priority for a contact: priority  
+#### Setting priority for a contact: priority
 <br/>Assign or update the priority level for a contact to help you focus on important clients.  
 <br/>**Format:** <mark> priority INDEX pr/PRIORITY </mark>
 
