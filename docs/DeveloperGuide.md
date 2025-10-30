@@ -297,6 +297,12 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 ### Note
 
+![NoteCommandClassDiagram](images/NoteCommand.png)
+This is a class diagram representing `NoteCommand.java` file.
+![NoteCommandParserClassDiagram](images/NoteCommandParser.png)
+This is a class diagram representing `NoteCommandParser.java` file.
+
+
 **Command format**  
 `note INDEX r/REMARKS`  
 (Entering `r/` with no text clears the note)
@@ -307,6 +313,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 **Validation & semantics:**
 
+
 * `Note.isValidNote(...)` accepts any printable text or `"-"`.
 * Empty or whitespace-only → treated as placeholder `"-"`.
   * See:  
@@ -315,6 +322,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 **Implementation steps:**
 
+
 1. **Parse**:
    * `NoteCommandParser.parse(String args)` reads index + `r/`.
    * Empty remark → placeholder `"-"`.
@@ -322,8 +330,23 @@ The following activity diagram summarizes what happens when a user executes a ne
 2. **Create NoteCommand**:
    * `new NoteCommand(Index, new Note(value))`
 3. **Execute**:
-   * Updates person at index via `model.setPerson(...)` or `model.setNote(...)`.
-   * Commits model after success.
+  ## High-level purpose
+`NoteCommand` **adds or updates a `Note`** (remark) for an existing `Person` in the address book.  
+Steps:
+
+1. Read filtered person list from `Model`.  
+2. Validate index.  
+3. Create a new `Person` with the updated `Note`.  
+4. Replace the original `Person` in the `Model`.  
+5. Commit the change (for undo/redo).  
+6. Refresh the filtered list.  
+7. Return a `CommandResult` with a success message.
+![NoteCommandSequenceDiagram](images/NoteCommandInternalSequence.png)
+
+
+---
+
+
 
 **Key tests:**
 
@@ -376,6 +399,64 @@ The following activity diagram summarizes what happens when a user executes a ne
 - priority 3 pr/HIGH
 - priority 1 pr/2
 - priority 2 pr/low
+
+### HelpCommand
+
+## Purpose
+
+The `help` command displays usage instructions to the user.  
+In the GUI, it opens the **Help Window**; in the CLI, it shows a message indicating that help is displayed.
+
+---
+
+## Command Format
+
+help
+
+- No arguments are accepted.
+- Any extra input should cause a parse failure.
+
+---
+
+## Behaviour
+
+- Does **not** modify the model; therefore, it does **not** commit any changes.
+- Returns a `CommandResult` with:
+  - `feedbackToUser = "Opened help window."`
+  - `showHelp = true` (signals UI to open help)
+  - `exit = false`
+
+---
+
+## Example Usage
+
+> help  
+Opened help window.
+
+You can also hover on Help at the menu bar and click 'Help F1' to open up the HelpWindow.
+
+---
+
+## Dependencies
+
+The `help` command relies on the following files for the GUI implementation:
+
+1. **`HelpWindow.java`**  
+   - JavaFX controller for the help window.
+   - Manages interaction with FXML elements, buttons, and labels.
+   - Handles copying the user guide URL to the clipboard and opening the browser.
+
+2. **`HelpWindow.fxml`**  
+   - Defines the GUI layout of the help window.
+   - Includes the copy button, open button, and help message label.
+
+3. **`HelpWindow.css`** 
+   - Provides styling for the help window, such as button appearance, font styles, and layout padding.
+
+
+---
+
+
 
 # Sort — implementation notes & tests
 
