@@ -1,0 +1,20 @@
+.pane-with-border {
+    -fx-background-color: #2b2b2b;          /* deep grey background */
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 12, 0, 0, 4);
+    -fx-border-color: #3c3f41;              /* subtle outer edge */
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+}
+
+.result-display {
+    -fx-background-color: #2b2b2b;          /* uniform dark grey */
+    -fx-text-fill: #bbbbbb;                  /* soft white text */
+    -fx-font-family: "JetBrains Mono", "Consolas", monospace;
+    -fx-font-size: 13px;
+    -fx-border-color: #555555;               /* subtle border */
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 10;
+}
