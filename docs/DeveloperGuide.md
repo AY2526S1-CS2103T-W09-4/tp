@@ -250,7 +250,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 ### Add
 
 **Command format**  
-`add n/NAME p/PHONE [e/EMAIL] [a/ADDRESS] [c/COMPANY] [pr/PRIORITY] [t/TAG]... [r/REMARKS]`
+`add n/NAME p/PHONE [e/EMAIL\] [a/ADDRESS\] [c/COMPANY\] [pr/PRIORITY\] [t/TAG\]... [r/REMARKS\]`
 
 - Prefix constants are used throughout parsing code and test utilities (see `PersonUtil`), e.g. `PREFIX_NAME`, `PREFIX_PHONE`, `PREFIX_EMAIL`, `PREFIX_ADDRESS`, `PREFIX_TAG`, `PREFIX_PRIORITY`, `PREFIX_REMARK`, `PREFIX_COMPANY`, etc.
   * Example builder used in tests: `PersonUtil.getPersonDetails(person)` constructs strings using these prefixes. See:  
@@ -258,8 +258,8 @@ The following activity diagram summarizes what happens when a user executes a ne
 
 **Validation rules (derived from `ParserUtilTest` & model tests):**
 
-* `Name`: Not null, not blank, must satisfy `Name.isValidName(...)`.
-* `Phone`: Numeric only, ≥ 3 digits (`Phone.isValidPhone`).
+* `Name`: Must be Not null, not blank, must satisfy `Name.isValidName(...)`.
+* `Phone`: Numeric only, 3-15 digits (`Phone.isValidPhone`).
 * `Email` (optional): Must satisfy `Email.isValidEmail(...)`.
 * `Address` (optional): Must satisfy `Address.isValidAddress(...)`.
 * `Company` (optional): Must satisfy `Company.isValidCompany(...)`.
