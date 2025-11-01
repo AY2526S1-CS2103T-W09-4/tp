@@ -110,7 +110,8 @@ Several command behaviors are covered by unit tests in `src/test/java/seedu/addr
 
 ### Model component
 **API**: `Ui` interface (see `src/main/java/seedu/address/model/Model.java` in the original reference layout).
-<img src="images/ModelClassDiagram.png" width="450" />
+<img width="496" height="453" alt="image" src="https://github.com/user-attachments/assets/7c1902fa-a19e-49f7-ad8f-263f1f58404d" />
+
 
 
 The `Model` stores the _single source of truth_ for the application state. In our codebase the important classes are:
