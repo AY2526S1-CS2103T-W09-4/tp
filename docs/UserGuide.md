@@ -337,7 +337,7 @@ Organize your contact list for easier access.
 
 ### **History Commands**
 
-All the above commands except [list](#listing-all-contacts-list) directly change the contact list. Every new, changed state of the contact list is tracked, allowing access to states across the history through certain commands like [undo](#undo-last-action-undo) and [redo](#redo-undone-action-redo).
+All the above commands except [list](#listing-all-contacts-list) and [find](#finding-contacts-find) and [help](#viewing-help-help) directly change the contact list. Every new, changed state of the contact list is tracked, allowing access to states across the history through certain commands like [undo](#undo-last-action-undo) and [redo](#redo-undone-action-redo).
 
 #### Undo last action: undo
 
@@ -353,7 +353,27 @@ Redo last action that was undone. Reverts last undo action by moving forward to 
 
 **Format:** <mark> redo </mark>
 
-This only works if there was at least one or more consecutive undo commands called before this redo command, without calling any other command that changes the addressbook. If one of these commands are called after an undo command, that state is set as the most recent, effectively forgetting all previously undone state using the undo command.
+**When does it work?**
+- ✅ You have just used **undo** one or more times, and you **haven’t** run any other command that changes the contacts since then.
+- ❌ If you run a new changing command (e.g., <mark>add</mark>, <mark>edit</mark>, <mark>delete</mark>, <mark>sort</mark>, <mark>priority</mark>, <mark>note</mark>, <mark>clear</mark>), the “redo path” is reset and <mark>redo</mark> is no longer available.
+
+**Quick example**
+1. Start with 3 contacts.  
+2. <mark>add n/Alice p/9000</mark> → now 4 contacts.  
+3. <mark>delete 2</mark> → now 3 contacts.  
+4. <mark>undo</mark> → back to 4 contacts.  
+5. <mark>redo</mark> → reapplies the deletion → back to 3 contacts.
+
+
+**When redo is no longer available**
+1. <mark>add n/Alice p/9000</mark> 
+2. <mark>undo</mark>
+3. (Instead of redo) <mark>edit 1 p/9999</mark> → changes data
+4. <mark>redo</mark> → ❌ Not available (the new edit broke the redo chain)
+
+If <mark>redo</mark> isn’t available, QuickCLI shows: “No actions to redo.”  
+
+Commands like <mark>list</mark>, <mark>help</mark>, <mark>find</mark> and <mark>exit</mark> don’t affect undo/redo history.
 
 ### **System Commands**
 
