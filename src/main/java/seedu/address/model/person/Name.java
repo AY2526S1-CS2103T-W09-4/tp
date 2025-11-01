@@ -11,13 +11,14 @@ public class Name {
 
     public static final String MESSAGE_CONSTRAINTS =
             "Names should only contain letters (including accented characters), numbers, spaces, hyphens, "
-                    + "periods, and apostrophes, and it should not be blank";
+                    + "periods, and apostrophes. It must be 1–100 characters long and cannot be blank.";
 
     /*
-     * The first character of the address must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
+     * The first character must not be whitespace.
+     * Length limit: 1–100 characters.
      */
-    public static final String VALIDATION_REGEX = "[\\p{L}\\p{M}\\p{N}][\\p{L}\\p{M}\\p{N} .'-]*";
+    public static final String VALIDATION_REGEX =
+            "^(?=.{1,100}$)[\\p{L}\\p{M}\\p{N}][\\p{L}\\p{M}\\p{N} .'-]*$";
 
     public final String fullName;
 
@@ -36,9 +37,8 @@ public class Name {
      * Returns true if a given string is a valid name.
      */
     public static boolean isValidName(String test) {
-        return test.matches(VALIDATION_REGEX);
+        return test != null && test.matches(VALIDATION_REGEX);
     }
-
 
     @Override
     public String toString() {
@@ -47,22 +47,13 @@ public class Name {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-
-        // instanceof handles nulls
-        if (!(other instanceof Name)) {
-            return false;
-        }
-
-        Name otherName = (Name) other;
-        return fullName.equals(otherName.fullName);
+        return other == this
+                || (other instanceof Name
+                && fullName.equals(((Name) other).fullName));
     }
 
     @Override
     public int hashCode() {
         return fullName.hashCode();
     }
-
 }
