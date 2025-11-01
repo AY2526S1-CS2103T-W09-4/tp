@@ -132,6 +132,11 @@ public class EditCommand extends Command {
                                              EditPersonDescriptor editPersonDescriptor) {
         assert personToEdit != null;
 
+
+        Priority finalPriority = editPersonDescriptor.isClearPriority()
+                ? null
+                : updated(editPersonDescriptor.getPriority(), personToEdit.getPriority());
+
         return new Person(
                 updated(editPersonDescriptor.getName(), personToEdit.getName()),
                 updated(editPersonDescriptor.getPhone(), personToEdit.getPhone()),
@@ -140,7 +145,7 @@ public class EditCommand extends Command {
                 updated(editPersonDescriptor.getCompany(), personToEdit.getCompany()),
                 updated(editPersonDescriptor.getTags(), personToEdit.getTags()),
                 updated(editPersonDescriptor.getNote(), personToEdit.getNote()),
-                updated(editPersonDescriptor.getPriority(), personToEdit.getPriority())
+                finalPriority
         );
     }
 
@@ -181,6 +186,7 @@ public class EditCommand extends Command {
         private Company company;
         private Note note;
         private Priority priority;
+        private boolean clearPriority;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -197,6 +203,7 @@ public class EditCommand extends Command {
             setCompany(toCopy.company);
             setNote(toCopy.note);
             setPriority(toCopy.priority);
+            this.clearPriority = toCopy.clearPriority;
             setTags(toCopy.tags);
         }
 
@@ -204,13 +211,22 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, company, note, priority, tags);
+            return clearPriority
+                    || CollectionUtil.isAnyNonNull(
+                    name, phone, email, address, company, note, priority, tags);
         }
 
         public void setName(Name name) {
             this.name = name;
         }
 
+
+        public void markClearPriority() {
+            this.clearPriority = true;
+        }
+        public boolean isClearPriority() {
+            return clearPriority;
+        }
         public Optional<Name> getName() {
             return Optional.ofNullable(name);
         }

@@ -99,10 +99,10 @@ Before diving into specific commands, here's how you read the command syntax:
 
 - **Words in UPPER_CASE** are parameters you need to provide
   - Example: add n/NAME means replace NAME with actual name like add <mark> add n/John Doe </mark>
-- **Items in square brackets \[\]** are optional
-  - Example: n/NAME \[t/TAG\] can be used as n/John Doe t/client or just n/John Doe
+- **Items in square brackets [\]** are optional
+  - Example: n/NAME [t/TAG\] can be used as n/John Doe t/client or just n/John Doe
 - **Items with ...** can be used multiple times (including zero)
-  - Example: \[t/TAG\]... can be omitted **OR**
+  - Example: [t/TAG\]... can be omitted **OR**
   - Used once: t/designer **OR**
   - Multiple times t/designer t/priority
 - **Parameters can be in any order**
@@ -116,18 +116,18 @@ Before diving into specific commands, here's how you read the command syntax:
 
 Adds a new client contact so you can manage your client list in QuickCLI.
 
-**Format:** <mark> add n/NAME p/PHONE \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... \[r/REMARKS\] </mark> 
+**Format:** <mark> add n/NAME p/PHONE [e/EMAIL\] [a/ADDRESS\] [c/COMPANY\] [pr/PRIORITY\] [t/TAG\]... [r/REMARKS\] </mark> 
 **Parameters:**
 
-<div class="joplin-table-wrapper"><table><tbody><tr><th><p><strong>Parameter</strong></p></th><th><p><strong>Definition / Explanation</strong></p></th></tr><tr><td><p>n/NAME</p></td><td><p>Client's name (required)</p><ul><li>Alphanumeric characters and spaces only</li><li>1-100 characters</li></ul></td></tr><tr><td><p>p/PHONE</p></td><td><p>Phone number (required)</p><ul><li>Numbers only, 3-15 digits</li></ul></td></tr><tr><td><p>e/EMAIL</p></td><td><p>Email address (optional)</p><ul><li>Must be valid email format</li></ul></td></tr><tr><td><p>a/ADDRESS</p></td><td><p>Address (optional)</p></td></tr><tr><td><p>C/COMPANY</p></td><td><p>Company name (optional)</p><ul><li>Can include letters, numbers, spaces, and . , &amp; -</li></ul></td></tr><tr><td><p>t/TAG</p></td><td><p>Tags for categorization (optional, multiple allowed)</p><ul><li>Single word, alphanumeric only</li></ul></td></tr><tr><td><p>pr/PRIORITY</p></td><td><p>Priority level (optional)</p><ul><li>Can be HIGH, MEDIUM, or LOW (case-insensitive)</li><li>Or numeric: 1-2 = HIGH, 3-4 = MEDIUM, 5 = LOW<ul><li>For more details on this feature, refer to Section: <a href="#setting-priority-for-a-contact-priority">Setting priority for a contact: priority</a></li></ul></li></ul></td></tr><tr><td><p>r/REMARKS</p></td><td><ul><li>Add remarks or project details to a contact (optional)<ul><li>For more details on this feature, refer to Section: <a href="#adding-notes-to-a-contact-note">Adding notes to a contact: note</a></li></ul></li></ul></td></tr></tbody></table></div>
+<div class="joplin-table-wrapper"><table><tbody><tr><th><p><strong>Parameter</strong></p></th><th><p><strong>Definition / Explanation</strong></p></th></tr><tr><td><p>n/NAME</p></td><td><p>Client's name (required)</p><ul><li>Alphanumeric characters and spaces only</li><li>1-100 characters</li></ul></td></tr><tr><td><p>p/PHONE</p></td><td><p>Phone number (required)</p><ul><li>Numbers only, 3-15 digits</li></ul></td></tr><tr><td><p>e/EMAIL</p></td><td><p>Email address (optional)</p><ul><li>Must be valid email format</li></ul></td></tr><tr><td><p>a/ADDRESS</p></td><td><p>Address (optional)</p></td></tr><tr><td><p>c/COMPANY</p></td><td><p>Company name (optional)</p><ul><li>Can include letters, numbers, spaces, and . , &amp; -</li></ul></td></tr><tr><td><p>t/TAG</p></td><td><p>Tags for categorization (optional, multiple allowed)</p><ul><li>Single word, alphanumeric only</li></ul></td></tr><tr><td><p>pr/PRIORITY</p></td><td><p>Priority level (optional)</p><ul><li>Can be HIGH, MEDIUM, or LOW (case-insensitive)</li><li>Or numeric: 1-2 = HIGH, 3-4 = MEDIUM, 5 = LOW<ul><li>For more details on this feature, refer to Section: <a href="#setting-priority-for-a-contact-priority">Setting priority for a contact: priority</a></li></ul></li></ul></td></tr><tr><td><p>r/REMARKS</p></td><td><ul><li>Add remarks or project details to a contact (optional)<ul><li>For more details on this feature, refer to Section: <a href="#adding-notes-to-a-contact-note">Adding notes to a contact: note</a></li></ul></li></ul></td></tr></tbody></table></div>
 
 **Examples:**
 
 | **Command** | **You have added Client...** |
 | --- | --- |
 | <mark> add n/John Doe p/98765432 </mark>  | John Doe - name, phone |
-| <mark> add n/Sarah Chen p/91234567 [e/sarah@design.co](mailto:e/sarah@design.co) c/Chen Designs t/designer t/priority </mark> | Sarah Chen - name, phone; optional: email, company, 2 tags |
-| <mark> add n/Mike Wong p/87654321 [e/mike@techcorp.com](mailto:e/mike@techcorp.com) t/developer r/Prefers Email Communication </mark>| Mike Wong - name, phone; optional: email, tag, remark |
+| <mark> add n/Sarah Chen p/91234567 e/sarah@design.co c/Chen Designs t/designer t/priority </mark> | Sarah Chen - name, phone; optional: email, company, 2 tags |
+| <mark> add n/Mike Wong p/87654321 e/mike@techcorp.com t/developer r/Prefers Email Communication </mark>| Mike Wong - name, phone; optional: email, tag, remark |
 | <mark> add n/Jane Smith p/92345678 e/jane@urgentclient.com pr/HIGH t/priority </mark> | Jane Smith - name, phone; optional: email, priority |
 
 **Note:** QuickCLI prevents duplicate contacts. Two contacts are considered duplicates if they have the same name AND phone number.
@@ -144,14 +144,24 @@ Shows all contacts in your database. You can also filter by tags.
 **Examples:**
 
 <mark> list </mark>
+
 <mark> list t/priority </mark> 
+
 <mark> list t/designer </mark>
 
+**Rules & notes:**
+- At most **one** `t/` is allowed.  
+  `list t/friends t/colleagues`
+  
+  <img width="395" height="32" alt="image" src="https://github.com/user-attachments/assets/90c4e511-7068-4e71-b14c-4c46e5493d44" />
+
+
+  
 #### Finding contacts: find
 
 Searches across all fields including name, phone, email, address, company, tags, and priority level.
 
-**Format:** <mark> find KEYWORD \[MORE_KEYWORDS\] </mark>
+**Format:** <mark> find KEYWORD [MORE_KEYWORDS\] </mark>
 
 - Search is case-insensitive (john matches John)
 - Partial matching is supported (Joh matches John)
@@ -174,7 +184,7 @@ Searches across all fields including name, phone, email, address, company, tags,
 
 Updates the details of an existing contact.
 
-**Format:** <mark> edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... </mark>
+**Format:** <mark> edit INDEX [n/NAME\] [p/PHONE\] [e/EMAIL\] [a/ADDRESS\] [c/COMPANY\] [pr/PRIORITY\] [t/TAG\]... [r/REMARKS\] </mark>
 
 - Edit the contact at the specified INDEX (shown in the contact list)
 - At least one field must be provided
@@ -217,8 +227,9 @@ Add remarks or project details to a contact.
 
 #### Setting priority for a contact: priority
 <br/>Assign or update the priority level for a contact to help you focus on important clients.  
-<br/>**Format:** <mark> priority INDEX pr/PRIORITY </mark>
-
+<br/>**Format:** priority INDEX pr/PRIORITY
+- `pr/` with **blank value** clears the person’s priority.
+- Otherwise `pr/PRIORITY` must be one of HIGH, MEDIUM, LOW, or 1..5.
 - Set priority for the contact at the specified INDEX
 - Replaces any existing priority level
 - Priority levels: HIGH, MEDIUM, LOW (case-insensitive)
@@ -232,8 +243,8 @@ Add remarks or project details to a contact.
 
 **Parameters:**
 
-- pr/PRIORITY: Priority level (required)
-- Valid values: \`HIGH\`, \`MEDIUM\`, \`LOW\`, or \`1\`, \`2\`, \`3\`, \`4\`, \`5\`
+- pr/PRIORITY: Priority level 
+- Valid values: \`HIGH\`, \`MEDIUM\`, \`LOW\`, or \`1\`, \`2\`, \`3\`, \`4\`, \`5\`, \`\`
 - Case-insensitive
 
 **Examples:**
@@ -241,6 +252,7 @@ Add remarks or project details to a contact.
 - <mark> priority 1 pr/HIGH </mark>
 - <mark> priority 2 pr/medium </mark>
 - <mark> priority 3 pr/1 </mark>
+- <mark> priority 2 pr/ </mark> *(clears priority for contact #2)*
 
 <img width="913" height="197" alt="image" src="https://github.com/user-attachments/assets/7fcb4e47-300e-483d-a02d-3d52daabb6da" />
 
@@ -305,12 +317,15 @@ Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
 
 Organize your contact list for easier access.
 
-**Format:** <mark> sort \[CRITERION\] </mark>
+**Format:** <mark> sort [CRITERION\] </mark>
 
 **Available sorting options:**
 
 - sort or sort name - Alphabetical by name (default)
-- sort recent - Most recently added first
+- sort phone
+- sort email
+- sort address
+- sort tag - Sorts by first tag
 - sort priority - By priority level (HIGH → MEDIUM → LOW, then no priority)
 
 **Examples:**
@@ -322,7 +337,7 @@ Organize your contact list for easier access.
 
 ### **History Commands**
 
-All the above commands except [list](#listing-all-contacts-list) directly change the contact list. Every new, changed state of the contact list is tracked, allowing access to states across the history through certain commands like [undo](#undo-last-action-undo) and [redo](#redo-undone-action-redo).
+All the above commands except [list](#listing-all-contacts-list) and [find](#finding-contacts-find) and [help](#viewing-help-help) directly change the contact list. Every new, changed state of the contact list is tracked, allowing access to states across the history through certain commands like [undo](#undo-last-action-undo) and [redo](#redo-undone-action-redo).
 
 #### Undo last action: undo
 
@@ -338,7 +353,27 @@ Redo last action that was undone. Reverts last undo action by moving forward to 
 
 **Format:** <mark> redo </mark>
 
-This only works if there was at least one or more consecutive undo commands called before this redo command, without calling any other command that changes the addressbook. If one of these commands are called after an undo command, that state is set as the most recent, effectively forgetting all previously undone state using the undo command.
+**When does it work?**
+- ✅ You have just used **undo** one or more times, and you **haven’t** run any other command that changes the contacts since then.
+- ❌ If you run a new changing command (e.g., <mark>add</mark>, <mark>edit</mark>, <mark>delete</mark>, <mark>sort</mark>, <mark>priority</mark>, <mark>note</mark>, <mark>clear</mark>), the “redo path” is reset and <mark>redo</mark> is no longer available.
+
+**Quick example**
+1. Start with 3 contacts.  
+2. <mark>add n/Alice p/9000</mark> → now 4 contacts.  
+3. <mark>delete 2</mark> → now 3 contacts.  
+4. <mark>undo</mark> → back to 4 contacts.  
+5. <mark>redo</mark> → reapplies the deletion → back to 3 contacts.
+
+
+**When redo is no longer available**
+1. <mark>add n/Alice p/9000</mark> 
+2. <mark>undo</mark>
+3. (Instead of redo) <mark>edit 1 p/9999</mark> → changes data
+4. <mark>redo</mark> → ❌ Not available (the new edit broke the redo chain)
+
+If <mark>redo</mark> isn’t available, QuickCLI shows: “No actions to redo.”  
+
+Commands like <mark>list</mark>, <mark>help</mark>, <mark>find</mark> and <mark>exit</mark> don’t affect undo/redo history.
 
 ### **System Commands**
 
@@ -480,11 +515,8 @@ For bug reports, feature requests, or additional help, please contact our suppor
 
 **Response Time:** We typically respond within 24-48 hours.
 
-<box type="tip" seamless>
-
 **Remember:** QuickCLI is designed for speed. The more you use keyboard commands instead of mouse clicks, the more efficient your workflow becomes!
 
-</box>
 
 --------------------------------------------------------------------------------------------------------------------
 

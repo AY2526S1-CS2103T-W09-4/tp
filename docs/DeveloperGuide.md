@@ -222,8 +222,6 @@ Similarly, how a redo operation goes through the `Model` component is shown belo
 
 ![RedoSequenceDiagram](images/RedoSequenceDiagram-Model.png)
 
-</div>
-
 Step 6. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
 
 ![UndoRedoState4](images/UndoRedoState4.png)
@@ -347,7 +345,6 @@ Steps:
 ---
 
 
-
 **Key tests:**
 
 - `NoteCommandParserTest`
@@ -364,27 +361,32 @@ Steps:
 
 * Accepted textual values: `HIGH`, `MEDIUM`, `LOW` (case-insensitive)  
 * Accepted numeric values: `1`–`5`
+* Accepted `` to clear priority
 
 **Mapping:**
+
 | Numeric | Level  |
 |----------|---------|
 | 1, 2     | HIGH    |
 | 3, 4     | MEDIUM  |
 | 5        | LOW     |
 
-**Implementation steps:**
+**Implementation steps**
 
-1. **Parse**:
-   * `PriorityCommandParser.parse(String args)` → index + `PREFIX_PRIORITY`
-   * Validates with `ParserUtil.parsePriority(...)`.
-2. **Create**:
-   * `new PriorityCommand(index, new Priority(value))`
-3. **Execute**:
-   * Updates the person’s priority via `model.setPerson(...)`.
-   * Commits model after success.
+1. **Parse**
+   * `PriorityCommandParser.parse(String args)` tokenizes for index and `PREFIX_PRIORITY`.
+   * If the `pr/` value is **blank** after trimming → treat as **clear** (`priority = null`).
+   * Otherwise parse with `ParserUtil.parsePriority(raw)`.
+2. **Create**
+   * `new PriorityCommand(index, /* may be null */ priority)`
+3. **Execute**
+   * Build an edited `Person` where the priority is set to the parsed `Priority` **or cleared when null**.
+   * `model.setPerson(original, edited)` and `model.commitAddressBook()`.
+   * Return a message indicating either “Set priority …” or “Cleared priority …”.
 
 **Important details:**
-
+* `pr/` with **blank value** clears the person’s priority.
+* Otherwise `pr/PRIORITY` must be one of HIGH, MEDIUM, LOW, or 1..5.
 * Case-insensitive input accepted.
 * Numeric 1–5 mapped to textual levels.
 * Invalid (e.g., `0`, `6`, `URGENT`) → ParseException.
@@ -399,45 +401,26 @@ Steps:
 - priority 3 pr/HIGH
 - priority 1 pr/2
 - priority 2 pr/low
+- priority 3 pr/
 
 ### HelpCommand
 
-## Purpose
+**Command format**  
+`help`  
 
-The `help` command displays usage instructions to the user.  
-In the GUI, it opens the **Help Window**; in the CLI, it shows a message indicating that help is displayed.
+**Important details:**
 
----
+* Does **not** modify the model; therefore, it does **not** commit any changes.
+* No arguments are accepted.
+* Any extra input should cause a parse failure.
+* You can also hover on Help at the menu bar and click 'Help F1' to open up the HelpWindow.
 
-## Command Format
+**Example:**
 
-help
-
-- No arguments are accepted.
-- Any extra input should cause a parse failure.
-
----
-
-## Behaviour
-
-- Does **not** modify the model; therefore, it does **not** commit any changes.
-- Returns a `CommandResult` with:
-  - `feedbackToUser = "Opened help window."`
-  - `showHelp = true` (signals UI to open help)
-  - `exit = false`
-
----
-
-## Example Usage
-
-> help  
+`help`
 Opened help window.
 
-You can also hover on Help at the menu bar and click 'Help F1' to open up the HelpWindow.
-
----
-
-## Dependencies
+**Important implementation points:**
 
 The `help` command relies on the following files for the GUI implementation:
 
@@ -452,9 +435,6 @@ The `help` command relies on the following files for the GUI implementation:
 
 3. **`HelpWindow.css`** 
    - Provides styling for the help window, such as button appearance, font styles, and layout padding.
-
-
----
 
 
 
@@ -668,86 +648,261 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* *`    | freelance professional | search contacts by company | find all contacts from a specific organization |
 | `*`      | freelance professional | sort contacts alphabetically | locate clients more systematically |
 | `*`      | freelance professional | export contact data | backup or share client information |
-| `*`      | freelance professional | view recent contacts | quickly access frequently contacted clients |
 
 *{More to be added}*
 
-### Use cases
+## Use Cases
 
-(For all use cases below, the **System** is `QuickCLI` and the **Actor** is the `user`, unless specified otherwise)
+> For all use cases below, the **System** is `QuickCLI` and the **Actor** is the **user**, unless specified otherwise.
 
-**Use case: UC01 - Add a new client contact**
+---
 
-**MSS**
-
-1.  User requests to add a new contact with name and phone number
-2.  QuickCLI validates the input format
-3.  QuickCLI checks for duplicate contacts
-4.  QuickCLI adds the contact to the database
-5.  QuickCLI displays success message with contact details
-
-    Use case ends.
-
-**Extensions**
-
-* 2a. Invalid input format (e.g., missing required fields, invalid phone number).
-    * 2a1. QuickCLI shows specific error message.
-    * 2a2. User enters corrected command.
-
-  Use case resumes at step 2.
-
-* 3a. Duplicate contact exists (same name and phone).
-    * 3a1. QuickCLI shows duplicate warning.
-    * 3a2. QuickCLI displays existing contact details.
-
-  Use case ends.
-
-**Use case: UC02 - Find client by name**
+### UC01 — Add a new client contact
 
 **MSS**
-
-1.  User requests to find contacts with keyword(s)
-2.  QuickCLI searches for contacts with names containing the keyword(s)
-3.  QuickCLI displays filtered list of matching contacts
-
-    Use case ends.
+1. User requests to add a new contact with name and phone number.
+2. QuickCLI validates the input format.
+3. QuickCLI checks for duplicate contacts.
+4. QuickCLI adds the contact to the database.
+5. QuickCLI displays success message with contact details.  
+   **Use case ends.**
 
 **Extensions**
+- 2a. Invalid input format (e.g., missing required fields, invalid phone number).  
+  2a1. QuickCLI shows specific error message.  
+  2a2. User enters corrected command.  
+  *Use case resumes at step 2.*
 
-* 2a. No contacts match the search criteria.
-    * 2a1. QuickCLI shows "0 contacts found" message.
+- 3a. Duplicate contact exists (same name and phone).  
+  3a1. QuickCLI shows duplicate warning and the existing contact.  
+  *Use case ends.*
 
-  Use case ends.
+---
 
-**Use case: UC03 - Add notes to a contact**
+### UC02 — Find contacts (across all fields)
 
 **MSS**
-
-1.  User requests to list all contacts
-2.  QuickCLI shows list of contacts with index numbers
-3.  User requests to add note to specific contact by index
-4.  QuickCLI adds the note to the contact
-5.  QuickCLI displays success message
-
-    Use case ends.
+1. User requests to find contacts with keyword(s).
+2. QuickCLI searches **across all fields** (name, phone, email, address, company, tags, priority).
+3. QuickCLI displays the filtered list of matching contacts.  
+   **Use case ends.**
 
 **Extensions**
+- 2a. No contacts match the search criteria.  
+  2a1. QuickCLI shows “0 contacts found.”  
+  *Use case ends.*
 
-* 2a. The contact list is empty.
+---
 
-  Use case ends.
+### UC03 — Add or update notes for a contact
 
-* 3a. Invalid index provided.
-    * 3a1. QuickCLI shows error message.
+**MSS**
+1. User requests to list all contacts.
+2. QuickCLI shows the list with indices.
+3. User requests to add/update a note for a specific contact by index.
+4. QuickCLI saves the note to the contact.
+5. QuickCLI displays success message.  
+   **Use case ends.**
 
-  Use case resumes at step 3.
+**Extensions**
+- 2a. The contact list is empty.  
+  *Use case ends.*
 
-* 3b. Note exceeds 500 character limit.
-    * 3b1. QuickCLI shows error message about character limit.
+- 3a. Invalid index is provided.  
+  3a1. QuickCLI shows error message.  
+  *Use case resumes at step 3.*
 
-  Use case resumes at step 3.
+- 3b. Note exceeds the character limit.  
+  3b1. QuickCLI shows error about the limit.  
+  *Use case resumes at step 3.*
 
-*{More to be added}*
+---
+
+### UC04 — Edit an existing contact
+
+**MSS**
+1. User requests to edit a contact by index and supplies one or more fields to change.
+2. QuickCLI validates each supplied field.
+3. QuickCLI updates the contact details.
+4. QuickCLI displays success message with the updated contact.  
+   **Use case ends.**
+
+**Extensions**
+- 1a. No fields are supplied.  
+  1a1. QuickCLI shows “Please provide at least one field to update.”  
+  *Use case ends.*
+
+- 2a. Invalid index.  
+  2a1. QuickCLI shows error message.  
+  *Use case ends.*
+
+- 2b. A field is invalid (e.g., phone not 3–15 digits, malformed email).  
+  2b1. QuickCLI shows a specific validation error.  
+  *Use case resumes at step 1.*
+
+- 3a. The edit would create a duplicate (same name + phone as another contact).  
+  3a1. QuickCLI shows duplicate warning.  
+  *Use case ends.*
+
+- 3b. User clears the priority with an empty value (`pr/`).  
+  3b1. QuickCLI removes the priority from the contact.  
+  *Use case returns to step 4.*
+
+---
+
+### UC05 — Set or clear a contact’s priority
+
+**MSS**
+1. User requests to set a priority for a contact by index (e.g., `priority 3 pr/HIGH` or numeric `1–5`).
+2. QuickCLI validates the priority value.
+3. QuickCLI updates the contact’s priority.
+4. QuickCLI displays success message.  
+   **Use case ends.**
+
+**Extensions**
+- 1a. Invalid index.  
+  1a1. QuickCLI shows error message.  
+  *Use case ends.*
+
+- 2a. Invalid priority token (not HIGH/MEDIUM/LOW or 1–5).  
+  2a1. QuickCLI shows usage message clarifying accepted values (including `2` and `4`).  
+  *Use case resumes at step 1.*
+
+- 3a. User clears the priority with an empty value (`priority 3 pr/`).  
+  3a1. QuickCLI removes the priority and shows a confirmation message.  
+  *Use case ends.*
+
+---
+
+### UC06 — List all contacts / filter by tag
+
+**MSS**
+1. User requests to list contacts (optionally with a single tag filter `t/TAG`).
+2. QuickCLI shows the list (or the filtered list by tag).  
+   **Use case ends.**
+
+**Extensions**
+- 1a. Multiple tag prefixes are supplied when only one is supported.  
+  1a1. QuickCLI shows an error clarifying expected usage (single tag or error).  
+  *Use case ends.*
+
+- 2a. No contacts match the tag filter.  
+  2a1. QuickCLI shows “0 contacts found.”  
+  *Use case ends.*
+
+---
+
+### UC07 — Sort the contact list
+
+**MSS**
+1. User requests to sort contacts (e.g., `sort`, `sort name`, `sort priority`).
+2. QuickCLI validates the sort key (defaults to name if omitted).
+3. QuickCLI sorts and updates the displayed order.
+4. QuickCLI displays success message.  
+   **Use case ends.**
+
+**Extensions**
+- 2a. Unsupported sort key is provided.  
+  2a1. QuickCLI shows usage message with valid keys.  
+  *Use case resumes at step 1.*
+
+---
+
+### UC08 — Delete one or more contacts
+
+**MSS**
+1. User requests to delete contact(s) by index / comma list / range.
+2. QuickCLI validates all indices.
+3. (If multiple) QuickCLI asks for confirmation.
+4. QuickCLI deletes the specified contact(s).
+5. QuickCLI displays success message.  
+   **Use case ends.**
+
+**Extensions**
+- 2a. One or more indices are invalid.  
+  2a1. QuickCLI lists invalid indices and cancels the operation.  
+  *Use case ends.*
+
+- 3a. User cancels the confirmation.  
+  3a1. QuickCLI aborts delete.  
+  *Use case ends.*
+
+- 4a. Deletion performed from a filtered list (after `find`).  
+  4a1. QuickCLI deletes the contact at the given **filtered** index.  
+  *Use case continues at step 5.*
+
+---
+
+### UC09 — Undo last action
+
+**MSS**
+1. User requests `undo`.
+2. QuickCLI checks that there is a previous state.
+3. QuickCLI restores the previous state.
+4. QuickCLI displays success message.  
+   **Use case ends.**
+
+**Extensions**
+- 2a. No previous state is available.  
+  2a1. QuickCLI shows “No actions to undo.”  
+  *Use case ends.*
+
+---
+
+### UC10 — Redo last undone action
+
+**MSS**
+1. User requests `redo`.
+2. QuickCLI checks that there is an undone state to reapply.
+3. QuickCLI reapplies the next state.
+4. QuickCLI displays success message.  
+   **Use case ends.**
+
+**Extensions**
+- 2a. No redo is available (e.g., user performed a new mutating command after undo).  
+  2a1. QuickCLI shows “No actions to redo.”  
+  *Use case ends.*
+
+- **Illustrative example**  
+  - User runs `add n/A p/111`.  
+  - User runs `delete 1`.  
+  - User runs `undo` → restores contact A.  
+  - User runs `redo` → deletes A again (works).  
+  - User runs `undo` → restores A.  
+  - **User runs `edit 1 p/222` (new change)** → redo history is cleared.  
+  - User runs `redo` → **fails** (“No actions to redo.”) because a new change broke the redo chain.
+
+---
+
+### UC11 — Clear all contacts
+
+**MSS**
+1. User requests `clear`.
+2. QuickCLI prompts for confirmation (e.g., `clear confirm`).
+3. User confirms.
+4. QuickCLI deletes all contacts and shows success message.  
+   **Use case ends.**
+
+**Extensions**
+- 2a. User does not confirm.  
+  2a1. QuickCLI cancels clear.  
+  *Use case ends.*
+
+---
+
+### UC12 — View help
+
+**MSS**
+1. User requests `help` (or presses `F1`).
+2. QuickCLI opens the Help Window and/or shows a help message.  
+   **Use case ends.**
+
+**Extensions**
+- 1a. Help Window is already open.  
+  1a1. QuickCLI focuses the existing Help Window.  
+  *Use case ends.*
+
+---
 
 ### Non-Functional Requirements
 

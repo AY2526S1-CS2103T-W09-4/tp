@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PRIORITY;
 
+import java.util.Optional;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.PriorityCommand;
@@ -32,14 +34,15 @@ public class PriorityCommandParser implements Parser<PriorityCommand> {
                     PriorityCommand.MESSAGE_USAGE), ive);
         }
 
-        if (!argMultimap.getValue(PREFIX_PRIORITY).isPresent()) {
+        Optional<String> rawOpt = argMultimap.getValue(PREFIX_PRIORITY);
+        if (rawOpt.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     PriorityCommand.MESSAGE_USAGE));
         }
-
+        String raw = rawOpt.get().trim();
         Priority priority;
         try {
-            priority = ParserUtil.parsePriority(argMultimap.getValue(PREFIX_PRIORITY).get());
+            priority = raw.isEmpty() ? null : ParserUtil.parsePriority(raw);
         } catch (ParseException pe) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     PriorityCommand.MESSAGE_USAGE), pe);
