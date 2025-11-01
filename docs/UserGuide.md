@@ -279,7 +279,7 @@ Removes one or multiple contacts from your database.
 When deleting multiple contacts (2 or more), QuickCLI will show a confirmation dialog to prevent accidental deletion. Click "YES" to proceed or "NO" to cancel.
 
 <box type="warning" seamless>
-Warning: Bulk delete operations cannot be undone. Always verify the indices before confirming deletion.
+Warning: Always verify the indices before confirming deletion.
 </box>
 
 **Examples:**
