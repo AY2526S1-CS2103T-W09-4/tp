@@ -1,39 +1,41 @@
 @startuml
 !include style.puml
 skinparam arrowThickness 1.1
-skinparam arrowColor MODEL_COLOR
-skinparam classBackgroundColor MODEL_COLOR
+skinparam ArrowColor MODEL_COLOR
+skinparam ClassBackgroundColor MODEL_COLOR
 
-Package Model as ModelPackage <<Rectangle>>{
-Class "<<interface>>\nReadOnlyAddressBook" as ReadOnlyAddressBook
-Class "<<interface>>\nReadOnlyUserPrefs" as ReadOnlyUserPrefs
-Class "<<interface>>\nModel" as Model
-Class AddressBook
-Class ModelManager
-Class UserPrefs
+package "Model" as ModelPackage <<Rectangle>> {
+  class ReadOnlyAddressBook <<interface>>
+  class ReadOnlyUserPrefs   <<interface>>
+  class Model               <<interface>>
+  class AddressBook
+  class ModelManager
+  class UserPrefs
 
-Class UniquePersonList
-Class Person
-Class Address
-Class Email
-Class Name
-Class Phone
-Class Tag
+  class UniquePersonList
+  class Person
+  class Address
+  class Email
+  class Name
+  class Phone
+  class Tag
+  class Priority
+  class Note
 
-Class I #FFFFFF
+  class I #FFFFFF
 }
 
-Class HiddenOutside #FFFFFF
+class HiddenOutside #FFFFFF
 HiddenOutside ..> Model
 
-AddressBook .up.|> ReadOnlyAddressBook
+AddressBook -up-|> ReadOnlyAddressBook
 
-ModelManager .up.|> Model
+ModelManager -up-|> Model
 Model .right.> ReadOnlyUserPrefs
-Model .left.> ReadOnlyAddressBook
-ModelManager -left-> "1" AddressBook
+Model .left.>  ReadOnlyAddressBook
+ModelManager -left->  "1" AddressBook
 ModelManager -right-> "1" UserPrefs
-UserPrefs .up.|> ReadOnlyUserPrefs
+UserPrefs -up-|> ReadOnlyUserPrefs
 
 AddressBook *--> "1" UniquePersonList
 UniquePersonList --> "~* all" Person
@@ -42,11 +44,13 @@ Person *--> Phone
 Person *--> Email
 Person *--> Address
 Person *--> "*" Tag
+Person *--> Priority
+Person *--> Note
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
 
-Name -[hidden]right-> Phone
+Name  -[hidden]right-> Phone
 Phone -[hidden]right-> Address
 Address -[hidden]right-> Email
 
