@@ -364,6 +364,7 @@ Steps:
 * Accepted numeric values: `1`–`5`
 
 **Mapping:**
+
 | Numeric | Level  |
 |----------|---------|
 | 1, 2     | HIGH    |
