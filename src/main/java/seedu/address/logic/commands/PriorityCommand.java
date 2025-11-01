@@ -68,7 +68,6 @@ public class PriorityCommand extends Command {
         );
 
         model.setPerson(personToEdit, editedPerson);
-        model.commitAddressBook();
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         String msg = (priority == null) ? String.format(MESSAGE_CLEAR_SUCCESS, editedPerson.getName())
