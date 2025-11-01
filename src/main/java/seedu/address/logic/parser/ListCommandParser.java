@@ -27,7 +27,7 @@ public class ListCommandParser implements Parser<ListCommand> {
         }
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_TAG);
-
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_TAG);
         if (!argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(
                     seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
