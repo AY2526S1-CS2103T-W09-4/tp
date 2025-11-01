@@ -364,6 +364,7 @@ Steps:
 
 * Accepted textual values: `HIGH`, `MEDIUM`, `LOW` (case-insensitive)  
 * Accepted numeric values: `1`–`5`
+* Accepted `` to clear priority
 
 **Mapping:**
 | Numeric | Level  |
@@ -372,19 +373,22 @@ Steps:
 | 3, 4     | MEDIUM  |
 | 5        | LOW     |
 
-**Implementation steps:**
+**Implementation steps**
 
-1. **Parse**:
-   * `PriorityCommandParser.parse(String args)` → index + `PREFIX_PRIORITY`
-   * Validates with `ParserUtil.parsePriority(...)`.
-2. **Create**:
-   * `new PriorityCommand(index, new Priority(value))`
-3. **Execute**:
-   * Updates the person’s priority via `model.setPerson(...)`.
-   * Commits model after success.
+1. **Parse**
+   * `PriorityCommandParser.parse(String args)` tokenizes for index and `PREFIX_PRIORITY`.
+   * If the `pr/` value is **blank** after trimming → treat as **clear** (`priority = null`).
+   * Otherwise parse with `ParserUtil.parsePriority(raw)`.
+2. **Create**
+   * `new PriorityCommand(index, /* may be null */ priority)`
+3. **Execute**
+   * Build an edited `Person` where the priority is set to the parsed `Priority` **or cleared when null**.
+   * `model.setPerson(original, edited)` and `model.commitAddressBook()`.
+   * Return a message indicating either “Set priority …” or “Cleared priority …”.
 
 **Important details:**
-
+* `pr/` with **blank value** clears the person’s priority.
+* Otherwise `pr/PRIORITY` must be one of HIGH, MEDIUM, LOW, or 1..5.
 * Case-insensitive input accepted.
 * Numeric 1–5 mapped to textual levels.
 * Invalid (e.g., `0`, `6`, `URGENT`) → ParseException.
@@ -399,6 +403,7 @@ Steps:
 - priority 3 pr/HIGH
 - priority 1 pr/2
 - priority 2 pr/low
+- priority 3 pr/
 
 ### HelpCommand
 

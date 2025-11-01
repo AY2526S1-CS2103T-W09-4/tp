@@ -224,8 +224,9 @@ Add remarks or project details to a contact.
 
 #### Setting priority for a contact: priority
 <br/>Assign or update the priority level for a contact to help you focus on important clients.  
-<br/>**Format:** <mark> priority INDEX pr/PRIORITY </mark>
-
+<br/>**Format:** priority INDEX pr/PRIORITY
+- `pr/` with **blank value** clears the person’s priority.
+- Otherwise `pr/PRIORITY` must be one of HIGH, MEDIUM, LOW, or 1..5.
 - Set priority for the contact at the specified INDEX
 - Replaces any existing priority level
 - Priority levels: HIGH, MEDIUM, LOW (case-insensitive)
@@ -239,8 +240,8 @@ Add remarks or project details to a contact.
 
 **Parameters:**
 
-- pr/PRIORITY: Priority level (required)
-- Valid values: \`HIGH\`, \`MEDIUM\`, \`LOW\`, or \`1\`, \`2\`, \`3\`, \`4\`, \`5\`
+- pr/PRIORITY: Priority level 
+- Valid values: \`HIGH\`, \`MEDIUM\`, \`LOW\`, or \`1\`, \`2\`, \`3\`, \`4\`, \`5\`, \`\`
 - Case-insensitive
 
 **Examples:**
@@ -248,6 +249,7 @@ Add remarks or project details to a contact.
 - <mark> priority 1 pr/HIGH </mark>
 - <mark> priority 2 pr/medium </mark>
 - <mark> priority 3 pr/1 </mark>
+- <mark> priority 2 pr/ </mark> *(clears priority for contact #2)*
 
 <img width="913" height="197" alt="image" src="https://github.com/user-attachments/assets/7fcb4e47-300e-483d-a02d-3d52daabb6da" />
 

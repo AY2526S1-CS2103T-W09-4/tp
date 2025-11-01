@@ -69,8 +69,15 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (argMultimap.getValue(PREFIX_REMARK).isPresent()) {
             editPersonDescriptor.setNote(ParserUtil.parseNote(argMultimap.getValue(PREFIX_REMARK).get()));
         }
+
         if (argMultimap.getValue(PREFIX_PRIORITY).isPresent()) {
-            editPersonDescriptor.setPriority(ParserUtil.parsePriority(argMultimap.getValue(PREFIX_PRIORITY).get()));
+            Optional<String> rawOpt = argMultimap.getValue(PREFIX_PRIORITY);
+            String raw = rawOpt.orElse("").trim();
+            if (raw.isEmpty()) {
+                editPersonDescriptor.markClearPriority();
+            } else {
+                editPersonDescriptor.setPriority(ParserUtil.parsePriority(raw));
+            }
         }
         parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);
 
