@@ -222,8 +222,6 @@ Similarly, how a redo operation goes through the `Model` component is shown belo
 
 ![RedoSequenceDiagram](images/RedoSequenceDiagram-Model.png)
 
-</div>
-
 Step 6. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
 
 ![UndoRedoState4](images/UndoRedoState4.png)
@@ -347,7 +345,6 @@ Steps:
 ---
 
 
-
 **Key tests:**
 
 - `NoteCommandParserTest`
@@ -364,27 +361,32 @@ Steps:
 
 * Accepted textual values: `HIGH`, `MEDIUM`, `LOW` (case-insensitive)  
 * Accepted numeric values: `1`–`5`
+* Accepted `` to clear priority
 
 **Mapping:**
+
 | Numeric | Level  |
 |----------|---------|
 | 1, 2     | HIGH    |
 | 3, 4     | MEDIUM  |
 | 5        | LOW     |
 
-**Implementation steps:**
+**Implementation steps**
 
-1. **Parse**:
-   * `PriorityCommandParser.parse(String args)` → index + `PREFIX_PRIORITY`
-   * Validates with `ParserUtil.parsePriority(...)`.
-2. **Create**:
-   * `new PriorityCommand(index, new Priority(value))`
-3. **Execute**:
-   * Updates the person’s priority via `model.setPerson(...)`.
-   * Commits model after success.
+1. **Parse**
+   * `PriorityCommandParser.parse(String args)` tokenizes for index and `PREFIX_PRIORITY`.
+   * If the `pr/` value is **blank** after trimming → treat as **clear** (`priority = null`).
+   * Otherwise parse with `ParserUtil.parsePriority(raw)`.
+2. **Create**
+   * `new PriorityCommand(index, /* may be null */ priority)`
+3. **Execute**
+   * Build an edited `Person` where the priority is set to the parsed `Priority` **or cleared when null**.
+   * `model.setPerson(original, edited)` and `model.commitAddressBook()`.
+   * Return a message indicating either “Set priority …” or “Cleared priority …”.
 
 **Important details:**
-
+* `pr/` with **blank value** clears the person’s priority.
+* Otherwise `pr/PRIORITY` must be one of HIGH, MEDIUM, LOW, or 1..5.
 * Case-insensitive input accepted.
 * Numeric 1–5 mapped to textual levels.
 * Invalid (e.g., `0`, `6`, `URGENT`) → ParseException.
@@ -399,45 +401,26 @@ Steps:
 - priority 3 pr/HIGH
 - priority 1 pr/2
 - priority 2 pr/low
+- priority 3 pr/
 
 ### HelpCommand
 
-## Purpose
+**Command format**  
+`help`  
 
-The `help` command displays usage instructions to the user.  
-In the GUI, it opens the **Help Window**; in the CLI, it shows a message indicating that help is displayed.
+**Important details:**
 
----
+* Does **not** modify the model; therefore, it does **not** commit any changes.
+* No arguments are accepted.
+* Any extra input should cause a parse failure.
+* You can also hover on Help at the menu bar and click 'Help F1' to open up the HelpWindow.
 
-## Command Format
+**Example:**
 
-help
-
-- No arguments are accepted.
-- Any extra input should cause a parse failure.
-
----
-
-## Behaviour
-
-- Does **not** modify the model; therefore, it does **not** commit any changes.
-- Returns a `CommandResult` with:
-  - `feedbackToUser = "Opened help window."`
-  - `showHelp = true` (signals UI to open help)
-  - `exit = false`
-
----
-
-## Example Usage
-
-> help  
+`help`
 Opened help window.
 
-You can also hover on Help at the menu bar and click 'Help F1' to open up the HelpWindow.
-
----
-
-## Dependencies
+**Important implementation points:**
 
 The `help` command relies on the following files for the GUI implementation:
 
@@ -452,9 +435,6 @@ The `help` command relies on the following files for the GUI implementation:
 
 3. **`HelpWindow.css`** 
    - Provides styling for the help window, such as button appearance, font styles, and layout padding.
-
-
----
 
 
 

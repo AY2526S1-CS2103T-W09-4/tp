@@ -27,11 +27,11 @@ public class PriorityCommand extends Command {
             + "Parameters: INDEX (must be a positive integer) "
             + PREFIX_PRIORITY + "PRIORITY (HIGH/MEDIUM/LOW or 1-5)\n"
             + "Example: " + COMMAND_WORD + " 1 "
-            + PREFIX_PRIORITY + "HIGH";
-
+            + PREFIX_PRIORITY + "HIGH"
+            + "To clear priority: " + COMMAND_WORD + " INDEX pr/\n";
     public static final String MESSAGE_SET_PRIORITY_SUCCESS = "Set priority for Contact: %1$s";
     public static final String MESSAGE_REMOVE_PRIORITY_SUCCESS = "Removed priority from Contact: %1$s";
-
+    public static final String MESSAGE_CLEAR_SUCCESS = "Cleared priority for: %s";
     private final Index index;
     private final Priority priority;
 
@@ -71,7 +71,9 @@ public class PriorityCommand extends Command {
         model.commitAddressBook();
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        return new CommandResult(generateSuccessMessage(editedPerson));
+        String msg = (priority == null) ? String.format(MESSAGE_CLEAR_SUCCESS, editedPerson.getName())
+            : String.format(generateSuccessMessage(editedPerson), editedPerson.getPriority(), editedPerson.getName());
+        return new CommandResult(msg);
     }
 
     /**
