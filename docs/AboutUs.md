@@ -14,7 +14,6 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 <img src="images/brandonnlow.png" width="200px">
 
 [[github](https://github.com/BrandonnLow)]
-[[portfolio](https://portfolio-brandon.vercel.app/)]
 
 * Role: Developer
 * Responsibilities: UI + Data
