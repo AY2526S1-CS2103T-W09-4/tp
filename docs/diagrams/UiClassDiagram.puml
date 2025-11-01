@@ -51,10 +51,17 @@ PersonCard ..> Model
 UiManager -right-> Logic
 MainWindow -left-> Logic
 
+' layout helpers (hidden)
 PersonListPanel -[hidden]left- HelpWindow
 HelpWindow -[hidden]left- CommandBox
 CommandBox -[hidden]left- ResultDisplay
 ResultDisplay -[hidden]left- StatusBarFooter
-
 MainWindow -[hidden]-|> UiPart
+
+' optional: clarify role of UiManager
+note right of UiManager
+  Orchestrates UI lifecycle:
+  - creates MainWindow
+  - passes Logic to UI parts
+end note
 @enduml
