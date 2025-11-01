@@ -181,7 +181,7 @@ Searches across all fields including name, phone, email, address, company, tags,
 
 Updates the details of an existing contact.
 
-**Format:** <mark> edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... </mark>
+**Format:** <mark> edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... \[r/REMARKS\] </mark>
 
 - Edit the contact at the specified INDEX (shown in the contact list)
 - At least one field must be provided
@@ -492,11 +492,8 @@ For bug reports, feature requests, or additional help, please contact our suppor
 
 **Response Time:** We typically respond within 24-48 hours.
 
-<box type="tip" seamless>
-
 **Remember:** QuickCLI is designed for speed. The more you use keyboard commands instead of mouse clicks, the more efficient your workflow becomes!
 
-</box>
 
 --------------------------------------------------------------------------------------------------------------------
 

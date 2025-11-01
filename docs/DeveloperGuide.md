@@ -222,8 +222,6 @@ Similarly, how a redo operation goes through the `Model` component is shown belo
 
 ![RedoSequenceDiagram](images/RedoSequenceDiagram-Model.png)
 
-</div>
-
 Step 6. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
 
 ![UndoRedoState4](images/UndoRedoState4.png)
@@ -347,7 +345,6 @@ Steps:
 ---
 
 
-
 **Key tests:**
 
 - `NoteCommandParserTest`
@@ -367,6 +364,7 @@ Steps:
 * Accepted `` to clear priority
 
 **Mapping:**
+
 | Numeric | Level  |
 |----------|---------|
 | 1, 2     | HIGH    |
@@ -407,42 +405,22 @@ Steps:
 
 ### HelpCommand
 
-## Purpose
+**Command format**  
+`help`  
 
-The `help` command displays usage instructions to the user.  
-In the GUI, it opens the **Help Window**; in the CLI, it shows a message indicating that help is displayed.
+**Important details:**
 
----
+* Does **not** modify the model; therefore, it does **not** commit any changes.
+* No arguments are accepted.
+* Any extra input should cause a parse failure.
+* You can also hover on Help at the menu bar and click 'Help F1' to open up the HelpWindow.
 
-## Command Format
+**Example:**
 
-help
-
-- No arguments are accepted.
-- Any extra input should cause a parse failure.
-
----
-
-## Behaviour
-
-- Does **not** modify the model; therefore, it does **not** commit any changes.
-- Returns a `CommandResult` with:
-  - `feedbackToUser = "Opened help window."`
-  - `showHelp = true` (signals UI to open help)
-  - `exit = false`
-
----
-
-## Example Usage
-
-> help  
+`help`
 Opened help window.
 
-You can also hover on Help at the menu bar and click 'Help F1' to open up the HelpWindow.
-
----
-
-## Dependencies
+**Important implementation points:**
 
 The `help` command relies on the following files for the GUI implementation:
 
@@ -457,9 +435,6 @@ The `help` command relies on the following files for the GUI implementation:
 
 3. **`HelpWindow.css`** 
    - Provides styling for the help window, such as button appearance, font styles, and layout padding.
-
-
----
 
 
 
