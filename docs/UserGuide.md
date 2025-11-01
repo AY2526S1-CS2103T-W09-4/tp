@@ -116,18 +116,18 @@ Before diving into specific commands, here's how you read the command syntax:
 
 Adds a new client contact so you can manage your client list in QuickCLI.
 
-**Format:** <mark> add n/NAME p/PHONE \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... \[r/REMARKS\] </mark> 
+**Format:** <mark> add n/NAME p/PHONE [e/EMAIL\] [a/ADDRESS\] [c/COMPANY\] [pr/PRIORITY\] [t/TAG\]... [r/REMARKS\] </mark> 
 **Parameters:**
 
-<div class="joplin-table-wrapper"><table><tbody><tr><th><p><strong>Parameter</strong></p></th><th><p><strong>Definition / Explanation</strong></p></th></tr><tr><td><p>n/NAME</p></td><td><p>Client's name (required)</p><ul><li>Alphanumeric characters and spaces only</li><li>1-100 characters</li></ul></td></tr><tr><td><p>p/PHONE</p></td><td><p>Phone number (required)</p><ul><li>Numbers only, 3-15 digits</li></ul></td></tr><tr><td><p>e/EMAIL</p></td><td><p>Email address (optional)</p><ul><li>Must be valid email format</li></ul></td></tr><tr><td><p>a/ADDRESS</p></td><td><p>Address (optional)</p></td></tr><tr><td><p>C/COMPANY</p></td><td><p>Company name (optional)</p><ul><li>Can include letters, numbers, spaces, and . , &amp; -</li></ul></td></tr><tr><td><p>t/TAG</p></td><td><p>Tags for categorization (optional, multiple allowed)</p><ul><li>Single word, alphanumeric only</li></ul></td></tr><tr><td><p>pr/PRIORITY</p></td><td><p>Priority level (optional)</p><ul><li>Can be HIGH, MEDIUM, or LOW (case-insensitive)</li><li>Or numeric: 1-2 = HIGH, 3-4 = MEDIUM, 5 = LOW<ul><li>For more details on this feature, refer to Section: <a href="#setting-priority-for-a-contact-priority">Setting priority for a contact: priority</a></li></ul></li></ul></td></tr><tr><td><p>r/REMARKS</p></td><td><ul><li>Add remarks or project details to a contact (optional)<ul><li>For more details on this feature, refer to Section: <a href="#adding-notes-to-a-contact-note">Adding notes to a contact: note</a></li></ul></li></ul></td></tr></tbody></table></div>
+<div class="joplin-table-wrapper"><table><tbody><tr><th><p><strong>Parameter</strong></p></th><th><p><strong>Definition / Explanation</strong></p></th></tr><tr><td><p>n/NAME</p></td><td><p>Client's name (required)</p><ul><li>Alphanumeric characters and spaces only</li><li>1-100 characters</li></ul></td></tr><tr><td><p>p/PHONE</p></td><td><p>Phone number (required)</p><ul><li>Numbers only, 3-15 digits</li></ul></td></tr><tr><td><p>e/EMAIL</p></td><td><p>Email address (optional)</p><ul><li>Must be valid email format</li></ul></td></tr><tr><td><p>a/ADDRESS</p></td><td><p>Address (optional)</p></td></tr><tr><td><p>c/COMPANY</p></td><td><p>Company name (optional)</p><ul><li>Can include letters, numbers, spaces, and . , &amp; -</li></ul></td></tr><tr><td><p>t/TAG</p></td><td><p>Tags for categorization (optional, multiple allowed)</p><ul><li>Single word, alphanumeric only</li></ul></td></tr><tr><td><p>pr/PRIORITY</p></td><td><p>Priority level (optional)</p><ul><li>Can be HIGH, MEDIUM, or LOW (case-insensitive)</li><li>Or numeric: 1-2 = HIGH, 3-4 = MEDIUM, 5 = LOW<ul><li>For more details on this feature, refer to Section: <a href="#setting-priority-for-a-contact-priority">Setting priority for a contact: priority</a></li></ul></li></ul></td></tr><tr><td><p>r/REMARKS</p></td><td><ul><li>Add remarks or project details to a contact (optional)<ul><li>For more details on this feature, refer to Section: <a href="#adding-notes-to-a-contact-note">Adding notes to a contact: note</a></li></ul></li></ul></td></tr></tbody></table></div>
 
 **Examples:**
 
 | **Command** | **You have added Client...** |
 | --- | --- |
 | <mark> add n/John Doe p/98765432 </mark>  | John Doe - name, phone |
-| <mark> add n/Sarah Chen p/91234567 [e/sarah@design.co](mailto:e/sarah@design.co) c/Chen Designs t/designer t/priority </mark> | Sarah Chen - name, phone; optional: email, company, 2 tags |
-| <mark> add n/Mike Wong p/87654321 [e/mike@techcorp.com](mailto:e/mike@techcorp.com) t/developer r/Prefers Email Communication </mark>| Mike Wong - name, phone; optional: email, tag, remark |
+| <mark> add n/Sarah Chen p/91234567 e/sarah@design.co c/Chen Designs t/designer t/priority </mark> | Sarah Chen - name, phone; optional: email, company, 2 tags |
+| <mark> add n/Mike Wong p/87654321 e/mike@techcorp.com t/developer r/Prefers Email Communication </mark>| Mike Wong - name, phone; optional: email, tag, remark |
 | <mark> add n/Jane Smith p/92345678 e/jane@urgentclient.com pr/HIGH t/priority </mark> | Jane Smith - name, phone; optional: email, priority |
 
 **Note:** QuickCLI prevents duplicate contacts. Two contacts are considered duplicates if they have the same name AND phone number.
@@ -144,12 +144,15 @@ Shows all contacts in your database. You can also filter by tags.
 **Examples:**
 
 <mark> list </mark>
+
 <mark> list t/priority </mark> 
+
 <mark> list t/designer </mark>
 
 **Rules & notes:**
 - At most **one** `t/` is allowed.  
   `list t/friends t/colleagues`
+  
   <img width="395" height="32" alt="image" src="https://github.com/user-attachments/assets/90c4e511-7068-4e71-b14c-4c46e5493d44" />
 
 
