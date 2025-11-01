@@ -99,10 +99,10 @@ Before diving into specific commands, here's how you read the command syntax:
 
 - **Words in UPPER_CASE** are parameters you need to provide
   - Example: add n/NAME means replace NAME with actual name like add <mark> add n/John Doe </mark>
-- **Items in square brackets \[\]** are optional
-  - Example: n/NAME \[t/TAG\] can be used as n/John Doe t/client or just n/John Doe
+- **Items in square brackets [\]** are optional
+  - Example: n/NAME [t/TAG\] can be used as n/John Doe t/client or just n/John Doe
 - **Items with ...** can be used multiple times (including zero)
-  - Example: \[t/TAG\]... can be omitted **OR**
+  - Example: [t/TAG\]... can be omitted **OR**
   - Used once: t/designer **OR**
   - Multiple times t/designer t/priority
 - **Parameters can be in any order**
@@ -161,7 +161,7 @@ Shows all contacts in your database. You can also filter by tags.
 
 Searches across all fields including name, phone, email, address, company, tags, and priority level.
 
-**Format:** <mark> find KEYWORD \[MORE_KEYWORDS\] </mark>
+**Format:** <mark> find KEYWORD [MORE_KEYWORDS\] </mark>
 
 - Search is case-insensitive (john matches John)
 - Partial matching is supported (Joh matches John)
@@ -184,7 +184,7 @@ Searches across all fields including name, phone, email, address, company, tags,
 
 Updates the details of an existing contact.
 
-**Format:** <mark> edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... \[r/REMARKS\] </mark>
+**Format:** <mark> edit INDEX [n/NAME\] [p/PHONE\] [e/EMAIL\] [a/ADDRESS\] [c/COMPANY\] [pr/PRIORITY\] [t/TAG\]... [r/REMARKS\] </mark>
 
 - Edit the contact at the specified INDEX (shown in the contact list)
 - At least one field must be provided
@@ -317,7 +317,7 @@ Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
 
 Organize your contact list for easier access.
 
-**Format:** <mark> sort \[CRITERION\] </mark>
+**Format:** <mark> sort [CRITERION\] </mark>
 
 **Available sorting options:**
 
