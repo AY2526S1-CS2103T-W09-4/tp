@@ -10,7 +10,7 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Priority {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Priority should be one of: HIGH, MEDIUM, LOW (case-insensitive), or 1-5 where 1=HIGH, 3=MEDIUM, 5=LOW";
+            "Priority should be one of: HIGH, MEDIUM, LOW (case-insensitive), or 1-5 where 1-2=HIGH, 3-4=MEDIUM, 5=LOW";
 
     /**
      * Represents the priority level of a person.
