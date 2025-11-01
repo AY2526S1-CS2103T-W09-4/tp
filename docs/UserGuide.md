@@ -185,8 +185,8 @@ Searches across all fields including name, phone, email, address, company, tags,
 
 Updates the details of an existing contact.
 
-**Format:** 
-<mark> <br>edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... </mark>
+**Format:**
+<mark> edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[r/REMARKS\] \[pr/PRIORITY\] \[t/TAG\]... </mark>
 
 - Edit the contact at the specified INDEX (shown in the contact list)
 - At least one field must be provided
@@ -444,7 +444,7 @@ A: Yes, as long as they have different phone numbers. QuickCLI considers contact
 A: QuickCLI can handle up to 1,000 contacts efficiently. Performance may degrade with larger databases.
 
 **Q: Can I undo a delete operation?**  
-A: Currently, delete operations cannot be undone. Future versions will include undo/redo functionality.
+A: Yes! You can use the `undo` command to reverse any delete operation. Use `redo` to reapply an undone operation if needed.
 
 **Q: How do I import contacts from another application?**  
 A: Import/export functionality is coming in version 2.0. For now, you can manually edit the JSON data file.
