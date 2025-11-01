@@ -99,10 +99,10 @@ Before diving into specific commands, here's how you read the command syntax:
 
 - **Words in UPPER_CASE** are parameters you need to provide
   - Example: add n/NAME means replace NAME with actual name like add <mark> add n/John Doe </mark>
-- **Items in square brackets \[\]** are optional
-  - Example: n/NAME \[t/TAG\] can be used as n/John Doe t/client or just n/John Doe
+- **Items in square brackets [\]** are optional
+  - Example: n/NAME [t/TAG\] can be used as n/John Doe t/client or just n/John Doe
 - **Items with ...** can be used multiple times (including zero)
-  - Example: \[t/TAG\]... can be omitted **OR**
+  - Example: [t/TAG\]... can be omitted **OR**
   - Used once: t/designer **OR**
   - Multiple times t/designer t/priority
 - **Parameters can be in any order**
@@ -153,6 +153,7 @@ Shows all contacts in your database. You can also filter by tags.
 **Rules & notes:**
 - At most **one** `t/` is allowed.  
   `list t/friends t/colleagues`
+  
   <img width="395" height="32" alt="image" src="https://github.com/user-attachments/assets/90c4e511-7068-4e71-b14c-4c46e5493d44" />
 
 
@@ -319,7 +320,7 @@ Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
 
 Organize your contact list for easier access.
 
-**Format:** <mark> sort \[CRITERION\] </mark>
+**Format:** <mark> sort [CRITERION\] </mark>
 
 **Available sorting options:**
 
@@ -339,7 +340,7 @@ Organize your contact list for easier access.
 
 ### **History Commands**
 
-All the above commands except [list](#listing-all-contacts-list) directly change the contact list. Every new, changed state of the contact list is tracked, allowing access to states across the history through certain commands like [undo](#undo-last-action-undo) and [redo](#redo-undone-action-redo).
+All the above commands except [list](#listing-all-contacts-list) and [find](#finding-contacts-find) and [help](#viewing-help-help) directly change the contact list. Every new, changed state of the contact list is tracked, allowing access to states across the history through certain commands like [undo](#undo-last-action-undo) and [redo](#redo-undone-action-redo).
 
 #### Undo last action: undo
 
@@ -355,7 +356,27 @@ Redo last action that was undone. Reverts last undo action by moving forward to 
 
 **Format:** <mark> redo </mark>
 
-This only works if there was at least one or more consecutive undo commands called before this redo command, without calling any other command that changes the addressbook. If one of these commands are called after an undo command, that state is set as the most recent, effectively forgetting all previously undone state using the undo command.
+**When does it work?**
+- ✅ You have just used **undo** one or more times, and you **haven’t** run any other command that changes the contacts since then.
+- ❌ If you run a new changing command (e.g., <mark>add</mark>, <mark>edit</mark>, <mark>delete</mark>, <mark>sort</mark>, <mark>priority</mark>, <mark>note</mark>, <mark>clear</mark>), the “redo path” is reset and <mark>redo</mark> is no longer available.
+
+**Quick example**
+1. Start with 3 contacts.  
+2. <mark>add n/Alice p/9000</mark> → now 4 contacts.  
+3. <mark>delete 2</mark> → now 3 contacts.  
+4. <mark>undo</mark> → back to 4 contacts.  
+5. <mark>redo</mark> → reapplies the deletion → back to 3 contacts.
+
+
+**When redo is no longer available**
+1. <mark>add n/Alice p/9000</mark> 
+2. <mark>undo</mark>
+3. (Instead of redo) <mark>edit 1 p/9999</mark> → changes data
+4. <mark>redo</mark> → ❌ Not available (the new edit broke the redo chain)
+
+If <mark>redo</mark> isn’t available, QuickCLI shows: “No actions to redo.”  
+
+Commands like <mark>list</mark>, <mark>help</mark>, <mark>find</mark> and <mark>exit</mark> don’t affect undo/redo history.
 
 ### **System Commands**
 
@@ -512,6 +533,7 @@ For bug reports, feature requests, or additional help, please contact our suppor
 | **Index**                     | The number representing a contact in the current list, used in commands like edit, delete, note.        | `edit 2 n/Jane Smith`                                        |
 | **Parameter**                 | A piece of information required or optional for a command.                                              | In `add n/NAME p/PHONE`, NAME and PHONE are parameters.      |
 | **Required Parameter**        | A parameter that must be provided for the command to execute successfully.                              | `n/NAME` and `p/PHONE` in add.                               |
+| **Alphanumeric**        | Characters that are either alphabets(upper and lower case) or numbers(0-9)                             | `n/NAME` and `t/TAG`                               |
 | **Optional Parameter**        | A parameter that can be omitted without causing an error.                                               | `e/EMAIL`, `a/ADDRESS`, `c/COMPANY`, `t/TAG`, `r/REMARKS`.   |
 | **Priority**                  | A level assigned to a contact indicating their importance or urgency.                                   | `pr/HIGH`, `pr/MEDIUM`, `pr/LOW`, `pr/1`                     |
 | **Tag**                       | A keyword used to categorize or filter contacts.                                                        | `t/client`, `t/priority`.                                    |
