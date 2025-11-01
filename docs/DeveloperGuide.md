@@ -222,8 +222,6 @@ Similarly, how a redo operation goes through the `Model` component is shown belo
 
 ![RedoSequenceDiagram](images/RedoSequenceDiagram-Model.png)
 
-</div>
-
 Step 6. The user then decides to execute the command `list`. Commands that do not modify the address book, such as `list`, will usually not call `Model#commitAddressBook()`, `Model#undoAddressBook()` or `Model#redoAddressBook()`. Thus, the `addressBookStateList` remains unchanged.
 
 ![UndoRedoState4](images/UndoRedoState4.png)
