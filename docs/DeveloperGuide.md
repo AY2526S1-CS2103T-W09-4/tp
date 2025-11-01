@@ -87,9 +87,12 @@ The UI uses JavaFX. Primary points:
 
 The UI communicates with `Logic` only (it has a reference to a `Logic` instance); it does not directly manipulate the `Model` or `Storage`.
 
+<img width="796" height="441" alt="UiClassDiagram" src="https://github.com/user-attachments/assets/0f701846-2e51-412e-b9bf-7ba676484dd6" />
+
+
 ### Logic component
 
-**API**: `Logic` (implemented by `LogicManager`). The parsing subsystem is centered around `AddressBookParser` and many `*CommandParser` classes.
+**API**: `Logic` (implemented by `LogicManager`). The parsing subsystem is centered around `AddressBookParser` and many `*CommandParser` classes. Instead of putting all the `*CommandParser` classes, I used `*XYZCommand`
 
 Key parsing & command classes in the codebase (also covered by parser unit tests):
 
@@ -106,6 +109,8 @@ Command execution flow (high-level):
 5. The `execute` method returns `CommandResult` which contains feedback to the UI.
 
 Several command behaviors are covered by unit tests in `src/test/java/seedu/address/logic/commands` including `PriorityCommandTest`, `NoteCommandTest` (parser + command), `UndoCommandTest`, `RedoCommandTest`, `SortCommandTest`, etc.
+
+<img width="789" height="537" alt="LogicClassDiagram" src="https://github.com/user-attachments/assets/9f2f908e-ba4f-4151-950c-e5a69930ca1d" />
 
 
 ### Model component
