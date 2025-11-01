@@ -345,7 +345,6 @@ Steps:
 ---
 
 
-
 **Key tests:**
 
 - `NoteCommandParserTest`
@@ -401,42 +400,22 @@ Steps:
 
 ### HelpCommand
 
-## Purpose
+**Command format**  
+`help`  
 
-The `help` command displays usage instructions to the user.  
-In the GUI, it opens the **Help Window**; in the CLI, it shows a message indicating that help is displayed.
+**Important details:**
 
----
+* Does **not** modify the model; therefore, it does **not** commit any changes.
+* No arguments are accepted.
+* Any extra input should cause a parse failure.
+* You can also hover on Help at the menu bar and click 'Help F1' to open up the HelpWindow.
 
-## Command Format
+**Example:**
 
-help
-
-- No arguments are accepted.
-- Any extra input should cause a parse failure.
-
----
-
-## Behaviour
-
-- Does **not** modify the model; therefore, it does **not** commit any changes.
-- Returns a `CommandResult` with:
-  - `feedbackToUser = "Opened help window."`
-  - `showHelp = true` (signals UI to open help)
-  - `exit = false`
-
----
-
-## Example Usage
-
-> help  
+`help`
 Opened help window.
 
-You can also hover on Help at the menu bar and click 'Help F1' to open up the HelpWindow.
-
----
-
-## Dependencies
+**Important implementation points:**
 
 The `help` command relies on the following files for the GUI implementation:
 
@@ -451,9 +430,6 @@ The `help` command relies on the following files for the GUI implementation:
 
 3. **`HelpWindow.css`** 
    - Provides styling for the help window, such as button appearance, font styles, and layout padding.
-
-
----
 
 
 
