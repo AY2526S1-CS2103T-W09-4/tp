@@ -174,7 +174,7 @@ Searches across all fields including name, phone, email, address, company, tags,
 
 Updates the details of an existing contact.
 
-**Format:** <mark> edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... </mark>
+**Format:** <mark> edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... \[r/REMARKS\] </mark>
 
 - Edit the contact at the specified INDEX (shown in the contact list)
 - At least one field must be provided
