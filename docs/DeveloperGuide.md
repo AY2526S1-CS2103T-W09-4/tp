@@ -971,7 +971,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 2. `add n/Test User p/91234567` — new contact created and visible in top of list (or bottom depending on sort), success message appears.
 3. `find Test` — the previously added contact should be shown.
 4. `edit 1 p/99999999` — the phone of the first visible contact should update.
-5. `note 1 r/Meeting notes` — note should be saved and `Note:` visible in person card (or `-` placeholder cleared).
+5. `note 1 r/Meeting notes` — note should be saved and Note: Meeting notes should become visible in the person card (previously hidden if no note existed).
 6. `priority 1 pr/HIGH` — the contact’s priority should update and any visual badge updated.
 7. `delete 1` — deletion happens; confirm address book updated in UI and status bar.
 8. `undo` (if implemented) — the last mutation is undone. 
