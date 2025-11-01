@@ -70,7 +70,8 @@ public class PriorityCommand extends Command {
         model.setPerson(personToEdit, editedPerson);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        String msg = (priority == null) ? String.format(MESSAGE_CLEAR_SUCCESS, editedPerson.getName()) : String.format(generateSuccessMessage(editedPerson), editedPerson.getPriority(), editedPerson.getName());
+        String msg = (priority == null) ? String.format(MESSAGE_CLEAR_SUCCESS, editedPerson.getName())
+            : String.format(generateSuccessMessage(editedPerson), editedPerson.getPriority(), editedPerson.getName());
         return new CommandResult(msg);
     }
 
