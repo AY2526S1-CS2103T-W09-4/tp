@@ -1,0 +1,42 @@
+/* ----------------------------
+   Status Bar Footer - Sleek
+   ---------------------------- */
+
+/* container */
+.status-bar {
+    -fx-background-color: linear-gradient(to bottom, #292929, #232323); /* very subtle depth */
+    -fx-padding: 10 14; /* comfortable breathing room */
+    -fx-border-color: rgba(74,74,74,0.85); /* refined separator */
+    -fx-border-width: 1 0 0 0;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.36), 6, 0, 0, -1); /* subtle depth */
+}
+
+/* wrapper spacing (keeps structure intact) */
+.status-bar #saveContainer {
+    -fx-padding: 2 0;
+}
+
+/* primary label (save path) — stronger weight and uppercase style */
+.status-bar #saveLocationStatus {
+    -fx-text-fill: #e6e6e6;                /* soft near-white for clarity */
+    -fx-font-size: 12px;
+    -fx-font-family: "JetBrains Mono", monospace;
+    -fx-font-weight: 600;                  /* semi-bold for emphasis */
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-padding: 2 0;
+    -fx-opacity: 0.95;
+}
+
+/* secondary label (copyright) — lighter and smaller for visual hierarchy */
+.status-bar #copyrightLabel {
+    -fx-padding: 6 0 0 0;                  /* spaced a bit below the path */
+    -fx-font-size: 11px;
+    -fx-font-family: "JetBrains Mono", monospace;
+    -fx-font-weight: 400;
+    -fx-text-fill: #9b9b9b;                /* muted gray for lower emphasis */
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-opacity: 0.95;
+}

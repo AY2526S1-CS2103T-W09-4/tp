@@ -20,7 +20,6 @@ class Model
 class CommandResult
 class CommandException
 class Person
-class ToStringBuilder
 class Messages
 
 ' =============================
@@ -41,7 +40,6 @@ NoteCommand ..> Model : uses
 NoteCommand ..> CommandResult : returns
 NoteCommand ..> CommandException : throws
 NoteCommand ..> Person : edits
-NoteCommand ..> ToStringBuilder : uses
 NoteCommand ..> Messages : formats
 
 note top of NoteCommand

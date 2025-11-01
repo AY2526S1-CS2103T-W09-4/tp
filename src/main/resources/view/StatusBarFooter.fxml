@@ -1,12 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Pos?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane styleClass="status-bar" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
-  <columnConstraints>
-    <ColumnConstraints hgrow="SOMETIMES" minWidth="10" />
-  </columnConstraints>
-  <Label fx:id="saveLocationStatus" />
-</GridPane>
+<VBox fx:id="statusBar"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      styleClass="status-bar"
+      alignment="CENTER"
+      spacing="4"
+      minHeight="50"
+      stylesheets="@StatusBarFooter.css">
+
+    <!-- Save file location (uppercase for a sleek status look) -->
+    <StackPane fx:id="saveContainer">
+        <Label fx:id="saveLocationStatus"
+               text="SAVE FILE LOCATION: ./data/"
+               alignment="CENTER"
+               textAlignment="CENTER" />
+    </StackPane>
+
+    <!-- Copyright label (uppercase branding) -->
+    <Label fx:id="copyrightLabel"
+           text="© 2025 QUICKCLI"
+           alignment="CENTER"
+           textAlignment="CENTER" />
+</VBox>

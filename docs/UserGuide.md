@@ -2,33 +2,38 @@
 
 ## **Table of Contents**
 
-- [About: How to use the guide](#_QuickCLI_User_Guide)
-- [Product Overview](#_Product_Overview)
-- [Quick Start](#_Quick_Start)
-- [Features](#_Features)
-  - [Understanding the Command Format](#_Understanding_the_Command)
-  - [Adding a contact: add](#_Adding_a_contact:)
-  - [Listing all contacts: list](#_Listing_all_contacts:)
-  - [Finding contacts: find](#_Finding_contacts:_find)
-  - [Editing a contact: edit](#_Editing_a_contact:)
-  - [Deleting a contact: delete](#_Deleting_a_contact:)
-  - [Adding notes to a contact: note](#_Adding_notes_to)
-  - [Sorting contacts: sort](#_Sorting_contacts:_sort)
-  - [Clearing all contacts: clear](#_Sorting_contacts:_sort)
-  - [Viewing help: help](#_Viewing_help:_help)
-  - [Exiting the program: exit](#_Exiting_the_program:)
-- [Data Management](#_Data_Management)
-  - [Saving the data](#_Saving_the_data)
-  - [Editing the data file](#_Editing_the_data)
-- [FAQ](#_FAQ)
-- [Command Summary](#_Command_Summary)
-- [Troubleshooting](#_Troubleshooting)
-- [Contact & Support](#_Contact_&_Support)
-- [Glossary](#_Glossary)
+- [About: How to use the guide](#about-how-to-use-the-guide)
+- [Product Overview](#product-overview)
+- [Quick Start](#quick-start)
+- [Features](#features)
+  - [Understanding the Command Format](#understanding-the-command-format)
+  - [Adding a contact: add](#adding-a-contact-add)
+  - [Listing all contacts: list](#listing-all-contacts-list)
+  - [Finding contacts: find](#finding-contacts-find)
+  - [Editing a contact: edit](#editing-a-contact-edit)
+  - [Adding notes to a contact: note](#adding-notes-to-a-contact-note)
+  - [Setting priority for a contact: priority](#setting-priority-for-a-contact-priority)
+  - [Deleting a contact: delete](#deleting-a-contact-delete)
+  - [Sorting contacts: sort](#sorting-contacts-sort)
+  - [Clearing all contacts: clear](#clearing-all-contacts-clear)
+  - [Undo last action: undo](#undo-last-action-undo)
+  - [Redo undone action: redo](#redo-undone-action-redo)
+  - [Viewing help: help](#viewing-help-help)
+  - [Exiting the program: exit](#exiting-the-program-exit)
+- [Data Management](#data-management)
+  - [Saving the data](#saving-the-data)
+  - [Editing the data file](#editing-the-data-file)
+- [FAQ](#faq)
+- [Command Summary](#command-summary)
+- [Troubleshooting](#troubleshooting)
+- [Contact & Support](#contact--support)
+- [Glossary](#glossary)
+
+--------------------------------------------------------------------------------------------------------------------
 
 ## **About: How to use the guide**
 
-Words highlighted in <mark> yellow </mark> represent commands that should be typed into the **command terminal** in QuickCLI under the section [Features](#_Features).
+Words highlighted in <mark> yellow </mark> represent commands that should be typed into the **command terminal** in QuickCLI under the [Features](#features) section.
 
 **Tip Boxes** provide additional guidance or useful hints to help you use QuickCLI more effectively:
 <img width="553" height="109" alt="image" src="https://github.com/user-attachments/assets/ae8307da-aec9-448d-a3ce-644025781e3e" />
@@ -36,14 +41,17 @@ Words highlighted in <mark> yellow </mark> represent commands that should be typ
 **Warning Boxes** alert you about something important, risky, or potentially destructive.
 <img width="565" height="109" alt="image" src="https://github.com/user-attachments/assets/3a9df3d2-4b3d-4f75-bd08-7d02e0193954" />
 
+--------------------------------------------------------------------------------------------------------------------
 
-## **Product Overview**
+## Product Overview
 
 QuickCLI is a **desktop application for freelance professionals** who need to manage multiple client relationships efficiently. Optimized for users who can type fast, QuickCLI allows you to manage your contacts faster than traditional GUI applications through a Command Line Interface (CLI), while still providing the visual benefits of a Graphical User Interface (GUI).
 
 **Perfect for:** Freelance developers, designers, writers, marketers, and consultants who value keyboard efficiency and need quick access to client information.
 
-## **Quick Start**
+--------------------------------------------------------------------------------------------------------------------
+
+## Quick Start
 
 - **Check System Requirements**
   - Ensure you have Java 17 or above installed on your computer, follow the Instruction Guide for Windows users [here](https://se-education.org/guides/tutorials/javaInstallationWindows.html)
@@ -80,6 +88,8 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
   - <mark> add n/Jane Smith p/91234567 </mark> - Add a new contact
   - <mark> find John </mark> - Search for contacts named John
   - <mark> help </mark> - View available commands
+
+--------------------------------------------------------------------------------------------------------------------
 
 ## **Features**
 
@@ -141,6 +151,13 @@ Shows all contacts in your database. You can also filter by tags.
 <br/>
 <mark> list t/designer </mark>
 
+**Rules & notes:**
+- At most **one** `t/` is allowed.  
+  `list t/friends t/colleagues`
+  <img width="395" height="32" alt="image" src="https://github.com/user-attachments/assets/90c4e511-7068-4e71-b14c-4c46e5493d44" />
+
+
+  
 #### Finding contacts: find
 
 Searches across all fields including name, phone, email, address, company, tags, and priority level.
@@ -211,7 +228,7 @@ Add remarks or project details to a contact.
 - <mark> note 2 r/Meeting scheduled for next Tuesday, 2pm  </mark>
 - <mark> note 1 r/ </mark>
 
-Setting priority for a contact: priority  
+#### Setting priority for a contact: priority
 <br/>Assign or update the priority level for a contact to help you focus on important clients.  
 <br/>**Format:** <mark> priority INDEX pr/PRIORITY </mark>
 
@@ -242,27 +259,58 @@ Setting priority for a contact: priority
 
 #### Deleting a contact: delete
 
-Removes a contact from your database.
+Removes one or multiple contacts from your database.
 
-**Format:** <mark> delete INDEX </mark>
+**Format:**
+- Single deletion: <mark> delete INDEX </mark>
+- Multiple deletion: <mark> delete INDEX1,INDEX2,INDEX3 </mark>
+- Range deletion: <mark> delete START-END </mark>
+- Combined: <mark> delete INDEX1,INDEX2,START-END </mark>
 
-- Deletes the contact at the specified INDEX
-- The index refers to the number shown in the current contact list
-- The index must be a positive integer (1, 2, 3, ...)
+**Parameters:**
+- INDEX: The contact number shown in the current list (must be positive integer)
+- Multiple indices can be separated by commas
+- Ranges can be specified with a hyphen (e.g., 5-7 deletes contacts 5, 6, and 7)
+- Can combine individual indices and ranges (e.g., 1,3,5-7,10)
+
+**Bulk Delete Confirmation:**
+When deleting multiple contacts (2 or more), QuickCLI will show a confirmation dialog to prevent accidental deletion. Click "YES" to proceed or "NO" to cancel.
+
+<box type="warning" seamless>
+Warning: Bulk delete operations cannot be undone. Always verify the indices before confirming deletion.
+</box>
 
 **Examples:**
 
-<mark> delete 3 </mark> deletes Charlotte Oliveiro
+**Single deletion:**
+<mark>delete 3</mark> - Deletes contact at index 3 (e.g., Charlotte Oliveiro)
 
 <img width="905" height="737" alt="image" src="https://github.com/user-attachments/assets/c2f24953-7b94-4863-88d6-5e5324724f72" />
 
-<img width="865" height="202" alt="image" src="https://github.com/user-attachments/assets/34b01396-f1a0-48a0-9267-7760d0e6eb86" />
+**Multiple deletion:**
+<mark>delete 1,3,5</mark> - Deletes contacts at indices 1, 3, and 5
 
-<mark> find roy </mark>
+**Range deletion:**
+<mark>delete 2-4</mark> - Deletes contacts from index 2 to 4 (inclusive)
 
-<img width="902" height="737" alt="image" src="https://github.com/user-attachments/assets/4b7b3f49-adad-40f9-a40e-db8edbcb7540" />
+**Combined deletion:**
+<mark>delete 1,3,5-7,10</mark> - Deletes contacts at indices 1, 3, 5, 6, 7, and 10
 
-<mark> delete 1 </mark> (Deletes Person with Index 1 in the list filtered by find: In this case, it deletes Roy Balakrishnan)
+**After using find:**
+
+<mark>find roy</mark>
+
+<mark>delete 1</mark>
+
+Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
+
+<box type="tip" seamless>
+<img src="images/tips-delete.png" width="1286" alt="warning" />
+</box>
+
+**Error Handling:**
+- If any index is invalid, QuickCLI will display all invalid indices and the operation will be cancelled
+- Example: <mark>delete 1,3,50</mark> when only 10 contacts exist will show: "Invalid indices: 50 (person list has 10 entries)"
 
 ### **Organizing Your Contacts**
 
@@ -275,7 +323,10 @@ Organize your contact list for easier access.
 **Available sorting options:**
 
 - sort or sort name - Alphabetical by name (default)
-- sort recent - Most recently added first
+- sort phone
+- sort email
+- sort address
+- sort tag - Sorts by first tag
 - sort priority - By priority level (HIGH → MEDIUM → LOW, then no priority)
 
 **Examples:**
@@ -284,6 +335,26 @@ Organize your contact list for easier access.
 - <mark> sort name </mark>
 - <mark> sort recent </mark>
 - <mark> sort priority </mark>
+
+### **History Commands**
+
+All the above commands except [list](#listing-all-contacts-list) directly change the contact list. Every new, changed state of the contact list is tracked, allowing access to states across the history through certain commands like [undo](#undo-last-action-undo) and [redo](#redo-undone-action-redo).
+
+#### Undo last action: undo
+
+Undo last action done by user; Moves back to previous saved state in the history. 
+
+**Format:** <mark> undo </mark>
+
+This only works if there are actions to undo.
+
+#### Redo undone action: redo
+
+Redo last action that was undone. Reverts last undo action by moving forward to the next saved state in the history.
+
+**Format:** <mark> redo </mark>
+
+This only works if there was at least one or more consecutive undo commands called before this redo command, without calling any other command that changes the addressbook. If one of these commands are called after an undo command, that state is set as the most recent, effectively forgetting all previously undone state using the undo command.
 
 ### **System Commands**
 
@@ -330,26 +401,8 @@ Closes QuickCLI. Your data is automatically saved.
 
 <img width="947" height="180" alt="image" src="https://github.com/user-attachments/assets/f5e211e8-f1bf-4ca6-a585-2385de34712d" />
 
-## **FAQ**
+--------------------------------------------------------------------------------------------------------------------
 
-**Q: Can I use QuickCLI on multiple computers?** A: Yes! Copy the quickcli.json data file from the data folder to transfer your contacts between computers.
-
-**Q: What happens if I enter an invalid command?** A: QuickCLI will show an error message explaining what went wrong. Check the command format and try again.
-
-**Q: Can I have multiple contacts with the same name?** A: Yes, as long as they have different phone numbers. QuickCLI considers contacts duplicates only if both name AND phone number match.
-
-**Q: Is there a limit to how many contacts I can store?** A: QuickCLI can handle up to 1,000 contacts efficiently. Performance may degrade with larger databases.
-
-**Q: Can I undo a delete operation?** A: Currently, delete operations cannot be undone. Future versions will include undo/redo functionality.
-
-**Q: How do I import contacts from another application?** A: Import/export functionality is coming in version 2.0. For now, you can manually edit the JSON data file.
-
-**Q: What if QuickCLI doesn't start?**
-
-- Check that Java 17 or higher is installed: java -version
-- Ensure you're in the correct directory
-- Try running with: java -jar quickcli.jar
-- Check for error messages in the terminal
 ## Data Management
 
 ### Saving the data
@@ -417,19 +470,19 @@ A: Import/export functionality is coming in version 2.0. For now, you can manual
 
 ## Command Summary
 
-| Action   | Format                                                                                              | Example                                                                           |
-|----------|-----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| Add      | `add n/NAME p/PHONE [e/EMAIL] [c/COMPANY] [t/TAG] [r/REMARKS]`                                     | `add n/John Doe p/98765432 e/john@email.com t/client r/Prefers Email Communication` |
-| List     | `list [t/TAG]`                                                                                      | `list` or `list t/priority`                                                       |
-| Find     | `find KEYWORD [MORE_KEYWORDS]`                                                                      | `find john smith`                                                                 |
-| Edit     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [c/COMPANY] [t/TAG]...`                                   | `edit 2 p/91234567 e/newemail@company.com`                                        |
-| Delete   | `delete INDEX`                                                                                      | `delete 3`                                                                        |
-| Note     | `note INDEX r/REMARKS`                                                                              | `note 1 r/Important client, handle with care`                                     |
-| Priority | `priority INDEX pr/PRIORITY`                                                                        | `priority 1 pr/HIGH`                                                              |
-| Sort     | `sort [name|recent|priority]`                                                                       | `sort recent`                                                                     |
-| Clear    | `clear`                                                                                             | `clear` (then `clear confirm`)                                                    |
-| Help     | `help`                                                                                              | `help`                                                                            |
-| Exit     | `exit`                                                                                              | `exit`                                                                            |
+| Action   | Format                                                                               | Example                                                                           |
+|----------|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
+| Add      | `add n/NAME p/PHONE [e/EMAIL] [c/COMPANY] [t/TAG] [r/REMARKS]`                       | `add n/John Doe p/98765432 e/john@email.com t/client r/Prefers Email Communication` |
+| List     | `list [t/TAG]`                                                                       | `list` or `list t/priority`                                             |
+| Find     | `find KEYWORD [MORE_KEYWORDS]`                                                       | `find john smith`                                                                 |
+| Edit     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [c/COMPANY] [t/TAG]...`                     | `edit 2 p/91234567 e/newemail@company.com`                              |
+| Delete   | `delete INDEX` or `delete INDEX1,INDEX2,...` or `delete START-END`                   | `delete 3` or `delete 1,3,5` or `delete 2-4` or `delete 1,3,5-7,10`     |
+| Note     | `note INDEX r/REMARKS`                                                               | `note 1 r/Important client, handle with care`                           |
+| Priority | `priority INDEX pr/PRIORITY`                                                         | `priority 1 pr/HIGH`                                                    |
+| Sort     | `sort [SORTKEY]`                                                                     | `sort name` or `sort phone`                                             |
+| Clear    | `clear`                                                                              | `clear` (then `clear confirm`)                                          |
+| Help     | `help`                                                                               | `help`                                                                  |
+| Exit     | `exit`                                                                               | `exit`                                                                  |
 
 --------------------------------------------------------------------------------------------------------------------
 

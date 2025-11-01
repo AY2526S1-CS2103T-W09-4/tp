@@ -33,6 +33,6 @@ public class UndoCommand extends Command {
 
     @Override
     public boolean equals(Object other) {
-        return other == this || other instanceof UndoCommand;
+        return other instanceof UndoCommand;
     }
 }
