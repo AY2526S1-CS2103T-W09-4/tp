@@ -11,9 +11,9 @@ public class Phone {
 
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Phone numbers should contain only digits, spaces, hyphens, and plus signs, "
-                    + "with at least 3 digits. Valid formats include: 91234567, +65 9123 4567, +1-650-555-0123";
-    public static final String VALIDATION_REGEX = "[+\\d\\s-]+";
+            "Phone numbers should contain only numbers, "
+                    + "with 3-15 digits. Valid formats include: 91234567, 123";
+    public static final String VALIDATION_REGEX = "\\d{3,15}";
     public final String value;
 
     /**
