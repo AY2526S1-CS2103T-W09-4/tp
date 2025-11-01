@@ -87,9 +87,7 @@ public class NoteCommand extends Command {
             message = MESSAGE_ADD_NOTE_SUCCESS;
         }
 
-        // Use Note.toDisplayString() to include timestamp nicely
-        String noteDisplay = person.getNote().toDisplayString();
-        return String.format(message, Messages.format(person) + " [" + noteDisplay + "]");
+        return String.format(message, Messages.format(person));
     }
 
     @Override
