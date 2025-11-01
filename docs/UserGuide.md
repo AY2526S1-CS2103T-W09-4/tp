@@ -147,6 +147,13 @@ Shows all contacts in your database. You can also filter by tags.
 <mark> list t/priority </mark> 
 <mark> list t/designer </mark>
 
+**Rules & notes:**
+- At most **one** `t/` is allowed.  
+  `list t/friends t/colleagues`
+  <img width="395" height="32" alt="image" src="https://github.com/user-attachments/assets/90c4e511-7068-4e71-b14c-4c46e5493d44" />
+
+
+  
 #### Finding contacts: find
 
 Searches across all fields including name, phone, email, address, company, tags, and priority level.
