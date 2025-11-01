@@ -310,7 +310,10 @@ Organize your contact list for easier access.
 **Available sorting options:**
 
 - sort or sort name - Alphabetical by name (default)
-- sort recent - Most recently added first
+- sort phone
+- sort email
+- sort address
+- sort tag - Sorts by first tag
 - sort priority - By priority level (HIGH → MEDIUM → LOW, then no priority)
 
 **Examples:**
