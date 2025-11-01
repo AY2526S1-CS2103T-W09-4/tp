@@ -480,11 +480,8 @@ For bug reports, feature requests, or additional help, please contact our suppor
 
 **Response Time:** We typically respond within 24-48 hours.
 
-<box type="tip" seamless>
-
 **Remember:** QuickCLI is designed for speed. The more you use keyboard commands instead of mouse clicks, the more efficient your workflow becomes!
 
-</box>
 
 --------------------------------------------------------------------------------------------------------------------
 
