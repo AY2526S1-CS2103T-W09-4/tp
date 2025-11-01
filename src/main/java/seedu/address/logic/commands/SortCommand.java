@@ -39,9 +39,11 @@ public class SortCommand extends Command {
         case PHONE:
             return java.util.Comparator.comparing(p -> p.getPhone().value);
         case EMAIL:
-            return java.util.Comparator.comparing(p -> p.getEmail().value, String.CASE_INSENSITIVE_ORDER);
+            return java.util.Comparator.comparing(p -> p.getEmail() == null ? "\uFFFF" : p.getEmail().value,
+                    String.CASE_INSENSITIVE_ORDER);
         case ADDRESS:
-            return java.util.Comparator.comparing(p -> p.getAddress().value, String.CASE_INSENSITIVE_ORDER);
+            return java.util.Comparator.comparing(p -> p.getAddress() == null ? "\uFFFF" : p.getAddress().value,
+                    String.CASE_INSENSITIVE_ORDER);
         case TAG:
             return java.util.Comparator.comparing(p -> p.getTags().stream()
                     .map(tag -> tag.tagName)
