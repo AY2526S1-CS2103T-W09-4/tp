@@ -12,7 +12,7 @@ public class ArgumentTokenizerTest {
     private final Prefix unknownPrefix = new Prefix("--u");
     private final Prefix pSlash = new Prefix("p/");
     private final Prefix dashT = new Prefix("-t");
-    private final Prefix hatQ = new Prefix("^Q");
+    private final Prefix hatQ = new Prefix("^q");
 
     @Test
     public void tokenize_emptyArgsString_noValues() {
