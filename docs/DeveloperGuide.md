@@ -334,8 +334,7 @@ This is a class diagram representing `NoteCommandParser.java` file.
 2. **Create NoteCommand**:
    * `new NoteCommand(Index, new Note(value))`
 3. **Execute**:
-  ## High-level purpose
-`NoteCommand` **adds or updates a `Note`** (remark) for an existing `Person` in the address book.  
+`NoteCommand` adds or updates a `Note` (remark) for an existing `Person` in the address book.  
 Steps:
 
 1. Read filtered person list from `Model`.  
@@ -444,7 +443,7 @@ The `help` command relies on the following files for the GUI implementation:
 
 
 
-# Sort — implementation notes & tests
+### Sort — implementation notes & tests
 
 > Diagrams referenced  
 > * Class diagram: shows `SortCommand` (has `key: SortKeys`) → builds `Comparator<Person>` → calls `Model#sortPersonList(Comparator)` → `AddressBook` → `UniquePersonList` → `Person` accessors.
@@ -456,15 +455,15 @@ The `help` command relies on the following files for the GUI implementation:
 
 ---
 
-## Command format
+**Command format**
 sort [CRITERION]
 
-- If no args or only whitespace → **defaults to** `name`.  
+- If no args or only whitespace → defaults to `name`.  
 - Valid criteria (case-insensitive): `name`, `phone`, `email`, `address`, `tag`, `priority`.
 
 ---
 
-## High-level flow (parse → command → execute) — matches sequence diagram and code
+**High-level flow (parse → command → execute) — matches sequence diagram and code**
 
 1. `LogicManager` hands the raw user input to `AddressBookParser`.  
 2. `AddressBookParser` delegates to `SortCommandParser` which:
@@ -476,16 +475,16 @@ sort [CRITERION]
    1. `requireNonNull(model)`.
    2. `Comparator<Person> cmp = comparatorFor(key);` — `comparatorFor` returns the comparator for the selected `SortKeys` (detailed below).
    3. `model.sortPersonList(cmp);` — the model is asked to sort its person list using that comparator.
-      - According to the sequence/class diagram and current code structure, that results in `AddressBook` delegating to `UniquePersonList.sort(cmp)`, which sorts the list **in-place** (i.e., mutates the model’s internal person ordering).
+      - According to the sequence/class diagram and current code structure, that results in `AddressBook` delegating to `UniquePersonList.sort(cmp)`, which sorts the list in-place (i.e., mutates the model’s internal person ordering).
    4. `model.commitAddressBook();` — the command commits the change to the model (so sorting is treated as a model state change, enabling undo/redo).
    5. Build success message: `String.format(MESSAGE_SUCCESS, key.getDisplayName())`.
    6. `return new CommandResult(message)`.
 
-> Important: the code **does** call `model.commitAddressBook()` (so sorting is currently a mutation and recorded for undo/redo). The diagrams show the in-place sort via `AddressBook / UniquePersonList` — this matches the code.
+> Important: the code does call `model.commitAddressBook()` (so sorting is currently a mutation and recorded for undo/redo). The diagrams show the in-place sort via `AddressBook / UniquePersonList` — this matches the code.
 
 ---
 
-## How comparators are built (rules implemented in `comparatorFor`)
+**How comparators are built (rules implemented in `comparatorFor`)**
 - `NAME` → compare `Person.getName().fullName`, case-insensitive.
 - `PHONE` → compare `Person.getPhone().value` (string).
 - `EMAIL` → compare `Person.getEmail().value`, case-insensitive.
@@ -501,15 +500,13 @@ If an unsupported key is passed, the code throws `IllegalArgumentException("Unsu
 
 ---
 
-## Class-level mapping (from the class diagram)
+**Class-level mapping (from the class diagram)**
 - `SortCommand` (fields / methods shown in class diagram and implemented in code):
   - field: `private final SortKeys key;`
   - constructor: `SortCommand(SortKeys key)`
   - `execute(Model model) : CommandResult` — builds comparator, calls `model.sortPersonList(cmp)`, `model.commitAddressBook()`, returns `CommandResult`.
   - `private comparatorFor(SortKeys f) : Comparator<Person>` — builds comparator per key (see rules above).
   - `equals(Object other)` — current implementation: `return other == this || other instanceof SortCommand;`  
-    **Note:** that implementation treats any two `SortCommand` instances as equal regardless of `key`. This is inconsistent with the class diagram intent (and typical equals semantics). See **Tests & recommended fix** below.
-
 - `Model` provides `sortPersonList(Comparator<Person>)` (diagram & code).  
 - `AddressBook` implements `Model` and delegates the sort to `UniquePersonList`.  
 - `UniquePersonList` contains `Person` objects and performs the in-place sorting.
@@ -534,7 +531,7 @@ If an unsupported key is passed, the code throws `IllegalArgumentException("Unsu
 * Keep sorting logic in `Model` (or a `Model#sortBy(SortKey)` helper) so `SortCommand` just delegates — this keeps separation of concerns and simplifies testing.
 
 
-#### ModelManager
+### ModelManager
 
 The concrete implementation is in `ModelManager` (`src/main/java/seedu/address/model/ModelManager.java`).
 
