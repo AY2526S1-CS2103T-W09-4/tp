@@ -33,7 +33,7 @@
 
 ## **About: How to use the guide**
 
-Words highlighted in ` yellow ` represent commands that should be typed into the **command terminal** in QuickCLI under the [Features](#features) section.
+Words that are shaded like `this` represent commands that should be typed into the **command terminal** in QuickCLI under the [Features](#features) section.
 
 **Tip Boxes** provide additional guidance or useful hints to help you use QuickCLI more effectively:
 <img width="553" height="109" alt="image" src="https://github.com/user-attachments/assets/ae8307da-aec9-448d-a3ce-644025781e3e" />
@@ -84,10 +84,10 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
 
 
 - **Try Your First Commands** Type these commands in the command box and press Enter:
-  - ` list ` - View all contacts
-  - ` add n/Jane Smith p/91234567 ` - Add a new contact
-  - ` find John ` - Search for contacts named John
-  - ` help ` - View available commands
+  - `list` - View all contacts
+  - `add n/Jane Smith p/91234567` - Add a new contact
+  - `find John` - Search for contacts named John
+  - `help` - View available commands
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -98,17 +98,17 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
 Before diving into specific commands, here's how you read the command syntax:
 
 - **Words in UPPER_CASE** are parameters you need to provide
-  - Example: add n/NAME means replace NAME with actual name like add ` add n/John Doe `
-- **Items in square brackets [\]** are optional
-  - Example: n/NAME [t/TAG\] can be used as n/John Doe t/client or just n/John Doe
+  - Example: `add n/NAME` means replace NAME with actual name like add `add n/John Doe`
+- **Items in square brackets []** are optional
+  - Example: n/NAME [t/TAG] can be used as n/John Doe t/client or just n/John Doe
 - **Items with ...** can be used multiple times (including zero)
-  - Example: [t/TAG\]... can be omitted **OR**
+  - Example: [t/TAG]... can be omitted **OR**
   - Used once: t/designer **OR**
   - Multiple times t/designer t/priority
 - **Parameters can be in any order**
   - Example: `add n/NAME p/PHONE` is the same as `add p/PHONE n/NAME`
 - **Extraneous parameters** for commands that don't take parameters (like help, exit, clear) will be ignored
-  - Example: ` help 123 ` will be interpreted as help
+  - Example: `help 123` will be interpreted as help
 
 ### **Managing Contacts**
 
@@ -117,7 +117,7 @@ Before diving into specific commands, here's how you read the command syntax:
 Adds a new client contact so you can manage your client list in QuickCLI.
 
 **Format:**
-` <br> add n/NAME p/PHONE [e/EMAIL] [a/ADDRESS] [c/COMPANY] [pr/PRIORITY] [t/TAG]... [r/REMARKS] ` 
+`<br> add n/NAME p/PHONE [e/EMAIL] [a/ADDRESS] [c/COMPANY] [pr/PRIORITY] [t/TAG]... [r/REMARKS]`
 
 **Parameters:**
 
@@ -126,10 +126,10 @@ Adds a new client contact so you can manage your client list in QuickCLI.
 
 | **Command** | **You have added Client...** |
 | --- | --- |
-| ` add n/John Doe p/98765432 `  | John Doe - name, phone |
-| ` add n/Sarah Chen p/91234567 e/sarah@design.co c/Chen Designs t/designer t/priority ` | Sarah Chen - name, phone; optional: email, company, 2 tags |
-| ` add n/Mike Wong p/87654321 e/mike@techcorp.com t/developer r/Prefers Email Communication `| Mike Wong - name, phone; optional: email, tag, remark |
-| ` add n/Jane Smith p/92345678 e/jane@urgentclient.com pr/HIGH t/priority ` | Jane Smith - name, phone; optional: email, priority |
+| `add n/John Doe p/98765432` | John Doe - name, phone |
+| `add n/Sarah Chen p/91234567 e/sarah@design.co c/Chen Designs t/designer t/priority` | Sarah Chen - name, phone; optional: email, company, 2 tags |
+| `add n/Mike Wong p/87654321 e/mike@techcorp.com t/developer r/Prefers Email Communication` | Mike Wong - name, phone; optional: email, tag, remark |
+| `add n/Jane Smith p/92345678 e/jane@urgentclient.com pr/HIGH t/priority` | Jane Smith - name, phone; optional: email, priority |
 
 **Note:** QuickCLI prevents duplicate contacts. Two contacts are considered duplicates if they have the same name AND phone number.
 
@@ -139,20 +139,20 @@ Shows all contacts in your database. You can also filter by tags.
 
 **Format:**
 
-- ` list ` - Shows all contacts
-- ` list t/TAG ` - Shows contacts with specific tag (learn about tags in the add command section)
+- `list` - Shows all contacts
+- `list t/TAG` - Shows contacts with specific tag (learn about tags in the add command section)
 
 **Examples:**
 
-` list `
+`list`
 <br/>
-` list t/priority `
+`list t/priority`
 <br/>
-` list t/designer `
+`list t/designer`
 
 **Rules & notes:**
 - At most **one** `t/` is allowed.  
-  `list t/friends t/colleagues`
+ `list t/friends t/colleagues`
   
   <img width="395" height="32" alt="image" src="https://github.com/user-attachments/assets/90c4e511-7068-4e71-b14c-4c46e5493d44" />
 
@@ -162,7 +162,7 @@ Shows all contacts in your database. You can also filter by tags.
 
 Searches across all fields including name, phone, email, address, company, tags, and priority level.
 
-**Format:** `find KEYWORD [MORE_KEYWORDS]... `
+**Format:** `find KEYWORD [MORE_KEYWORDS]...`
 
 - Search is case-insensitive (john matches John)
 - Partial matching is supported (Joh matches John)
@@ -170,11 +170,11 @@ Searches across all fields including name, phone, email, address, company, tags,
 
 **Examples:**
 
-- ` find john `
-- ` find chen wong `
-- ` find design `
-- ` find HIGH ` (finds all high-priority contacts)
-- ` find urgent high ` (finds contacts with "urgent" OR "high" in any field)
+- `find john`
+- `find chen wong`
+- `find design`
+- `find HIGH` (finds all high-priority contacts)
+- `find urgent high` (finds contacts with "urgent" OR "high" in any field)
 
 <img width="708" height="146" alt="image" src="https://github.com/user-attachments/assets/3ea68fd4-bf55-4fc5-9a21-f0f8fc1002e2" />
 
@@ -186,7 +186,7 @@ Searches across all fields including name, phone, email, address, company, tags,
 Updates the details of an existing contact.
 
 **Format:**
-` edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/COMPANY] [r/REMARKS] [pr/PRIORITY] [t/TAG]... `
+`edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/COMPANY] [r/REMARKS] [pr/PRIORITY] [t/TAG]...`
 
 - Edit the contact at the specified INDEX (shown in the contact list)
 - At least one field must be provided
@@ -196,17 +196,17 @@ Updates the details of an existing contact.
 
 **Examples:**
 
-- ` edit 1 p/91234567 `
-- ` edit 2 n/John Smith e/john@newcompany.com `
-- ` edit 3 t/priority t/developer `
-- ` edit 2 pr/MEDIUM t/important `
-- ` edit 4 t/ `
+- `edit 1 p/91234567`
+- `edit 2 n/John Smith e/john@newcompany.com`
+- `edit 3 t/priority t/developer`
+- `edit 2 pr/MEDIUM t/important`
+- `edit 4 t/`
 
 #### Adding notes to a contact: note
 
 Add remarks or project details to a contact.
 
-**Format:** ` note INDEX r/REMARKS `
+**Format:** `note INDEX r/REMARKS`
 
 - Adds notes to the contact at the specified INDEX
 - Replaces any existing notes
@@ -224,9 +224,9 @@ Add remarks or project details to a contact.
 
 **Examples:**
 
-- ` note 1 r/Discussed new website project, budget \$5000 ` 
-- ` note 2 r/Meeting scheduled for next Tuesday, 2pm  `
-- ` note 1 r/ `
+- `note 1 r/Discussed new website project, budget \$5000`
+- `note 2 r/Meeting scheduled for next Tuesday, 2pm `
+- `note 1 r/`
 
 #### Setting priority for a contact: priority
 <br/>Assign or update the priority level for a contact to help you focus on important clients.  
@@ -240,22 +240,22 @@ Add remarks or project details to a contact.
 
 **Visual indicators:**
 
-- **HIGH** priority: Red badge with \`!!!\` symbol
-- **MEDIUM** priority: Orange badge with \`!!\` symbol
-- **LOW** priority: Green badge with \`!\` symbol
+- **HIGH** priority: Red badge with \ `!!!\` symbol
+- **MEDIUM** priority: Orange badge with \ `!!\` symbol
+- **LOW** priority: Green badge with \ `!\` symbol
 
 **Parameters:**
 
 - pr/PRIORITY: Priority level 
-- Valid values: \`HIGH\`, \`MEDIUM\`, \`LOW\`, or \`1\`, \`2\`, \`3\`, \`4\`, \`5\`, \`\`
+- Valid values: \ `HIGH`, `MEDIUM`, `LOW`, or `1`, `2`, `3`, `4`, `5`, ` `
 - Case-insensitive
 
 **Examples:**
 
-- ` priority 1 pr/HIGH `
-- ` priority 2 pr/medium `
-- ` priority 3 pr/1 `
-- ` priority 2 pr/ ` *(clears priority for contact #2)*
+- `priority 1 pr/HIGH`
+- `priority 2 pr/medium`
+- `priority 3 pr/1`
+- `priority 2 pr/` *(clears priority for contact #2)*
 
 <img width="913" height="197" alt="image" src="https://github.com/user-attachments/assets/7fcb4e47-300e-483d-a02d-3d52daabb6da" />
 
@@ -264,10 +264,10 @@ Add remarks or project details to a contact.
 Removes one or multiple contacts from your database.
 
 **Format:**
-- Single deletion: ` delete INDEX `
-- Multiple deletion: ` delete INDEX1,INDEX2,INDEX3 `
-- Range deletion: ` delete START-END `
-- Combined: ` delete INDEX1,INDEX2,START-END `
+- Single deletion: `delete INDEX`
+- Multiple deletion: `delete INDEX1,INDEX2,INDEX3`
+- Range deletion: `delete START-END`
+- Combined: `delete INDEX1,INDEX2,START-END`
 
 **Parameters:**
 - INDEX: The contact number shown in the current list (must be positive integer)
@@ -320,7 +320,7 @@ Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
 
 Organize your contact list for easier access.
 
-**Format:** ` sort [CRITERION] `
+**Format:** `sort [CRITERION]`
 
 **Available sorting options:**
 
@@ -333,10 +333,10 @@ Organize your contact list for easier access.
 
 **Examples:**
 
-- ` Sort `
-- ` sort name `
-- ` sort recent `
-- ` sort priority `
+- `Sort`
+- `sort name`
+- `sort recent`
+- `sort priority`
 
 ### **History Commands**
 
@@ -346,7 +346,7 @@ All the above commands except [list](#listing-all-contacts-list) and [find](#fin
 
 Undo last action done by user; Moves back to previous saved state in the history. 
 
-**Format:** ` undo `
+**Format:** `undo`
 
 This only works if there are actions to undo.
 
@@ -354,11 +354,11 @@ This only works if there are actions to undo.
 
 Redo last action that was undone. Reverts last undo action by moving forward to the next saved state in the history.
 
-**Format:** ` redo `
+**Format:** `redo`
 
 **When does it work?**
 - ✅ You have just used **undo** one or more times, and you **haven’t** run any other command that changes the contacts since then.
-- ❌ If you run a new changing command (e.g., `add`, `edit`, `delete`, `sort`, `priority`, `note`, `clear`), the “redo path” is reset and `redo` is no longer available.
+- ❌ If you run a new changing command (e.g. `add`, `edit`, `delete`, `sort`, `priority`, `note`, `clear`), the “redo path” is reset and `redo` is no longer available.
 
 **Quick example**
 1. Start with 3 contacts.  
@@ -369,7 +369,7 @@ Redo last action that was undone. Reverts last undo action by moving forward to 
 
 
 **When redo is no longer available**
-1. `add n/Alice p/9000` 
+1. `add n/Alice p/9000`
 2. `undo`
 3. (Instead of redo) `edit 1 p/9999` → changes data
 4. `redo` → ❌ Not available (the new edit broke the redo chain)
@@ -384,9 +384,9 @@ Commands like `list`, `help`, `find` and `exit` don’t affect undo/redo history
 
 Removes all contacts from the database. Use with caution!
 
-**Format:** ` clear `
+**Format:** `clear`
 
-- You will be prompted to confirm: Type ` clear confirm ` to proceed
+- You will be prompted to confirm: Type `clear confirm` to proceed
 
 <img width="486" height="109" alt="image" src="https://github.com/user-attachments/assets/0b6d4002-c2e8-4aab-949f-b6eeeb12f96f" />
 
@@ -396,9 +396,9 @@ Removes all contacts from the database. Use with caution!
 
 Opens the help window showing all available commands.
 
-**Format:** ` help `
+**Format:** `help`
 
-You can type ` help ` in the command input box and pressing enter on your keyboard :
+You can type `help` in the command input box and pressing enter on your keyboard :
 
 **OR**
 
@@ -419,7 +419,7 @@ Will automatically launch this window:
 
 Closes QuickCLI. Your data is automatically saved.
 
-**Format:** ` exit `
+**Format:** `exit`
 
 <img width="947" height="180" alt="image" src="https://github.com/user-attachments/assets/f5e211e8-f1bf-4ca6-a585-2385de34712d" />
 
@@ -494,17 +494,17 @@ A: Import/export functionality is coming in version 2.0. For now, you can manual
 
 | Action   | Format                                                                               | Example                                                                           |
 |----------|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
-| Add      | `add n/NAME p/PHONE [e/EMAIL] [c/COMPANY] [t/TAG] [r/REMARKS]`                       | `add n/John Doe p/98765432 e/john@email.com t/client r/Prefers Email Communication` |
-| List     | `list [t/TAG]`                                                                       | `list` or `list t/priority`                                             |
-| Find     | `find KEYWORD [MORE_KEYWORDS]`                                                       | `find john smith`                                                                 |
-| Edit     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [c/COMPANY] [t/TAG]...`                     | `edit 2 p/91234567 e/newemail@company.com`                              |
-| Delete   | `delete INDEX` or `delete INDEX1,INDEX2,...` or `delete START-END`                   | `delete 3` or `delete 1,3,5` or `delete 2-4` or `delete 1,3,5-7,10`     |
-| Note     | `note INDEX r/REMARKS`                                                               | `note 1 r/Important client, handle with care`                           |
-| Priority | `priority INDEX pr/PRIORITY`                                                         | `priority 1 pr/HIGH`                                                    |
-| Sort     | `sort [SORTKEY]`                                                                     | `sort name` or `sort phone`                                             |
-| Clear    | `clear`                                                                              | `clear` (then `clear confirm`)                                          |
-| Help     | `help`                                                                               | `help`                                                                  |
-| Exit     | `exit`                                                                               | `exit`                                                                  |
+| Add      | `add n/NAME p/PHONE [e/EMAIL] [c/COMPANY] [t/TAG] [r/REMARKS]`                      | `add n/John Doe p/98765432 e/john@email.com t/client r/Prefers Email Communication`|
+| List     | `list [t/TAG]`                                                                      | `list` or `list t/priority`                                            |
+| Find     | `find KEYWORD [MORE_KEYWORDS]`                                                      | `find john smith`                                                                |
+| Edit     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [c/COMPANY] [t/TAG]...`                    | `edit 2 p/91234567 e/newemail@company.com`                             |
+| Delete   | `delete INDEX` or `delete INDEX1,INDEX2,...` or `delete START-END`                  | `delete 3` or `delete 1,3,5` or `delete 2-4` or `delete 1,3,5-7,10`    |
+| Note     | `note INDEX r/REMARKS`                                                              | `note 1 r/Important client, handle with care`                          |
+| Priority | `priority INDEX pr/PRIORITY`                                                        | `priority 1 pr/HIGH`                                                   |
+| Sort     | `sort [SORTKEY]`                                                                    | `sort name` or `sort phone`                                            |
+| Clear    | `clear`                                                                             | `clear` then `clear confirm`)                                          |
+| Help     | `help`                                                                              | `help`                                                                 |
+| Exit     | `exit`                                                                              | `exit`                                                                 |
 
 --------------------------------------------------------------------------------------------------------------------
 
