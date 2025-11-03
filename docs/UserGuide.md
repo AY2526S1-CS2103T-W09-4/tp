@@ -33,7 +33,7 @@
 
 ## **About: How to use the guide**
 
-Words highlighted in`yellow`represent commands that should be typed into the **command terminal** in QuickCLI under the [Features](#features) section.
+Words that are shaded like `this` represent commands that should be typed into the **command terminal** in QuickCLI under the [Features](#features) section.
 
 **Tip Boxes** provide additional guidance or useful hints to help you use QuickCLI more effectively:
 <img width="553" height="109" alt="image" src="https://github.com/user-attachments/assets/ae8307da-aec9-448d-a3ce-644025781e3e" />
@@ -74,7 +74,7 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
 
 
 - 1. Navigate to the folder: cd path/to/quickcli/folder
-  - Run the application:`java -jar quickcli.jar`
+  - Run the application: `java -jar quickcli.jar`
   - The GUI should appear in a few seconds with some sample data
   - You should see:
     - A contact list panel displaying sample contacts
@@ -84,10 +84,10 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
 
 
 - **Try Your First Commands** Type these commands in the command box and press Enter:
-  -`list`- View all contacts
-  -`add n/Jane Smith p/91234567`- Add a new contact
-  -`find John`- Search for contacts named John
-  -`help`- View available commands
+  - `list` - View all contacts
+  - `add n/Jane Smith p/91234567` - Add a new contact
+  - `find John` - Search for contacts named John
+  - `help` - View available commands
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -98,17 +98,17 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
 Before diving into specific commands, here's how you read the command syntax:
 
 - **Words in UPPER_CASE** are parameters you need to provide
-  - Example: add n/NAME means replace NAME with actual name like add`add n/John Doe`
-- **Items in square brackets [\]** are optional
-  - Example: n/NAME [t/TAG\] can be used as n/John Doe t/client or just n/John Doe
+  - Example: `add n/NAME` means replace NAME with actual name like add `add n/John Doe`
+- **Items in square brackets []** are optional
+  - Example: n/NAME [t/TAG] can be used as n/John Doe t/client or just n/John Doe
 - **Items with ...** can be used multiple times (including zero)
-  - Example: [t/TAG\]... can be omitted **OR**
+  - Example: [t/TAG]... can be omitted **OR**
   - Used once: t/designer **OR**
   - Multiple times t/designer t/priority
 - **Parameters can be in any order**
-  - Example:`add n/NAME p/PHONE`is the same as`add p/PHONE n/NAME`
+  - Example: `add n/NAME p/PHONE` is the same as `add p/PHONE n/NAME`
 - **Extraneous parameters** for commands that don't take parameters (like help, exit, clear) will be ignored
-  - Example:`help 123`will be interpreted as help
+  - Example: `help 123` will be interpreted as help
 
 ### **Managing Contacts**
 
@@ -126,10 +126,10 @@ Adds a new client contact so you can manage your client list in QuickCLI.
 
 | **Command** | **You have added Client...** |
 | --- | --- |
-|`add n/John Doe p/98765432` | John Doe - name, phone |
-|`add n/Sarah Chen p/91234567 e/sarah@design.co c/Chen Designs t/designer t/priority`| Sarah Chen - name, phone; optional: email, company, 2 tags |
-|`add n/Mike Wong p/87654321 e/mike@techcorp.com t/developer r/Prefers Email Communication`| Mike Wong - name, phone; optional: email, tag, remark |
-|`add n/Jane Smith p/92345678 e/jane@urgentclient.com pr/HIGH t/priority`| Jane Smith - name, phone; optional: email, priority |
+| `add n/John Doe p/98765432` | John Doe - name, phone |
+| `add n/Sarah Chen p/91234567 e/sarah@design.co c/Chen Designs t/designer t/priority` | Sarah Chen - name, phone; optional: email, company, 2 tags |
+| `add n/Mike Wong p/87654321 e/mike@techcorp.com t/developer r/Prefers Email Communication` | Mike Wong - name, phone; optional: email, tag, remark |
+| `add n/Jane Smith p/92345678 e/jane@urgentclient.com pr/HIGH t/priority` | Jane Smith - name, phone; optional: email, priority |
 
 **Note:** QuickCLI prevents duplicate contacts. Two contacts are considered duplicates if they have the same name AND phone number.
 
@@ -139,8 +139,8 @@ Shows all contacts in your database. You can also filter by tags.
 
 **Format:**
 
--`list`- Shows all contacts
--`list t/TAG`- Shows contacts with specific tag (learn about tags in the add command section)
+- `list` - Shows all contacts
+- `list t/TAG` - Shows contacts with specific tag (learn about tags in the add command section)
 
 **Examples:**
 
@@ -151,7 +151,7 @@ Shows all contacts in your database. You can also filter by tags.
 `list t/designer`
 
 **Rules & notes:**
-- At most **one**`t/`is allowed.  
+- At most **one** `t/` is allowed.  
  `list t/friends t/colleagues`
   
   <img width="395" height="32" alt="image" src="https://github.com/user-attachments/assets/90c4e511-7068-4e71-b14c-4c46e5493d44" />
@@ -162,7 +162,7 @@ Shows all contacts in your database. You can also filter by tags.
 
 Searches across all fields including name, phone, email, address, company, tags, and priority level.
 
-**Format:**`find KEYWORD [MORE_KEYWORDS]...`
+**Format:** `find KEYWORD [MORE_KEYWORDS]...`
 
 - Search is case-insensitive (john matches John)
 - Partial matching is supported (Joh matches John)
@@ -170,11 +170,11 @@ Searches across all fields including name, phone, email, address, company, tags,
 
 **Examples:**
 
--`find john`
--`find chen wong`
--`find design`
--`find HIGH`(finds all high-priority contacts)
--`find urgent high`(finds contacts with "urgent" OR "high" in any field)
+- `find john`
+- `find chen wong`
+- `find design`
+- `find HIGH` (finds all high-priority contacts)
+- `find urgent high` (finds contacts with "urgent" OR "high" in any field)
 
 <img width="708" height="146" alt="image" src="https://github.com/user-attachments/assets/3ea68fd4-bf55-4fc5-9a21-f0f8fc1002e2" />
 
@@ -196,17 +196,17 @@ Updates the details of an existing contact.
 
 **Examples:**
 
--`edit 1 p/91234567`
--`edit 2 n/John Smith e/john@newcompany.com`
--`edit 3 t/priority t/developer`
--`edit 2 pr/MEDIUM t/important`
--`edit 4 t/`
+- `edit 1 p/91234567`
+- `edit 2 n/John Smith e/john@newcompany.com`
+- `edit 3 t/priority t/developer`
+- `edit 2 pr/MEDIUM t/important`
+- `edit 4 t/`
 
 #### Adding notes to a contact: note
 
 Add remarks or project details to a contact.
 
-**Format:**`note INDEX r/REMARKS`
+**Format:** `note INDEX r/REMARKS`
 
 - Adds notes to the contact at the specified INDEX
 - Replaces any existing notes
@@ -224,15 +224,15 @@ Add remarks or project details to a contact.
 
 **Examples:**
 
--`note 1 r/Discussed new website project, budget \$5000`
--`note 2 r/Meeting scheduled for next Tuesday, 2pm `
--`note 1 r/`
+- `note 1 r/Discussed new website project, budget \$5000`
+- `note 2 r/Meeting scheduled for next Tuesday, 2pm `
+- `note 1 r/`
 
 #### Setting priority for a contact: priority
 <br/>Assign or update the priority level for a contact to help you focus on important clients.  
 <br/>**Format:** priority INDEX pr/PRIORITY
--`pr/`with **blank value** clears the person’s priority.
-- Otherwise`pr/PRIORITY`must be one of HIGH, MEDIUM, LOW, or 1..5.
+- `pr/` with **blank value** clears the person’s priority.
+- Otherwise `pr/PRIORITY` must be one of HIGH, MEDIUM, LOW, or 1..5.
 - Set priority for the contact at the specified INDEX
 - Replaces any existing priority level
 - Priority levels: HIGH, MEDIUM, LOW (case-insensitive)
@@ -240,22 +240,22 @@ Add remarks or project details to a contact.
 
 **Visual indicators:**
 
-- **HIGH** priority: Red badge with \`!!!\`symbol
-- **MEDIUM** priority: Orange badge with \`!!\`symbol
-- **LOW** priority: Green badge with \`!\`symbol
+- **HIGH** priority: Red badge with \ `!!!\` symbol
+- **MEDIUM** priority: Orange badge with \ `!!\` symbol
+- **LOW** priority: Green badge with \ `!\` symbol
 
 **Parameters:**
 
 - pr/PRIORITY: Priority level 
-- Valid values: \`HIGH\`, \`MEDIUM\`, \`LOW\`, or \`1\`, \`2\`, \`3\`, \`4\`, \`5\`, \`\`
+- Valid values: \ `HIGH`, `MEDIUM`, `LOW`, or `1`, `2`, `3`, `4`, `5`, ` `
 - Case-insensitive
 
 **Examples:**
 
--`priority 1 pr/HIGH`
--`priority 2 pr/medium`
--`priority 3 pr/1`
--`priority 2 pr/`*(clears priority for contact #2)*
+- `priority 1 pr/HIGH`
+- `priority 2 pr/medium`
+- `priority 3 pr/1`
+- `priority 2 pr/` *(clears priority for contact #2)*
 
 <img width="913" height="197" alt="image" src="https://github.com/user-attachments/assets/7fcb4e47-300e-483d-a02d-3d52daabb6da" />
 
@@ -264,10 +264,10 @@ Add remarks or project details to a contact.
 Removes one or multiple contacts from your database.
 
 **Format:**
-- Single deletion:`delete INDEX`
-- Multiple deletion:`delete INDEX1,INDEX2,INDEX3`
-- Range deletion:`delete START-END`
-- Combined:`delete INDEX1,INDEX2,START-END`
+- Single deletion: `delete INDEX`
+- Multiple deletion: `delete INDEX1,INDEX2,INDEX3`
+- Range deletion: `delete START-END`
+- Combined: `delete INDEX1,INDEX2,START-END`
 
 **Parameters:**
 - INDEX: The contact number shown in the current list (must be positive integer)
@@ -285,18 +285,18 @@ Warning: Always verify the indices before confirming deletion.
 **Examples:**
 
 **Single deletion:**
-`delete 3`- Deletes contact at index 3 (e.g., Charlotte Oliveiro)
+`delete 3` - Deletes contact at index 3 (e.g., Charlotte Oliveiro)
 
 <img width="905" height="737" alt="image" src="https://github.com/user-attachments/assets/c2f24953-7b94-4863-88d6-5e5324724f72" />
 
 **Multiple deletion:**
-`delete 1,3,5`- Deletes contacts at indices 1, 3, and 5
+`delete 1,3,5` - Deletes contacts at indices 1, 3, and 5
 
 **Range deletion:**
-`delete 2-4`- Deletes contacts from index 2 to 4 (inclusive)
+`delete 2-4` - Deletes contacts from index 2 to 4 (inclusive)
 
 **Combined deletion:**
-`delete 1,3,5-7,10`- Deletes contacts at indices 1, 3, 5, 6, 7, and 10
+`delete 1,3,5-7,10` - Deletes contacts at indices 1, 3, 5, 6, 7, and 10
 
 **After using find:**
 
@@ -312,7 +312,7 @@ Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
 
 **Error Handling:**
 - If any index is invalid, QuickCLI will display all invalid indices and the operation will be cancelled
-- Example:`delete 1,3,50`when only 10 contacts exist will show: "Invalid indices: 50 (person list has 10 entries)"
+- Example: `delete 1,3,50` when only 10 contacts exist will show: "Invalid indices: 50 (person list has 10 entries)"
 
 ### **Organizing Your Contacts**
 
@@ -320,7 +320,7 @@ Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
 
 Organize your contact list for easier access.
 
-**Format:**`sort [CRITERION]`
+**Format:** `sort [CRITERION]`
 
 **Available sorting options:**
 
@@ -333,10 +333,10 @@ Organize your contact list for easier access.
 
 **Examples:**
 
--`Sort`
--`sort name`
--`sort recent`
--`sort priority`
+- `Sort`
+- `sort name`
+- `sort recent`
+- `sort priority`
 
 ### **History Commands**
 
@@ -346,7 +346,7 @@ All the above commands except [list](#listing-all-contacts-list) and [find](#fin
 
 Undo last action done by user; Moves back to previous saved state in the history. 
 
-**Format:**`undo`
+**Format:** `undo`
 
 This only works if there are actions to undo.
 
@@ -354,29 +354,29 @@ This only works if there are actions to undo.
 
 Redo last action that was undone. Reverts last undo action by moving forward to the next saved state in the history.
 
-**Format:**`redo`
+**Format:** `redo`
 
 **When does it work?**
 - ✅ You have just used **undo** one or more times, and you **haven’t** run any other command that changes the contacts since then.
-- ❌ If you run a new changing command (e.g.,`add`,`edit`,`delete`,`sort`,`priority`,`note`,`clear`), the “redo path” is reset and`redo`is no longer available.
+- ❌ If you run a new changing command (e.g. `add`, `edit`, `delete`, `sort`, `priority`, `note`, `clear`), the “redo path” is reset and `redo` is no longer available.
 
 **Quick example**
 1. Start with 3 contacts.  
-2.`add n/Alice p/9000`→ now 4 contacts.  
-3.`delete 2`→ now 3 contacts.  
-4.`undo`→ back to 4 contacts.  
-5.`redo`→ reapplies the deletion → back to 3 contacts.
+2. `add n/Alice p/9000` → now 4 contacts.  
+3. `delete 2` → now 3 contacts.  
+4. `undo` → back to 4 contacts.  
+5. `redo` → reapplies the deletion → back to 3 contacts.
 
 
 **When redo is no longer available**
-1.`add n/Alice p/9000`
-2.`undo`
-3. (Instead of redo)`edit 1 p/9999`→ changes data
-4.`redo`→ ❌ Not available (the new edit broke the redo chain)
+1. `add n/Alice p/9000`
+2. `undo`
+3. (Instead of redo) `edit 1 p/9999` → changes data
+4. `redo` → ❌ Not available (the new edit broke the redo chain)
 
-If`redo`isn’t available, QuickCLI shows: “No actions to redo.”  
+If `redo` isn’t available, QuickCLI shows: “No actions to redo.”  
 
-Commands like`list`,`help`,`find`and`exit`don’t affect undo/redo history.
+Commands like `list`, `help`, `find` and `exit` don’t affect undo/redo history.
 
 ### **System Commands**
 
@@ -384,9 +384,9 @@ Commands like`list`,`help`,`find`and`exit`don’t affect undo/redo history.
 
 Removes all contacts from the database. Use with caution!
 
-**Format:**`clear`
+**Format:** `clear`
 
-- You will be prompted to confirm: Type`clear confirm`to proceed
+- You will be prompted to confirm: Type `clear confirm` to proceed
 
 <img width="486" height="109" alt="image" src="https://github.com/user-attachments/assets/0b6d4002-c2e8-4aab-949f-b6eeeb12f96f" />
 
@@ -396,9 +396,9 @@ Removes all contacts from the database. Use with caution!
 
 Opens the help window showing all available commands.
 
-**Format:**`help`
+**Format:** `help`
 
-You can type`help`in the command input box and pressing enter on your keyboard :
+You can type `help` in the command input box and pressing enter on your keyboard :
 
 **OR**
 
@@ -419,7 +419,7 @@ Will automatically launch this window:
 
 Closes QuickCLI. Your data is automatically saved.
 
-**Format:**`exit`
+**Format:** `exit`
 
 <img width="947" height="180" alt="image" src="https://github.com/user-attachments/assets/f5e211e8-f1bf-4ca6-a585-2385de34712d" />
 
@@ -431,13 +431,13 @@ Closes QuickCLI. Your data is automatically saved.
 
 QuickCLI automatically saves your data after every command that changes the database. There's no need to save manually.
 
-Data is stored in:`[QuickCLI folder]/data/quickcli.json`
+Data is stored in: `[QuickCLI folder]/data/quickcli.json`
 
 ### Editing the data file
 
 Advanced users can directly edit the data file:
 
-1. The data is saved in JSON format at`./data/quickcli.json`
+1. The data is saved in JSON format at `./data/quickcli.json`
 2. Make a backup before editing
 3. Ensure the JSON format remains valid
 4. If the file becomes corrupted, QuickCLI will start with an empty database
@@ -452,7 +452,7 @@ Caution:
 ## FAQ
 
 **Q: Can I use QuickCLI on multiple computers?**  
-A: Yes! Copy the`quickcli.json`data file from the data folder to transfer your contacts between computers.
+A: Yes! Copy the `quickcli.json` data file from the data folder to transfer your contacts between computers.
 
 **Q: What happens if I enter an invalid command?**  
 A: QuickCLI will show an error message explaining what went wrong. Check the command format and try again.
@@ -464,15 +464,15 @@ A: Yes, as long as they have different phone numbers. QuickCLI considers contact
 A: QuickCLI can handle up to 1,000 contacts efficiently. Performance may degrade with larger databases.
 
 **Q: Can I undo a delete operation?**  
-A: Yes! You can use the`undo`command to reverse any delete operation. Use`redo`to reapply an undone operation if needed.
+A: Yes! You can use the `undo` command to reverse any delete operation. Use `redo` to reapply an undone operation if needed.
 
 **Q: How do I import contacts from another application?**  
 A: Import/export functionality is coming in version 2.0. For now, you can manually edit the JSON data file.
 
 **Q: What if QuickCLI doesn't start?**
-1. Check that Java 17 or higher is installed:`java -version`
+1. Check that Java 17 or higher is installed: `java -version`
 2. Ensure you're in the correct directory
-3. Try running with:`java -jar quickcli.jar`
+3. Try running with: `java -jar quickcli.jar`
 4. Check for error messages in the terminal
 
 --------------------------------------------------------------------------------------------------------------------
@@ -481,12 +481,12 @@ A: Import/export functionality is coming in version 2.0. For now, you can manual
 
 | Problem                  | Solution                                                                                      |
 |--------------------------|-----------------------------------------------------------------------------------------------|
-| "Command not recognized" | Check spelling and command format. Use`help`to see all commands                             |
+| "Command not recognized" | Check spelling and command format. Use `help` to see all commands                             |
 | "Invalid index"          | Ensure the contact number exists in the current list                                          |
 | "Duplicate contact"      | A contact with the same name and phone already exists                                         |
-| "Invalid email format"   | Ensure email follows format:`local@domain.com`                                              |
+| "Invalid email format"   | Ensure email follows format: `local@domain.com`                                              |
 | Application won't start  | Verify Java 17+ is installed and you're in the correct directory                              |
-| Data file corrupted      | Delete or rename`quickcli.json`to start fresh, or restore from backup                       |
+| Data file corrupted      | Delete or rename `quickcli.json` to start fresh, or restore from backup                       |
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -494,17 +494,17 @@ A: Import/export functionality is coming in version 2.0. For now, you can manual
 
 | Action   | Format                                                                               | Example                                                                           |
 |----------|--------------------------------------------------------------------------------------|-------------------------------------------------------------------------|
-| Add      |`add n/NAME p/PHONE [e/EMAIL] [c/COMPANY] [t/TAG] [r/REMARKS]`                      |`add n/John Doe p/98765432 e/john@email.com t/client r/Prefers Email Communication`|
-| List     |`list [t/TAG]`                                                                      |`list`or`list t/priority`                                            |
-| Find     |`find KEYWORD [MORE_KEYWORDS]`                                                      |`find john smith`                                                                |
-| Edit     |`edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [c/COMPANY] [t/TAG]...`                    |`edit 2 p/91234567 e/newemail@company.com`                             |
-| Delete   |`delete INDEX`or`delete INDEX1,INDEX2,...`or`delete START-END`                  |`delete 3`or`delete 1,3,5`or`delete 2-4`or`delete 1,3,5-7,10`    |
-| Note     |`note INDEX r/REMARKS`                                                              |`note 1 r/Important client, handle with care`                          |
-| Priority |`priority INDEX pr/PRIORITY`                                                        |`priority 1 pr/HIGH`                                                   |
-| Sort     |`sort [SORTKEY]`                                                                    |`sort name`or`sort phone`                                            |
-| Clear    |`clear`                                                                             |`clear`(then`clear confirm`)                                          |
-| Help     |`help`                                                                              |`help`                                                                 |
-| Exit     |`exit`                                                                              |`exit`                                                                 |
+| Add      | `add n/NAME p/PHONE [e/EMAIL] [c/COMPANY] [t/TAG] [r/REMARKS]`                      | `add n/John Doe p/98765432 e/john@email.com t/client r/Prefers Email Communication`|
+| List     | `list [t/TAG]`                                                                      | `list` or `list t/priority`                                            |
+| Find     | `find KEYWORD [MORE_KEYWORDS]`                                                      | `find john smith`                                                                |
+| Edit     | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [c/COMPANY] [t/TAG]...`                    | `edit 2 p/91234567 e/newemail@company.com`                             |
+| Delete   | `delete INDEX` or `delete INDEX1,INDEX2,...` or `delete START-END`                  | `delete 3` or `delete 1,3,5` or `delete 2-4` or `delete 1,3,5-7,10`    |
+| Note     | `note INDEX r/REMARKS`                                                              | `note 1 r/Important client, handle with care`                          |
+| Priority | `priority INDEX pr/PRIORITY`                                                        | `priority 1 pr/HIGH`                                                   |
+| Sort     | `sort [SORTKEY]`                                                                    | `sort name` or `sort phone`                                            |
+| Clear    | `clear`                                                                             | `clear` then `clear confirm`)                                          |
+| Help     | `help`                                                                              | `help`                                                                 |
+| Exit     | `exit`                                                                              | `exit`                                                                 |
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -529,39 +529,39 @@ For bug reports, feature requests, or additional help, please contact our suppor
 |-------------------------------|---------------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
 | **CLI (Command Line Interface)** | A text-based interface where users type commands to interact with software.                             | QuickCLI uses a CLI to manage contacts.                      |
 | **GUI (Graphical User Interface)** | A visual interface where users interact with software using windows, buttons, and icons.                | QuickCLI has a GUI overlay for visual representation.        |
-| **Contact**                   | A record representing a client, including name, phone, email, company, tags, and remarks.               |`add n/John Doe p/91234567`                                 |
-| **Index**                     | The number representing a contact in the current list, used in commands like edit, delete, note.        |`edit 2 n/Jane Smith`                                       |
-| **Parameter**                 | A piece of information required or optional for a command.                                              | In`add n/NAME p/PHONE`, NAME and PHONE are parameters.      |
-| **Required Parameter**        | A parameter that must be provided for the command to execute successfully.                              |`n/NAME`and`p/PHONE`in add.                               |
-| **Alphanumeric**        | Characters that are either alphabets(upper and lower case) or numbers(0-9)                             |`n/NAME`and`t/TAG`                              |
-| **Optional Parameter**        | A parameter that can be omitted without causing an error.                                               |`e/EMAIL`,`a/ADDRESS`,`c/COMPANY`,`t/TAG`,`r/REMARKS`.   |
-| **Priority**                  | A level assigned to a contact indicating their importance or urgency.                                   |`pr/HIGH`,`pr/MEDIUM`,`pr/LOW`,`pr/1`                    |
-| **Tag**                       | A keyword used to categorize or filter contacts.                                                        |`t/client`,`t/priority`.                                    |
-| **Remark / Note**             | Optional textual information about a contact, stored for reference.                                     |`r/Prefers Email Communication`.                             |
-| **Command Format / Syntax**   | The structure in which a command must be entered.                                                       |`add n/NAME p/PHONE [e/EMAIL]...`                           |
+| **Contact**                   | A record representing a client, including name, phone, email, company, tags, and remarks.               | `add n/John Doe p/91234567`                                 |
+| **Index**                     | The number representing a contact in the current list, used in commands like edit, delete, note.        | `edit 2 n/Jane Smith`                                       |
+| **Parameter**                 | A piece of information required or optional for a command.                                              | In `add n/NAME p/PHONE`, NAME and PHONE are parameters.      |
+| **Required Parameter**        | A parameter that must be provided for the command to execute successfully.                              | `n/NAME` and `p/PHONE` in add.                               |
+| **Alphanumeric**        | Characters that are either alphabets(upper and lower case) or numbers(0-9)                             | `n/NAME` and `t/TAG`                              |
+| **Optional Parameter**        | A parameter that can be omitted without causing an error.                                               | `e/EMAIL`, `a/ADDRESS`, `c/COMPANY`, `t/TAG`, `r/REMARKS`.   |
+| **Priority**                  | A level assigned to a contact indicating their importance or urgency.                                   | `pr/HIGH`, `pr/MEDIUM`, `pr/LOW`, `pr/1`                    |
+| **Tag**                       | A keyword used to categorize or filter contacts.                                                        | `t/client`, `t/priority`.                                    |
+| **Remark / Note**             | Optional textual information about a contact, stored for reference.                                     | `r/Prefers Email Communication`.                             |
+| **Command Format / Syntax**   | The structure in which a command must be entered.                                                       | `add n/NAME p/PHONE [e/EMAIL]...`                           |
 | **Duplicate Contact**         | A contact considered identical to an existing one if both name and phone number match.                  | QuickCLI prevents duplicates.                                |
-| **Sort Criterion**            | A property used to organize contacts when using the sort command.                                       |`name`for alphabetical,`recent`for newest first.          |
-| **Clear Confirm**             | A confirmation step to prevent accidental deletion of all contacts.                                     | User types`clear confirm`to execute clear.                 |
-| **Data File**                 | The file where all contact information is stored in JSON format.                                        |`[QuickCLI folder]/data/quickcli.json`                      |
+| **Sort Criterion**            | A property used to organize contacts when using the sort command.                                       | `name` for alphabetical, `recent` for newest first.          |
+| **Clear Confirm**             | A confirmation step to prevent accidental deletion of all contacts.                                     | User types `clear confirm` to execute clear.                 |
+| **Data File**                 | The file where all contact information is stored in JSON format.                                        | `[QuickCLI folder]/data/quickcli.json`                      |
 | **JSON**                      | A text-based format for storing structured data.                                                        | QuickCLI stores contacts in JSON format.                     |
 | **User Story**                | Short description of a feature from the user's perspective.                                             | As a user, I can add a contact so that I can manage client info quickly. |
-| **Help Window**               | A GUI window that lists all available commands and syntax.                                              | Opened using`help`.                                         |
-| **Command Not Recognized**    | Error message when an invalid command is entered.                                                       | User types`ad n/John`instead of`add`.                     |
-| **Invalid Index**             | Error message when the specified contact index does not exist.                                          |`edit 10 n/Jane`if only 5 contacts exist.                   |
-| **Invalid Email Format**      | Error message when an email does not follow proper format.                                              |`e/john[at]mail.com`                                        |
-| **Application Won't Start**   | Error when Java version is incorrect or wrong directory is used.                                        | Check`java -version`and run from correct folder.           |
+| **Help Window**               | A GUI window that lists all available commands and syntax.                                              | Opened using `help`.                                         |
+| **Command Not Recognized**    | Error message when an invalid command is entered.                                                       | User types `ad n/John` instead of `add`.                     |
+| **Invalid Index**             | Error message when the specified contact index does not exist.                                          | `edit 10 n/Jane` if only 5 contacts exist.                   |
+| **Invalid Email Format**      | Error message when an email does not follow proper format.                                              | `e/john[at]mail.com`                                        |
+| **Application Won't Start**   | Error when Java version is incorrect or wrong directory is used.                                        | Check `java -version` and run from correct folder.           |
 | **Clock Button**              | A button beside notes showing the time the note was added.                                              | Only active if a note exists.                                |
-| **Exit**                      | Command to close QuickCLI; automatically saves data.                                                    |`exit`                                                      |
-| **Save Data**                 | Automatic saving of changes to the database after commands that modify data.                            | Stored in`quickcli.json`.                                   |
-| **Add Command**               | Adds a new contact to QuickCLI.                                                                         |`add n/John Doe p/91234567`.                                 |
-| **List Command**              | Lists all contacts or filtered by tags.                                                                 |`list t/priority`.                                           |
-| **Find Command**              | Searches contacts by keyword(s).                                                                        |`find john mary`.                                            |
-| **Edit Command**              | Updates details of an existing contact.                                                                 |`edit 2 n/Jane Smith p/91234567`.                            |
-| **Delete Command**            | Removes a contact from the database.                                                                    |`delete 3`.                                                  |
-| **Note Command**              | Adds remarks to a contact.                                                                              |`note 1 r/Meeting scheduled`.                                |
-| **Sort Command**              | Organizes contacts according to a criterion.                                                            |`sort name`or`sort recent`.                                |
-| **Clear Command**             | Deletes all contacts from the database.                                                                 | Must type`clear confirm`to proceed.                        |
-| **Help Command**              | Launches the Help Window.                                                                               |`help`                                                      |
+| **Exit**                      | Command to close QuickCLI; automatically saves data.                                                    | `exit`                                                      |
+| **Save Data**                 | Automatic saving of changes to the database after commands that modify data.                            | Stored in `quickcli.json`.                                   |
+| **Add Command**               | Adds a new contact to QuickCLI.                                                                         | `add n/John Doe p/91234567`.                                 |
+| **List Command**              | Lists all contacts or filtered by tags.                                                                 | `list t/priority`.                                           |
+| **Find Command**              | Searches contacts by keyword(s).                                                                        | `find john mary`.                                            |
+| **Edit Command**              | Updates details of an existing contact.                                                                 | `edit 2 n/Jane Smith p/91234567`.                            |
+| **Delete Command**            | Removes a contact from the database.                                                                    | `delete 3`.                                                  |
+| **Note Command**              | Adds remarks to a contact.                                                                              | `note 1 r/Meeting scheduled`.                                |
+| **Sort Command**              | Organizes contacts according to a criterion.                                                            | `sort name` or `sort recent`.                                |
+| **Clear Command**             | Deletes all contacts from the database.                                                                 | Must type `clear confirm` to proceed.                        |
+| **Help Command**              | Launches the Help Window.                                                                               | `help`                                                      |
 
 --------------------------------------------------------------------------------------------------------------------
 
