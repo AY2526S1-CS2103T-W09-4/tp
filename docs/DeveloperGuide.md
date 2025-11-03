@@ -155,7 +155,6 @@ The `Storage` component handles reading and writing JSON files. Noteworthy class
 * Serialization tolerates `null` optional fields; `toModelType` returns domain objects with `null` fields where appropriate (verified by `JsonAdaptedPersonTest#toModelType_nullFields_returnsPerson`).
 * Saving to non-existent locations is handled — tests create temporary files and confirm correctness after save+load.
 
---------------------------------------------------------------------------------------------------------------------
 
 ## **Implementation**
 
@@ -253,6 +252,8 @@ The following activity diagram summarizes what happens when a user executes a ne
   * Pros: Will use less memory (e.g. for `delete`, just save the person being deleted).
   * Cons: We must ensure that the implementation of each individual command are correct.
 
+---
+
 ### Add
 
 **Command format**  
@@ -297,7 +298,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 **Example:**
 - `add n/Jane Doe p/91234567 e/jane@example.com a/123 Main St c/Acme pr/HIGH t/client r/Prefers email`
 
-
+---
 
 ### Note
 
@@ -347,8 +348,6 @@ Steps:
 ![NoteCommandSequenceDiagram](images/NoteCommandInternalSequence.png)
 
 
----
-
 
 **Key tests:**
 
@@ -358,6 +357,8 @@ Steps:
 
 **Example:**
 - `note 2 r/Client prefers weekends. Call after 3pm.`
+
+---
 
 ### Priority
 
@@ -408,6 +409,8 @@ Steps:
 - priority 2 pr/low
 - priority 3 pr/
 
+---
+
 ### HelpCommand
 
 **Command format**  
@@ -453,7 +456,6 @@ The `help` command relies on the following files for the GUI implementation:
 ![SortCommand Sequence Diagram](images/SortCommandSequenceDiagram.png)
 
 
----
 
 **Command format**
 sort [CRITERION]
@@ -461,7 +463,7 @@ sort [CRITERION]
 - If no args or only whitespace → defaults to `name`.  
 - Valid criteria (case-insensitive): `name`, `phone`, `email`, `address`, `tag`, `priority`.
 
----
+
 
 **High-level flow (parse → command → execute) — matches sequence diagram and code**
 
@@ -482,8 +484,6 @@ sort [CRITERION]
 
 > Important: the code does call `model.commitAddressBook()` (so sorting is currently a mutation and recorded for undo/redo). The diagrams show the in-place sort via `AddressBook / UniquePersonList` — this matches the code.
 
----
-
 **How comparators are built (rules implemented in `comparatorFor`)**
 - `NAME` → compare `Person.getName().fullName`, case-insensitive.
 - `PHONE` → compare `Person.getPhone().value` (string).
@@ -498,7 +498,6 @@ sort [CRITERION]
 
 If an unsupported key is passed, the code throws `IllegalArgumentException("Unsupported sort key: " + f)`.
 
----
 
 **Class-level mapping (from the class diagram)**
 - `SortCommand` (fields / methods shown in class diagram and implemented in code):
@@ -530,6 +529,7 @@ If an unsupported key is passed, the code throws `IllegalArgumentException("Unsu
 * If `SortCommand` relies on a `SortKeys` enum/class, ensure the parser maps strings case-insensitively to that enum.
 * Keep sorting logic in `Model` (or a `Model#sortBy(SortKey)` helper) so `SortCommand` just delegates — this keeps separation of concerns and simplifies testing.
 
+---
 
 ### ModelManager
 
