@@ -240,14 +240,14 @@ Add remarks or project details to a contact.
 
 **Visual indicators:**
 
-- **HIGH** priority: Red badge with \ `!!!\` symbol
-- **MEDIUM** priority: Orange badge with \ `!!\` symbol
-- **LOW** priority: Green badge with \ `!\` symbol
+- **HIGH** priority: Red badge with `!!!` symbol
+- **MEDIUM** priority: Orange badge with `!!` symbol
+- **LOW** priority: Green badge with `!` symbol
 
 **Parameters:**
 
 - pr/PRIORITY: Priority level 
-- Valid values: \ `HIGH`, `MEDIUM`, `LOW`, or `1`, `2`, `3`, `4`, `5`, ` `
+- Valid values: `HIGH`, `MEDIUM`, `LOW`, or `1`, `2`, `3`, `4`, `5`, empty input
 - Case-insensitive
 
 **Examples:**
