@@ -565,4 +565,4 @@ For bug reports, feature requests, or additional help, please contact our suppor
 
 --------------------------------------------------------------------------------------------------------------------
 
-_QuickCLI v1.4 - Built for freelance professionals who value efficiency_
+_QuickCLI v1.6 - Built for freelance professionals who value efficiency_
