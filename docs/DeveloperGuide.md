@@ -576,7 +576,6 @@ The concrete implementation is in `ModelManager` (`src/main/java/seedu/address/m
 
 (Implementation source: `ModelManager.java`.)
 
----
 
 #### Command-level classes (UndoCommand / RedoCommand)
 
