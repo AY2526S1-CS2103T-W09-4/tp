@@ -74,7 +74,7 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
 
 
 - 1. Navigate to the folder: cd path/to/quickcli/folder
-  - Run the application: java -jar quickcli.jar
+  - Run the application: `java -jar quickcli.jar`
   - The GUI should appear in a few seconds with some sample data
   - You should see:
     - A contact list panel displaying sample contacts
@@ -106,7 +106,7 @@ Before diving into specific commands, here's how you read the command syntax:
   - Used once: t/designer **OR**
   - Multiple times t/designer t/priority
 - **Parameters can be in any order**
-  - Example: n/NAME p/PHONE is the same as p/PHONE n/NAME
+  - Example: `add n/NAME p/PHONE` is the same as `add p/PHONE n/NAME`
 - **Extraneous parameters** for commands that don't take parameters (like help, exit, clear) will be ignored
   - Example: ` help 123 ` will be interpreted as help
 
@@ -117,7 +117,7 @@ Before diving into specific commands, here's how you read the command syntax:
 Adds a new client contact so you can manage your client list in QuickCLI.
 
 **Format:**
-` <br> add n/NAME p/PHONE \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... \[r/REMARKS\] ` 
+` <br> add n/NAME p/PHONE [e/EMAIL] [a/ADDRESS] [c/COMPANY] [pr/PRIORITY] [t/TAG]... [r/REMARKS] ` 
 
 **Parameters:**
 
@@ -162,7 +162,7 @@ Shows all contacts in your database. You can also filter by tags.
 
 Searches across all fields including name, phone, email, address, company, tags, and priority level.
 
-**Format:** `find KEYWORD \[MORE_KEYWORDS\] `
+**Format:** `find KEYWORD [MORE_KEYWORDS]... `
 
 - Search is case-insensitive (john matches John)
 - Partial matching is supported (Joh matches John)
@@ -186,7 +186,7 @@ Searches across all fields including name, phone, email, address, company, tags,
 Updates the details of an existing contact.
 
 **Format:**
-` edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[r/REMARKS\] \[pr/PRIORITY\] \[t/TAG\]... `
+` edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/COMPANY] [r/REMARKS] [pr/PRIORITY] [t/TAG]... `
 
 - Edit the contact at the specified INDEX (shown in the contact list)
 - At least one field must be provided
@@ -320,7 +320,7 @@ Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
 
 Organize your contact list for easier access.
 
-**Format:** ` sort [CRITERION\] `
+**Format:** ` sort [CRITERION] `
 
 **Available sorting options:**
 
