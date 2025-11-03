@@ -33,7 +33,7 @@
 
 ## **About: How to use the guide**
 
-Words highlighted in <mark> yellow </mark> represent commands that should be typed into the **command terminal** in QuickCLI under the [Features](#features) section.
+Words highlighted in ` yellow ` represent commands that should be typed into the **command terminal** in QuickCLI under the [Features](#features) section.
 
 **Tip Boxes** provide additional guidance or useful hints to help you use QuickCLI more effectively:
 <img width="553" height="109" alt="image" src="https://github.com/user-attachments/assets/ae8307da-aec9-448d-a3ce-644025781e3e" />
@@ -74,7 +74,7 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
 
 
 - 1. Navigate to the folder: cd path/to/quickcli/folder
-  - Run the application: java -jar quickcli.jar
+  - Run the application: `java -jar quickcli.jar`
   - The GUI should appear in a few seconds with some sample data
   - You should see:
     - A contact list panel displaying sample contacts
@@ -84,10 +84,10 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
 
 
 - **Try Your First Commands** Type these commands in the command box and press Enter:
-  - <mark> list </mark> - View all contacts
-  - <mark> add n/Jane Smith p/91234567 </mark> - Add a new contact
-  - <mark> find John </mark> - Search for contacts named John
-  - <mark> help </mark> - View available commands
+  - ` list ` - View all contacts
+  - ` add n/Jane Smith p/91234567 ` - Add a new contact
+  - ` find John ` - Search for contacts named John
+  - ` help ` - View available commands
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -98,7 +98,7 @@ QuickCLI is a **desktop application for freelance professionals** who need to ma
 Before diving into specific commands, here's how you read the command syntax:
 
 - **Words in UPPER_CASE** are parameters you need to provide
-  - Example: add n/NAME means replace NAME with actual name like add <mark> add n/John Doe </mark>
+  - Example: add n/NAME means replace NAME with actual name like add ` add n/John Doe `
 - **Items in square brackets [\]** are optional
   - Example: n/NAME [t/TAG\] can be used as n/John Doe t/client or just n/John Doe
 - **Items with ...** can be used multiple times (including zero)
@@ -106,9 +106,9 @@ Before diving into specific commands, here's how you read the command syntax:
   - Used once: t/designer **OR**
   - Multiple times t/designer t/priority
 - **Parameters can be in any order**
-  - Example: n/NAME p/PHONE is the same as p/PHONE n/NAME
+  - Example: `add n/NAME p/PHONE` is the same as `add p/PHONE n/NAME`
 - **Extraneous parameters** for commands that don't take parameters (like help, exit, clear) will be ignored
-  - Example: <mark> help 123 </mark> will be interpreted as help
+  - Example: ` help 123 ` will be interpreted as help
 
 ### **Managing Contacts**
 
@@ -117,7 +117,7 @@ Before diving into specific commands, here's how you read the command syntax:
 Adds a new client contact so you can manage your client list in QuickCLI.
 
 **Format:**
-<mark> <br> add n/NAME p/PHONE \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[pr/PRIORITY\] \[t/TAG\]... \[r/REMARKS\] </mark> 
+` <br> add n/NAME p/PHONE [e/EMAIL] [a/ADDRESS] [c/COMPANY] [pr/PRIORITY] [t/TAG]... [r/REMARKS] ` 
 
 **Parameters:**
 
@@ -126,10 +126,10 @@ Adds a new client contact so you can manage your client list in QuickCLI.
 
 | **Command** | **You have added Client...** |
 | --- | --- |
-| <mark> add n/John Doe p/98765432 </mark>  | John Doe - name, phone |
-| <mark> add n/Sarah Chen p/91234567 e/sarah@design.co c/Chen Designs t/designer t/priority </mark> | Sarah Chen - name, phone; optional: email, company, 2 tags |
-| <mark> add n/Mike Wong p/87654321 e/mike@techcorp.com t/developer r/Prefers Email Communication </mark>| Mike Wong - name, phone; optional: email, tag, remark |
-| <mark> add n/Jane Smith p/92345678 e/jane@urgentclient.com pr/HIGH t/priority </mark> | Jane Smith - name, phone; optional: email, priority |
+| ` add n/John Doe p/98765432 `  | John Doe - name, phone |
+| ` add n/Sarah Chen p/91234567 e/sarah@design.co c/Chen Designs t/designer t/priority ` | Sarah Chen - name, phone; optional: email, company, 2 tags |
+| ` add n/Mike Wong p/87654321 e/mike@techcorp.com t/developer r/Prefers Email Communication `| Mike Wong - name, phone; optional: email, tag, remark |
+| ` add n/Jane Smith p/92345678 e/jane@urgentclient.com pr/HIGH t/priority ` | Jane Smith - name, phone; optional: email, priority |
 
 **Note:** QuickCLI prevents duplicate contacts. Two contacts are considered duplicates if they have the same name AND phone number.
 
@@ -139,16 +139,16 @@ Shows all contacts in your database. You can also filter by tags.
 
 **Format:**
 
-- <mark> list </mark> - Shows all contacts
-- <mark> list t/TAG </mark> - Shows contacts with specific tag (learn about tags in the add command section)
+- ` list ` - Shows all contacts
+- ` list t/TAG ` - Shows contacts with specific tag (learn about tags in the add command section)
 
 **Examples:**
 
-<mark> list </mark>
+` list `
 <br/>
-<mark> list t/priority </mark>
+` list t/priority `
 <br/>
-<mark> list t/designer </mark>
+` list t/designer `
 
 **Rules & notes:**
 - At most **one** `t/` is allowed.  
@@ -162,7 +162,7 @@ Shows all contacts in your database. You can also filter by tags.
 
 Searches across all fields including name, phone, email, address, company, tags, and priority level.
 
-**Format:** <mark>find KEYWORD \[MORE_KEYWORDS\] </mark>
+**Format:** `find KEYWORD [MORE_KEYWORDS]... `
 
 - Search is case-insensitive (john matches John)
 - Partial matching is supported (Joh matches John)
@@ -170,11 +170,11 @@ Searches across all fields including name, phone, email, address, company, tags,
 
 **Examples:**
 
-- <mark> find john </mark>
-- <mark> find chen wong </mark>
-- <mark> find design </mark>
-- <mark> find HIGH </mark> (finds all high-priority contacts)
-- <mark> find urgent high </mark> (finds contacts with "urgent" OR "high" in any field)
+- ` find john `
+- ` find chen wong `
+- ` find design `
+- ` find HIGH ` (finds all high-priority contacts)
+- ` find urgent high ` (finds contacts with "urgent" OR "high" in any field)
 
 <img width="708" height="146" alt="image" src="https://github.com/user-attachments/assets/3ea68fd4-bf55-4fc5-9a21-f0f8fc1002e2" />
 
@@ -186,7 +186,7 @@ Searches across all fields including name, phone, email, address, company, tags,
 Updates the details of an existing contact.
 
 **Format:**
-<mark> edit INDEX \[n/NAME\] \[p/PHONE\] \[e/EMAIL\] \[a/ADDRESS\] \[c/COMPANY\] \[r/REMARKS\] \[pr/PRIORITY\] \[t/TAG\]... </mark>
+` edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [c/COMPANY] [r/REMARKS] [pr/PRIORITY] [t/TAG]... `
 
 - Edit the contact at the specified INDEX (shown in the contact list)
 - At least one field must be provided
@@ -196,17 +196,17 @@ Updates the details of an existing contact.
 
 **Examples:**
 
-- <mark> edit 1 p/91234567 </mark>
-- <mark> edit 2 n/John Smith e/john@newcompany.com </mark>
-- <mark> edit 3 t/priority t/developer </mark>
-- <mark> edit 2 pr/MEDIUM t/important </mark>
-- <mark> edit 4 t/ </mark>
+- ` edit 1 p/91234567 `
+- ` edit 2 n/John Smith e/john@newcompany.com `
+- ` edit 3 t/priority t/developer `
+- ` edit 2 pr/MEDIUM t/important `
+- ` edit 4 t/ `
 
 #### Adding notes to a contact: note
 
 Add remarks or project details to a contact.
 
-**Format:** <mark> note INDEX r/REMARKS </mark>
+**Format:** ` note INDEX r/REMARKS `
 
 - Adds notes to the contact at the specified INDEX
 - Replaces any existing notes
@@ -224,9 +224,9 @@ Add remarks or project details to a contact.
 
 **Examples:**
 
-- <mark> note 1 r/Discussed new website project, budget \$5000 </mark> 
-- <mark> note 2 r/Meeting scheduled for next Tuesday, 2pm  </mark>
-- <mark> note 1 r/ </mark>
+- ` note 1 r/Discussed new website project, budget \$5000 ` 
+- ` note 2 r/Meeting scheduled for next Tuesday, 2pm  `
+- ` note 1 r/ `
 
 #### Setting priority for a contact: priority
 <br/>Assign or update the priority level for a contact to help you focus on important clients.  
@@ -252,10 +252,10 @@ Add remarks or project details to a contact.
 
 **Examples:**
 
-- <mark> priority 1 pr/HIGH </mark>
-- <mark> priority 2 pr/medium </mark>
-- <mark> priority 3 pr/1 </mark>
-- <mark> priority 2 pr/ </mark> *(clears priority for contact #2)*
+- ` priority 1 pr/HIGH `
+- ` priority 2 pr/medium `
+- ` priority 3 pr/1 `
+- ` priority 2 pr/ ` *(clears priority for contact #2)*
 
 <img width="913" height="197" alt="image" src="https://github.com/user-attachments/assets/7fcb4e47-300e-483d-a02d-3d52daabb6da" />
 
@@ -264,10 +264,10 @@ Add remarks or project details to a contact.
 Removes one or multiple contacts from your database.
 
 **Format:**
-- Single deletion: <mark> delete INDEX </mark>
-- Multiple deletion: <mark> delete INDEX1,INDEX2,INDEX3 </mark>
-- Range deletion: <mark> delete START-END </mark>
-- Combined: <mark> delete INDEX1,INDEX2,START-END </mark>
+- Single deletion: ` delete INDEX `
+- Multiple deletion: ` delete INDEX1,INDEX2,INDEX3 `
+- Range deletion: ` delete START-END `
+- Combined: ` delete INDEX1,INDEX2,START-END `
 
 **Parameters:**
 - INDEX: The contact number shown in the current list (must be positive integer)
@@ -285,24 +285,24 @@ Warning: Always verify the indices before confirming deletion.
 **Examples:**
 
 **Single deletion:**
-<mark>delete 3</mark> - Deletes contact at index 3 (e.g., Charlotte Oliveiro)
+`delete 3` - Deletes contact at index 3 (e.g., Charlotte Oliveiro)
 
 <img width="905" height="737" alt="image" src="https://github.com/user-attachments/assets/c2f24953-7b94-4863-88d6-5e5324724f72" />
 
 **Multiple deletion:**
-<mark>delete 1,3,5</mark> - Deletes contacts at indices 1, 3, and 5
+`delete 1,3,5` - Deletes contacts at indices 1, 3, and 5
 
 **Range deletion:**
-<mark>delete 2-4</mark> - Deletes contacts from index 2 to 4 (inclusive)
+`delete 2-4` - Deletes contacts from index 2 to 4 (inclusive)
 
 **Combined deletion:**
-<mark>delete 1,3,5-7,10</mark> - Deletes contacts at indices 1, 3, 5, 6, 7, and 10
+`delete 1,3,5-7,10` - Deletes contacts at indices 1, 3, 5, 6, 7, and 10
 
 **After using find:**
 
-<mark>find roy</mark>
+`find roy`
 
-<mark>delete 1</mark>
+`delete 1`
 
 Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
 
@@ -312,7 +312,7 @@ Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
 
 **Error Handling:**
 - If any index is invalid, QuickCLI will display all invalid indices and the operation will be cancelled
-- Example: <mark>delete 1,3,50</mark> when only 10 contacts exist will show: "Invalid indices: 50 (person list has 10 entries)"
+- Example: `delete 1,3,50` when only 10 contacts exist will show: "Invalid indices: 50 (person list has 10 entries)"
 
 ### **Organizing Your Contacts**
 
@@ -320,7 +320,7 @@ Deletes the first contact in the filtered results (e.g., Roy Balakrishnan)
 
 Organize your contact list for easier access.
 
-**Format:** <mark> sort [CRITERION\] </mark>
+**Format:** ` sort [CRITERION] `
 
 **Available sorting options:**
 
@@ -333,10 +333,10 @@ Organize your contact list for easier access.
 
 **Examples:**
 
-- <mark> Sort </mark>
-- <mark> sort name </mark>
-- <mark> sort recent </mark>
-- <mark> sort priority </mark>
+- ` Sort `
+- ` sort name `
+- ` sort recent `
+- ` sort priority `
 
 ### **History Commands**
 
@@ -346,7 +346,7 @@ All the above commands except [list](#listing-all-contacts-list) and [find](#fin
 
 Undo last action done by user; Moves back to previous saved state in the history. 
 
-**Format:** <mark> undo </mark>
+**Format:** ` undo `
 
 This only works if there are actions to undo.
 
@@ -354,29 +354,29 @@ This only works if there are actions to undo.
 
 Redo last action that was undone. Reverts last undo action by moving forward to the next saved state in the history.
 
-**Format:** <mark> redo </mark>
+**Format:** ` redo `
 
 **When does it work?**
 - ✅ You have just used **undo** one or more times, and you **haven’t** run any other command that changes the contacts since then.
-- ❌ If you run a new changing command (e.g., <mark>add</mark>, <mark>edit</mark>, <mark>delete</mark>, <mark>sort</mark>, <mark>priority</mark>, <mark>note</mark>, <mark>clear</mark>), the “redo path” is reset and <mark>redo</mark> is no longer available.
+- ❌ If you run a new changing command (e.g., `add`, `edit`, `delete`, `sort`, `priority`, `note`, `clear`), the “redo path” is reset and `redo` is no longer available.
 
 **Quick example**
 1. Start with 3 contacts.  
-2. <mark>add n/Alice p/9000</mark> → now 4 contacts.  
-3. <mark>delete 2</mark> → now 3 contacts.  
-4. <mark>undo</mark> → back to 4 contacts.  
-5. <mark>redo</mark> → reapplies the deletion → back to 3 contacts.
+2. `add n/Alice p/9000` → now 4 contacts.  
+3. `delete 2` → now 3 contacts.  
+4. `undo` → back to 4 contacts.  
+5. `redo` → reapplies the deletion → back to 3 contacts.
 
 
 **When redo is no longer available**
-1. <mark>add n/Alice p/9000</mark> 
-2. <mark>undo</mark>
-3. (Instead of redo) <mark>edit 1 p/9999</mark> → changes data
-4. <mark>redo</mark> → ❌ Not available (the new edit broke the redo chain)
+1. `add n/Alice p/9000` 
+2. `undo`
+3. (Instead of redo) `edit 1 p/9999` → changes data
+4. `redo` → ❌ Not available (the new edit broke the redo chain)
 
-If <mark>redo</mark> isn’t available, QuickCLI shows: “No actions to redo.”  
+If `redo` isn’t available, QuickCLI shows: “No actions to redo.”  
 
-Commands like <mark>list</mark>, <mark>help</mark>, <mark>find</mark> and <mark>exit</mark> don’t affect undo/redo history.
+Commands like `list`, `help`, `find` and `exit` don’t affect undo/redo history.
 
 ### **System Commands**
 
@@ -384,9 +384,9 @@ Commands like <mark>list</mark>, <mark>help</mark>, <mark>find</mark> and <mark>
 
 Removes all contacts from the database. Use with caution!
 
-**Format:** <mark> clear </mark>
+**Format:** ` clear `
 
-- You will be prompted to confirm: Type <mark> clear confirm </mark> to proceed
+- You will be prompted to confirm: Type ` clear confirm ` to proceed
 
 <img width="486" height="109" alt="image" src="https://github.com/user-attachments/assets/0b6d4002-c2e8-4aab-949f-b6eeeb12f96f" />
 
@@ -396,9 +396,9 @@ Removes all contacts from the database. Use with caution!
 
 Opens the help window showing all available commands.
 
-**Format:** <mark> help </mark>
+**Format:** ` help `
 
-You can type <mark> help </mark> in the command input box and pressing enter on your keyboard :
+You can type ` help ` in the command input box and pressing enter on your keyboard :
 
 **OR**
 
@@ -419,7 +419,7 @@ Will automatically launch this window:
 
 Closes QuickCLI. Your data is automatically saved.
 
-**Format:** <mark> exit </mark>
+**Format:** ` exit `
 
 <img width="947" height="180" alt="image" src="https://github.com/user-attachments/assets/f5e211e8-f1bf-4ca6-a585-2385de34712d" />
 
@@ -565,4 +565,4 @@ For bug reports, feature requests, or additional help, please contact our suppor
 
 --------------------------------------------------------------------------------------------------------------------
 
-_QuickCLI v1.4 - Built for freelance professionals who value efficiency_
+_QuickCLI v1.6 - Built for freelance professionals who value efficiency_
