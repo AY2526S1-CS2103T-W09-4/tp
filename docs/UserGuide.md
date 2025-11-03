@@ -431,13 +431,13 @@ Closes QuickCLI. Your data is automatically saved.
 
 QuickCLI automatically saves your data after every command that changes the database. There's no need to save manually.
 
-Data is stored in: `[QuickCLI folder]/data/quickcli.json`
+Data is stored in: `[QuickCLI folder]/data/addressbook.json`
 
 ### Editing the data file
 
 Advanced users can directly edit the data file:
 
-1. The data is saved in JSON format at `./data/quickcli.json`
+1. The data is saved in JSON format at `./data/addressbook.json`
 2. Make a backup before editing
 3. Ensure the JSON format remains valid
 4. If the file becomes corrupted, QuickCLI will start with an empty database
@@ -452,7 +452,7 @@ Caution:
 ## FAQ
 
 **Q: Can I use QuickCLI on multiple computers?**  
-A: Yes! Copy the `quickcli.json` data file from the data folder to transfer your contacts between computers.
+A: Yes! Copy the `addressbook.json` data file from the data folder to transfer your contacts between computers.
 
 **Q: What happens if I enter an invalid command?**  
 A: QuickCLI will show an error message explaining what went wrong. Check the command format and try again.
@@ -479,14 +479,14 @@ A: Import/export functionality is coming in version 2.0. For now, you can manual
 
 ## Troubleshooting
 
-| Problem                  | Solution                                                                                      |
-|--------------------------|-----------------------------------------------------------------------------------------------|
-| "Command not recognized" | Check spelling and command format. Use `help` to see all commands                             |
-| "Invalid index"          | Ensure the contact number exists in the current list                                          |
-| "Duplicate contact"      | A contact with the same name and phone already exists                                         |
-| "Invalid email format"   | Ensure email follows format: `local@domain.com`                                              |
-| Application won't start  | Verify Java 17+ is installed and you're in the correct directory                              |
-| Data file corrupted      | Delete or rename `quickcli.json` to start fresh, or restore from backup                       |
+| Problem                  | Solution                                                                   |
+|--------------------------|----------------------------------------------------------------------------|
+| "Command not recognized" | Check spelling and command format. Use `help` to see all commands          |
+| "Invalid index"          | Ensure the contact number exists in the current list                       |
+| "Duplicate contact"      | A contact with the same name and phone already exists                      |
+| "Invalid email format"   | Ensure email follows format: `local@domain.com`                            |
+| Application won't start  | Verify Java 17+ is installed and you're in the correct directory           |
+| Data file corrupted      | Delete or rename `addressbook.json` to start fresh, or restore from backup |
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -525,43 +525,43 @@ For bug reports, feature requests, or additional help, please contact our suppor
 
 ## Glossary
 
-| Term                          | Definition / Explanation                                                                                | Example                                                      |
-|-------------------------------|---------------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
-| **CLI (Command Line Interface)** | A text-based interface where users type commands to interact with software.                             | QuickCLI uses a CLI to manage contacts.                      |
-| **GUI (Graphical User Interface)** | A visual interface where users interact with software using windows, buttons, and icons.                | QuickCLI has a GUI overlay for visual representation.        |
-| **Contact**                   | A record representing a client, including name, phone, email, company, tags, and remarks.               | `add n/John Doe p/91234567`                                 |
-| **Index**                     | The number representing a contact in the current list, used in commands like edit, delete, note.        | `edit 2 n/Jane Smith`                                       |
-| **Parameter**                 | A piece of information required or optional for a command.                                              | In `add n/NAME p/PHONE`, NAME and PHONE are parameters.      |
-| **Required Parameter**        | A parameter that must be provided for the command to execute successfully.                              | `n/NAME` and `p/PHONE` in add.                               |
-| **Alphanumeric**        | Characters that are either alphabets(upper and lower case) or numbers(0-9)                             | `n/NAME` and `t/TAG`                              |
-| **Optional Parameter**        | A parameter that can be omitted without causing an error.                                               | `e/EMAIL`, `a/ADDRESS`, `c/COMPANY`, `t/TAG`, `r/REMARKS`.   |
-| **Priority**                  | A level assigned to a contact indicating their importance or urgency.                                   | `pr/HIGH`, `pr/MEDIUM`, `pr/LOW`, `pr/1`                    |
-| **Tag**                       | A keyword used to categorize or filter contacts.                                                        | `t/client`, `t/priority`.                                    |
-| **Remark / Note**             | Optional textual information about a contact, stored for reference.                                     | `r/Prefers Email Communication`.                             |
-| **Command Format / Syntax**   | The structure in which a command must be entered.                                                       | `add n/NAME p/PHONE [e/EMAIL]...`                           |
-| **Duplicate Contact**         | A contact considered identical to an existing one if both name and phone number match.                  | QuickCLI prevents duplicates.                                |
-| **Sort Criterion**            | A property used to organize contacts when using the sort command.                                       | `name` for alphabetical, `recent` for newest first.          |
-| **Clear Confirm**             | A confirmation step to prevent accidental deletion of all contacts.                                     | User types `clear confirm` to execute clear.                 |
-| **Data File**                 | The file where all contact information is stored in JSON format.                                        | `[QuickCLI folder]/data/quickcli.json`                      |
-| **JSON**                      | A text-based format for storing structured data.                                                        | QuickCLI stores contacts in JSON format.                     |
+| Term                          | Definition / Explanation                                                                                | Example                                                                  |
+|-------------------------------|---------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| **CLI (Command Line Interface)** | A text-based interface where users type commands to interact with software.                             | QuickCLI uses a CLI to manage contacts.                                  |
+| **GUI (Graphical User Interface)** | A visual interface where users interact with software using windows, buttons, and icons.                | QuickCLI has a GUI overlay for visual representation.                    |
+| **Contact**                   | A record representing a client, including name, phone, email, company, tags, and remarks.               | `add n/John Doe p/91234567`                                              |
+| **Index**                     | The number representing a contact in the current list, used in commands like edit, delete, note.        | `edit 2 n/Jane Smith`                                                    |
+| **Parameter**                 | A piece of information required or optional for a command.                                              | In `add n/NAME p/PHONE`, NAME and PHONE are parameters.                  |
+| **Required Parameter**        | A parameter that must be provided for the command to execute successfully.                              | `n/NAME` and `p/PHONE` in add.                                           |
+| **Alphanumeric**        | Characters that are either alphabets(upper and lower case) or numbers(0-9)                             | `n/NAME` and `t/TAG`                                                     |
+| **Optional Parameter**        | A parameter that can be omitted without causing an error.                                               | `e/EMAIL`, `a/ADDRESS`, `c/COMPANY`, `t/TAG`, `r/REMARKS`.               |
+| **Priority**                  | A level assigned to a contact indicating their importance or urgency.                                   | `pr/HIGH`, `pr/MEDIUM`, `pr/LOW`, `pr/1`                                 |
+| **Tag**                       | A keyword used to categorize or filter contacts.                                                        | `t/client`, `t/priority`.                                                |
+| **Remark / Note**             | Optional textual information about a contact, stored for reference.                                     | `r/Prefers Email Communication`.                                         |
+| **Command Format / Syntax**   | The structure in which a command must be entered.                                                       | `add n/NAME p/PHONE [e/EMAIL]...`                                        |
+| **Duplicate Contact**         | A contact considered identical to an existing one if both name and phone number match.                  | QuickCLI prevents duplicates.                                            |
+| **Sort Criterion**            | A property used to organize contacts when using the sort command.                                       | `name` for alphabetical, `recent` for newest first.                      |
+| **Clear Confirm**             | A confirmation step to prevent accidental deletion of all contacts.                                     | User types `clear confirm` to execute clear.                             |
+| **Data File**                 | The file where all contact information is stored in JSON format.                                        | `[QuickCLI folder]/data/addressbook.json`                                |
+| **JSON**                      | A text-based format for storing structured data.                                                        | QuickCLI stores contacts in JSON format.                                 |
 | **User Story**                | Short description of a feature from the user's perspective.                                             | As a user, I can add a contact so that I can manage client info quickly. |
-| **Help Window**               | A GUI window that lists all available commands and syntax.                                              | Opened using `help`.                                         |
-| **Command Not Recognized**    | Error message when an invalid command is entered.                                                       | User types `ad n/John` instead of `add`.                     |
-| **Invalid Index**             | Error message when the specified contact index does not exist.                                          | `edit 10 n/Jane` if only 5 contacts exist.                   |
-| **Invalid Email Format**      | Error message when an email does not follow proper format.                                              | `e/john[at]mail.com`                                        |
-| **Application Won't Start**   | Error when Java version is incorrect or wrong directory is used.                                        | Check `java -version` and run from correct folder.           |
-| **Clock Button**              | A button beside notes showing the time the note was added.                                              | Only active if a note exists.                                |
-| **Exit**                      | Command to close QuickCLI; automatically saves data.                                                    | `exit`                                                      |
-| **Save Data**                 | Automatic saving of changes to the database after commands that modify data.                            | Stored in `quickcli.json`.                                   |
-| **Add Command**               | Adds a new contact to QuickCLI.                                                                         | `add n/John Doe p/91234567`.                                 |
-| **List Command**              | Lists all contacts or filtered by tags.                                                                 | `list t/priority`.                                           |
-| **Find Command**              | Searches contacts by keyword(s).                                                                        | `find john mary`.                                            |
-| **Edit Command**              | Updates details of an existing contact.                                                                 | `edit 2 n/Jane Smith p/91234567`.                            |
-| **Delete Command**            | Removes a contact from the database.                                                                    | `delete 3`.                                                  |
-| **Note Command**              | Adds remarks to a contact.                                                                              | `note 1 r/Meeting scheduled`.                                |
-| **Sort Command**              | Organizes contacts according to a criterion.                                                            | `sort name` or `sort recent`.                                |
-| **Clear Command**             | Deletes all contacts from the database.                                                                 | Must type `clear confirm` to proceed.                        |
-| **Help Command**              | Launches the Help Window.                                                                               | `help`                                                      |
+| **Help Window**               | A GUI window that lists all available commands and syntax.                                              | Opened using `help`.                                                     |
+| **Command Not Recognized**    | Error message when an invalid command is entered.                                                       | User types `ad n/John` instead of `add`.                                 |
+| **Invalid Index**             | Error message when the specified contact index does not exist.                                          | `edit 10 n/Jane` if only 5 contacts exist.                               |
+| **Invalid Email Format**      | Error message when an email does not follow proper format.                                              | `e/john[at]mail.com`                                                     |
+| **Application Won't Start**   | Error when Java version is incorrect or wrong directory is used.                                        | Check `java -version` and run from correct folder.                       |
+| **Clock Button**              | A button beside notes showing the time the note was added.                                              | Only active if a note exists.                                            |
+| **Exit**                      | Command to close QuickCLI; automatically saves data.                                                    | `exit`                                                                   |
+| **Save Data**                 | Automatic saving of changes to the database after commands that modify data.                            | Stored in `addressbook.json`.                                            |
+| **Add Command**               | Adds a new contact to QuickCLI.                                                                         | `add n/John Doe p/91234567`.                                             |
+| **List Command**              | Lists all contacts or filtered by tags.                                                                 | `list t/priority`.                                                       |
+| **Find Command**              | Searches contacts by keyword(s).                                                                        | `find john mary`.                                                        |
+| **Edit Command**              | Updates details of an existing contact.                                                                 | `edit 2 n/Jane Smith p/91234567`.                                        |
+| **Delete Command**            | Removes a contact from the database.                                                                    | `delete 3`.                                                              |
+| **Note Command**              | Adds remarks to a contact.                                                                              | `note 1 r/Meeting scheduled`.                                            |
+| **Sort Command**              | Organizes contacts according to a criterion.                                                            | `sort name` or `sort recent`.                                            |
+| **Clear Command**             | Deletes all contacts from the database.                                                                 | Must type `clear confirm` to proceed.                                    |
+| **Help Command**              | Launches the Help Window.                                                                               | `help`                                                                   |
 
 --------------------------------------------------------------------------------------------------------------------
 
