@@ -114,7 +114,7 @@ Several command behaviors are covered by unit tests in `src/test/java/seedu/addr
 
 
 ### Model component
-**API**: `Ui` interface (see `src/main/java/seedu/address/model/Model.java` in the original reference layout).
+**API**: `Model` interface (see `src/main/java/seedu/address/model/Model.java` in the original reference layout).
 <img width="496" height="453" alt="image" src="https://github.com/user-attachments/assets/7c1902fa-a19e-49f7-ad8f-263f1f58404d" />
 
 
@@ -125,7 +125,7 @@ The `Model` stores the _single source of truth_ for the application state. In ou
 * `Priority` — represents priority levels as an enum-like `Level` with helper parsing, numeric mapping and display metadata (symbol, color). See `src/main/java/seedu/address/model/person/Priority.java` and tests in `PriorityTest`.
 * `Note` — lightweight wrapper for remarks attached to a person. See `Note.java` and `NoteTest`.
 * `UniquePersonList` — enforces uniqueness (name + phone) and is used by `AddressBook`.
-* `AddressBook` / `VersionedAddressBook` — stores the `UniquePersonList` and (for versioned behaviour) maintains history for undo/redo.
+* `AddressBook` — stores the `UniquePersonList` and maintains history for undo/redo.
 
 **Design choices and rationale**
 
@@ -137,7 +137,7 @@ The `Model` stores the _single source of truth_ for the application state. In ou
 
 ### Storage component
 
-**API**: `Ui` interface (see `src/main/java/seedu/address/storage/Storage.java` in the original reference layout).
+**API**: `Storage` interface (see `src/main/java/seedu/address/storage/Storage.java` in the original reference layout).
 
 
 <img src="images/StorageClassDiagram.png" width="550" />
@@ -162,17 +162,12 @@ This section describes some noteworthy details on how certain features are imple
 
 ### Undo/redo feature
 
-The proposed undo/redo mechanism is facilitated by `VersionedAddressBook`. It extends `AddressBook` with an undo/redo history, stored internally as an `addressBookStateList` and `currentStatePointer`. Additionally, it implements the following operations:
-
-* `VersionedAddressBook#commit()` — Saves the current address book state in its history.
-* `VersionedAddressBook#undo()` — Restores the previous address book state from its history.
-* `VersionedAddressBook#redo()` — Restores a previously undone address book state from its history.
-
+The proposed undo/redo mechanism is facilitated by `AddressBook`. 
 These operations are exposed in the `Model` interface as `Model#commitAddressBook()`, `Model#undoAddressBook()` and `Model#redoAddressBook()` respectively.
 
 Given below is an example usage scenario and how the undo/redo mechanism behaves at each step.
 
-Step 1. The user launches the application for the first time. The `VersionedAddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
+Step 1. The user launches the application for the first time. The `AddressBook` will be initialized with the initial address book state, and the `currentStatePointer` pointing to that single address book state.
 
 ![UndoRedoState0](images/UndoRedoState0.png)
 
@@ -259,6 +254,7 @@ The following activity diagram summarizes what happens when a user executes a ne
 **Command format**  
 `add n/NAME p/PHONE [e/EMAIL\] [a/ADDRESS\] [c/COMPANY\] [pr/PRIORITY\] [t/TAG\]... [r/REMARKS\]`
 
+- [\] means an optional parameter.
 - Prefix constants are used throughout parsing code and test utilities (see `PersonUtil`), e.g. `PREFIX_NAME`, `PREFIX_PHONE`, `PREFIX_EMAIL`, `PREFIX_ADDRESS`, `PREFIX_TAG`, `PREFIX_PRIORITY`, `PREFIX_REMARK`, `PREFIX_COMPANY`, etc.
   * Example builder used in tests: `PersonUtil.getPersonDetails(person)` constructs strings using these prefixes. See:  
     `src/test/java/seedu/address/testutil/PersonUtil.java`
@@ -934,7 +930,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | **Remark / Note** | Optional textual information about a contact, stored for reference. | `r/Prefers Email Communication.` |
 | **Command Format / Syntax** | The structure in which a command must be entered. | `add n/NAME p/PHONE [e/EMAIL]...` |
 | **Duplicate Contact** | A contact considered identical to an existing one if both name and phone number match. | `QuickCLI` prevents duplicates. |
-| **Sort Criterion** | A property used to organize contacts when using the `sort` command. | `name` for alphabetical, `recent` for newest first. |
+| **Sort Criterion** | A property used to organize contacts when using the `sort` command. | `name` for alphabetical |
 | **Clear Confirm** | A confirmation step to prevent accidental deletion of all contacts. | User types `clear confirm` to execute clear. |
 | **JSON** | A text-based format for storing structured data. | `QuickCLI` stores contacts in JSON format. |
 | **User Story** | Short description of a feature from the user’s perspective. | “As a user, I can add a contact so that I can manage client info quickly.” |
@@ -948,10 +944,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | **Edit Command** | Updates details of an existing contact. | `edit 2 n/Jane Smith p/91234567` |
 | **Delete Command** | Removes a contact from the database. | `delete 3` |
 | **Note Command** | Adds remarks to a contact. | `note 1 r/Meeting scheduled` |
-| **Sort Command** | Organizes contacts according to a criterion. | `sort name` or `sort recent` |
+| **Sort Command** | Organizes contacts according to a criterion. | `sort name` |
 | **Clear Command** | Deletes all contacts from the database. | Must type `clear confirm` to proceed. |
 | **Help Command** | Launches the Help Window. | `help` |
-| **JSON** |JavaScript Object Notation - A human-readable data format used to store contact data |
 | **Mainstream OS** |Operating System that is mainstream |Windows, Linux, Unix, MacOS |
 | **Freelance Professional** |Self-employed individual offering services to multiple clients |
 
@@ -984,5 +979,5 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Manual testing for sorting & filtering
 
-1. Use `sort` and `sort priority` and `sort recent` — check correct ordering in the list pane.
+1. Use `sort` and `sort priority` — check correct ordering in the list pane.
 3. Use `find` with partial keywords and mixed-case (e.g., `find JoH`) — confirm case-insensitive partial matches.
