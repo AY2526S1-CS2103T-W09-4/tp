@@ -335,7 +335,6 @@ Organize your contact list for easier access.
 
 - `Sort`
 - `sort name`
-- `sort recent`
 - `sort priority`
 
 ### **History Commands**
@@ -540,7 +539,7 @@ For bug reports, feature requests, or additional help, please contact our suppor
 | **Remark / Note**             | Optional textual information about a contact, stored for reference.                                     | `r/Prefers Email Communication`.                                         |
 | **Command Format / Syntax**   | The structure in which a command must be entered.                                                       | `add n/NAME p/PHONE [e/EMAIL]...`                                        |
 | **Duplicate Contact**         | A contact considered identical to an existing one if both name and phone number match.                  | QuickCLI prevents duplicates.                                            |
-| **Sort Criterion**            | A property used to organize contacts when using the sort command.                                       | `name` for alphabetical, `recent` for newest first.                      |
+| **Sort Criterion**            | A property used to organize contacts when using the sort command.                                       | `name` for alphabetical.                   |
 | **Clear Confirm**             | A confirmation step to prevent accidental deletion of all contacts.                                     | User types `clear confirm` to execute clear.                             |
 | **Data File**                 | The file where all contact information is stored in JSON format.                                        | `[QuickCLI folder]/data/addressbook.json`                                |
 | **JSON**                      | A text-based format for storing structured data.                                                        | QuickCLI stores contacts in JSON format.                                 |
@@ -559,7 +558,7 @@ For bug reports, feature requests, or additional help, please contact our suppor
 | **Edit Command**              | Updates details of an existing contact.                                                                 | `edit 2 n/Jane Smith p/91234567`.                                        |
 | **Delete Command**            | Removes a contact from the database.                                                                    | `delete 3`.                                                              |
 | **Note Command**              | Adds remarks to a contact.                                                                              | `note 1 r/Meeting scheduled`.                                            |
-| **Sort Command**              | Organizes contacts according to a criterion.                                                            | `sort name` or `sort recent`.                                            |
+| **Sort Command**              | Organizes contacts according to a criterion.                                                            | `sort name`                                            |
 | **Clear Command**             | Deletes all contacts from the database.                                                                 | Must type `clear confirm` to proceed.                                    |
 | **Help Command**              | Launches the Help Window.                                                                               | `help`                                                                   |
 
